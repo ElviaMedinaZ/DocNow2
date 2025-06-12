@@ -1,0 +1,146 @@
+/**
+ * Descripción: Estilos de Registro
+ * Fecha: 11 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #f0f2f5;
+  font-family: 'Segoe UI', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Contenedor principal */
+.RegistroContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.RegistroForm {
+  background: white;
+  width: 100%;
+  max-width: 800px;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.Logo {
+  width: 80px;
+  display: block;
+  margin: 0 auto 1.5rem auto;
+}
+
+.Titulo {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2a2a2a;
+  margin-bottom: 0.5rem;
+}
+
+.Subtitulo {
+  text-align: center;
+  color: #777;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.FotoPreview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.PreviewImg {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+.FileLabel {
+  background-color: #f2f2f2;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.FileLabel:hover {
+  background-color: #e0e0e0;
+}
+
+.PFluid > * {
+  margin-bottom: 1.25rem;
+}
+
+.p-inputtext,
+.p-dropdown,
+.p-calendar,
+.p-password {
+  width: 100%;
+  font-size: 1rem;
+}
+
+.SexoGroup {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.SexoGroup button {
+  flex: 1 1 45%;
+  min-width: 120px;
+  max-width: 100%;
+}
+
+
+.BtnSiguiente {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  background-color: #0A3B74;
+  color: white;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.BtnSiguiente:hover {
+  background-color: #1a62b4;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .RegistroForm {
+    padding: 2rem 1rem;
+  }
+
+  .Titulo {
+    font-size: 1.5rem;
+  }
+
+  .SexoGroup {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .SexoGroup button {
+    width: 100%;
+  }
+}

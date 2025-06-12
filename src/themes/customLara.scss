@@ -1,0 +1,16 @@
+/**
+ * Descripción: Personalización del tema lara-light
+ * Fecha:11 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+@use 'primereact/resources/themes/lara-light/theme' with (
+  $primaryColor: #0A3B74,
+  $primaryDarkColor: #08315f,
+  $primaryLightColor: #498FC0,
+  $accentColor: #498FC0,
+  $highlightBg: #EFEFF2,
+  $bodyBgColor: #F1F1F1,
+  $textColor: #646464,
+  $borderColor: #CBCBCB
+);
