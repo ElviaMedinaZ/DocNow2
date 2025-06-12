@@ -96,6 +96,11 @@ html, body, #root {
   
 }
 
+.p-password {
+  display: block;
+  width: 100% !important;
+}
+
 .SexoGroup {
   display: flex;
   gap: 1rem;
