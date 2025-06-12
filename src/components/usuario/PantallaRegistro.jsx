@@ -109,8 +109,8 @@ export default function RegistroWeb() {
 
           <InputText placeholder="Correo electrónico" className={errores.correoElectronico ? 'PInvalid' : ''} value={formData.correoElectronico} onChange={(e) => handleChange('correoElectronico', e.target.value)} />
           <InputText placeholder="Teléfono" className={errores.telefono ? 'PInvalid' : ''} value={formData.telefono} onChange={(e) => handleChange('telefono', e.target.value)} />
-          <Password placeholder="Contraseña" feedback={false} toggleMask value={formData.contrasena} onChange={(e) => handleChange('contrasena', e.target.value)} className={errores.contrasena ? 'PInvalid' : ''} />
-          <Password placeholder="Confirmar contraseña" feedback={false} toggleMask value={formData.confirmar} onChange={(e) => handleChange('confirmar', e.target.value)} className={errores.confirmar ? 'PInvalid' : ''} />
+          <Password placeholder="Contraseña" feedback={false} toggleMask hideIcon="pi pi-eye" showIcon="pi pi-eye-slash" value={formData.contrasena} onChange={(e) => handleChange('contrasena', e.target.value)} className={errores.contrasena ? 'PInvalid' : ''} />
+          <Password placeholder="Confirmar contraseña" feedback={false} toggleMask hideIcon="pi pi-eye" showIcon="pi pi-eye-slash" value={formData.confirmar} onChange={(e) => handleChange('confirmar', e.target.value)} className={errores.confirmar ? 'PInvalid' : ''} />
 
           <Button label="Siguiente" onClick={validarYEnviar} className="BtnSiguiente p-button-primary" />
         </div>
