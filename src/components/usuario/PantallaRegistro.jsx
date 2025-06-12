@@ -114,11 +114,6 @@ export default function RegistroWeb() {
 
           <Button label="Siguiente" onClick={validarYEnviar} className="BtnSiguiente p-button-primary" />
         </div>
-
-        <h1 className="Aviso"> 
-          textos
-          Al hacer clic en "Siguiente", aceptas los <a href="/terminos" className="Link">Términos y Condiciones</a> y la <a href="/privacidad" className="Link">Política de Privacidad</a>.
-        </h1>
       </div>
     </div>
   );
