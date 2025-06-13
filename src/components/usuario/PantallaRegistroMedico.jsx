@@ -1,7 +1,7 @@
 /**
- * Descripción: Diseño de vista Registro Paciente
+ * Descripción: Diseño de vista Registro con SweetAlert2
+ * Fecha: 11 Junio de 2025
  * Programador: Elvia Medina
- * Fecha: 12 de Junio de 2025
  */
 
 import { Button } from 'primereact/button';
@@ -19,14 +19,14 @@ import '../../styles/usuario/Registro.css';
 const MySwal = withReactContent(Swal);
 const HOY = new Date();
 const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
-
+const cedulaRegex = /^\d{8}$/;
 
 export default function RegistroWeb() {
   const [formData, setFormData] = useState({
     nombres: '',
     apellidoP: '',
     apellidoM: '',
-    curp: '',
+    cedulaProfesional: '',
     sexo: '',
     fechaNacimiento: null,
     estadoCivil: '',
@@ -72,7 +72,6 @@ export default function RegistroWeb() {
     const nuevosErrores = {};
     const nuevosMensajes = {};
 
-    // Requeridos
     Object.entries(formData).forEach(([campo, valor]) => {
       if (!valor) {
         nuevosErrores[campo] = true;
@@ -80,47 +79,45 @@ export default function RegistroWeb() {
       }
     });
 
-    // Foto obligatoria
     if (!fotoPerfil) {
       nuevosErrores.fotoPerfil = true;
       nuevosMensajes.fotoPerfil = 'La foto es obligatoria';
     }
 
-    // Email
+    //Email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.correoElectronico && !emailRegex.test(formData.correoElectronico)) {
       nuevosErrores.correoElectronico = true;
       nuevosMensajes.correoElectronico = 'Correo electrónico inválido';
     }
 
-    // Teléfono
+     //Telefono
     const telRegex = /^[0-9]{10,}$/;
     if (formData.telefono && !telRegex.test(formData.telefono)) {
       nuevosErrores.telefono = true;
       nuevosMensajes.telefono = 'Solo números, mínimo 10 dígitos';
     }
 
-    // CURP
-    const curpRegex = /^[A-Z]{4}\d{6}[HM][A-Z]{5}\d{2}$/i;
-    if (formData.curp && !curpRegex.test(formData.curp)) {
-      nuevosErrores.curp = true;
-      nuevosMensajes.curp = 'CURP no válido';
+     //Cedula
+    if (formData.cedulaProfesional && !cedulaRegex.test(formData.cedulaProfesional)) {
+      nuevosErrores.cedulaProfesional = true;
+      nuevosMensajes.cedulaProfesional = 'La cédula debe contener 8 dígitos numéricos';
     }
 
-   // Contraseña
-if (formData.contrasena && !passRegex.test(formData.contrasena)) {
-  nuevosErrores.contrasena = true;
-  nuevosMensajes.contrasena =
-    'La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial';
-}
+     //Contraseña
+    if (formData.contrasena && !passRegex.test(formData.contrasena)) {
+      nuevosErrores.contrasena = true;
+      nuevosMensajes.contrasena =
+        'La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial';
+    }
 
-if (formData.contrasena !== formData.confirmar) {
-  nuevosErrores.confirmar = true;
-  nuevosMensajes.confirmar = 'Las contraseñas no coinciden';
-}
+     //Conirmar Contraseña
+    if (formData.contrasena !== formData.confirmar) {
+      nuevosErrores.confirmar = true;
+      nuevosMensajes.confirmar = 'Las contraseñas no coinciden';
+    }
 
-
-    // Fecha de nacimiento
+     //Fecha de nacimiento
     if (formData.fechaNacimiento) {
       const edad = calcularEdad(formData.fechaNacimiento);
       if (formData.fechaNacimiento > HOY) {
@@ -128,7 +125,10 @@ if (formData.contrasena !== formData.confirmar) {
         nuevosMensajes.fechaNacimiento = 'La fecha no puede ser futura';
       } else if (edad > 130) {
         nuevosErrores.fechaNacimiento = true;
-        nuevosMensajes.fechaNacimiento = 'Favor de  ingresar  una fecha valida ';
+        nuevosMensajes.fechaNacimiento = 'Favor de ingresar una fecha válida';
+      }else if (edad < 18) {
+        nuevosErrores.fechaNacimiento = true;
+        nuevosMensajes.fechaNacimiento = 'Debe ser mayor de  edad';
       }
     }
 
@@ -148,7 +148,7 @@ if (formData.contrasena !== formData.confirmar) {
 
     MySwal.fire({
       icon: 'success',
-      title: '¡Registro completado!',
+      title: '¡Registro Exitoso',
       text: 'El registro se completó correctamente',
       confirmButtonColor: '#0A3B74',
     }).then(() => {
@@ -175,10 +175,16 @@ if (formData.contrasena !== formData.confirmar) {
 
         <div className="PFluid">
           <InputText placeholder="Nombre(s)" className={errores.nombres ? 'PInvalid' : ''} value={formData.nombres} onChange={(e) => handleChange('nombres', e.target.value)} />
-          <InputText placeholder="Apellido paterno" className={errores.apellidoP ? 'PInvalid' : ''} value={formData.apellidoP} onChange={(e) => handleChange('apellidoP', e.target.value)} />
-          <InputText placeholder="Apellido materno" className={errores.apellidoM ? 'PInvalid' : ''} value={formData.apellidoM} onChange={(e) => handleChange('apellidoM', e.target.value)} />
+          {mensajes.nombres && <p className="ErrorMsg">{mensajes.nombres}</p>}
 
-          <InputText placeholder="CURP" className={errores.curp ? 'PInvalid' : ''} value={formData.curp} onChange={(e) => handleChange('curp', e.target.value)} />
+          <InputText placeholder="Apellido paterno" className={errores.apellidoP ? 'PInvalid' : ''} value={formData.apellidoP} onChange={(e) => handleChange('apellidoP', e.target.value)} />
+          {mensajes.apellidoP && <p className="ErrorMsg">{mensajes.apellidoP}</p>}
+
+          <InputText placeholder="Apellido materno" className={errores.apellidoM ? 'PInvalid' : ''} value={formData.apellidoM} onChange={(e) => handleChange('apellidoM', e.target.value)} />
+          {mensajes.apellidoM && <p className="ErrorMsg">{mensajes.apellidoM}</p>}
+
+          <InputText placeholder="Cédula profesional" className={errores.cedulaProfesional ? 'PInvalid' : ''} value={formData.cedulaProfesional} onChange={(e) => handleChange('cedulaProfesional', e.target.value)} />
+          {mensajes.cedulaProfesional && <p className="ErrorMsg">{mensajes.cedulaProfesional}</p>}
 
           <Dropdown
             value={formData.sexo}
@@ -190,14 +196,26 @@ if (formData.contrasena !== formData.confirmar) {
             placeholder="Sexo"
             className={errores.sexo ? 'PInvalid' : ''}
           />
+          {mensajes.sexo && <p className="ErrorMsg">{mensajes.sexo}</p>}
 
           <Calendar value={formData.fechaNacimiento} onChange={(e) => handleChange('fechaNacimiento', e.value)} placeholder="Fecha de nacimiento" showIcon dateFormat="dd/mm/yy" className={errores.fechaNacimiento ? 'PInvalid' : ''} />
+          {mensajes.fechaNacimiento && <p className="ErrorMsg">{mensajes.fechaNacimiento}</p>}
 
           <Dropdown value={formData.estadoCivil} options={opcionesEstadoCivil} onChange={(e) => handleChange('estadoCivil', e.value)} placeholder="Estado civil" className={errores.estadoCivil ? 'PInvalid' : ''} />
+          {mensajes.estadoCivil && <p className="ErrorMsg">{mensajes.estadoCivil}</p>}
+
           <InputText placeholder="Correo electrónico" className={errores.correoElectronico ? 'PInvalid' : ''} value={formData.correoElectronico} onChange={(e) => handleChange('correoElectronico', e.target.value)} />
+          {mensajes.correoElectronico && <p className="ErrorMsg">{mensajes.correoElectronico}</p>}
+
           <InputText placeholder="Teléfono" className={errores.telefono ? 'PInvalid' : ''} value={formData.telefono} onChange={(e) => handleChange('telefono', e.target.value)} />
+          {mensajes.telefono && <p className="ErrorMsg">{mensajes.telefono}</p>}
+
           <Password placeholder="Contraseña" feedback={false} toggleMask value={formData.contrasena} onChange={(e) => handleChange('contrasena', e.target.value)} className={errores.contrasena ? 'PInvalid' : ''} />
+          {mensajes.contrasena && <p className="ErrorMsg">{mensajes.contrasena}</p>}
+
           <Password placeholder="Confirmar contraseña" feedback={false} toggleMask value={formData.confirmar} onChange={(e) => handleChange('confirmar', e.target.value)} className={errores.confirmar ? 'PInvalid' : ''} />
+          {mensajes.confirmar && <p className="ErrorMsg">{mensajes.confirmar}</p>}
+
           <Button label="Siguiente" onClick={validarYEnviar} className="BtnSiguiente p-button-primary" />
         </div>
       </div>

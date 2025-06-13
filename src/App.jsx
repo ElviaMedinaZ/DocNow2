@@ -9,7 +9,7 @@ import { addLocale, locale } from 'primereact/api';
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 
-import PantallaRegistro from './components/usuario/PantallaRegistroPaciente';
+import PantallaRegistro from './components/usuario/PantallaRegistroMedico';
 
 addLocale('es', {
   firstDayOfWeek: 1,
