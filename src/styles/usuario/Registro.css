@@ -4,12 +4,22 @@
  * Programador: Elvia Medina
  */
 
+/* Variables globales */
+:root {
+  --color-fondo: #f0f2f5;
+  --color-principal: #0A3B74;
+  --color-principal-hover: #031d3b;
+  --color-texto-secundario: #777;
+  --color-borde-imagen: #ccc;
+  --color-blanco: #ffffff;
+}
+
 html, body, #root {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  background-color: #f0f2f5;
+  background-color: var(--color-fondo);
   font-family: 'Segoe UI', sans-serif;
   overflow-x: hidden;
 }
@@ -25,7 +35,7 @@ html, body, #root {
 }
 
 .RegistroForm {
-  background: white;
+  background: var(--color-blanco);
   width: 100%;
   max-width: 800px;
   padding: 3rem 2rem;
@@ -43,13 +53,13 @@ html, body, #root {
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
-  color: #0A3B74;
+  color: var(--color-principal);
   margin-bottom: 0.5rem;
 }
 
 .Subtitulo {
   text-align: center;
-  color: #777;
+  color: var(--color-texto-secundario);
   margin-bottom: 2rem;
   font-size: 1rem;
 }
@@ -62,25 +72,25 @@ html, body, #root {
 }
 
 .PreviewImg {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #ccc;
+  border: 2px solid var(--color-borde-imagen);
   margin-bottom: 1rem;
 }
 
 .FileLabel {
-  background-color: #0A3B74;
-  padding: 0.5rem 1rem;
+  background-color: var(--color-principal);
+  padding: 01rem 1rem;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .FileLabel:hover {
-  background-color: #031d3b;
+  background-color: var(--color-principal-hover);
 }
 
 .PFluid > * {
@@ -93,7 +103,14 @@ html, body, #root {
 .p-password {
   width: 100%;
   font-size: 1rem;
-  
+}
+
+.PInvalid {
+  border: 1px solid red !important;
+}
+
+.p-button {
+  background-color: var(--color-principal);
 }
 
 .p-password {
@@ -101,34 +118,24 @@ html, body, #root {
   width: 100% !important;
 }
 
-.SexoGroup {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
+/* Oculta los radios */
+.SexoInput {
+  display: none;
 }
-
-.SexoGroup button {
-  flex: 1 1 45%;
-  min-width: 120px;
-  max-width: 100%;
-}
-
 
 .BtnSiguiente {
   width: 100%;
   font-size: 1rem;
   padding: 0.75rem;
   border-radius: 6px;
-  background-color: #0A3B74;
-  color: white;
+  background-color: var(--color-principal);
+  color: var(--color-blanco);
   border: none;
   transition: background-color 0.2s;
 }
 
 .BtnSiguiente:hover {
-  background-color: #1a62b4;
+  background-color: var(--color-principal-hover);
 }
 
 /* Responsivo */
@@ -149,4 +156,5 @@ html, body, #root {
   .SexoGroup button {
     width: 100%;
   }
+  
 }
