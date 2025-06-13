@@ -6,10 +6,13 @@
 
 import 'primeicons/primeicons.css';
 import { addLocale, locale } from 'primereact/api';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 
-import PantallaRegistro from './components/usuario/PantallaRegistroMedico';
+import PantallaRegistroMedico from './components/usuario/PantallaRegistroMedico';
+import PantallaRegistroPaciente from './components/usuario/PantallaRegistroPaciente';
+import PantallaPerfil from './components/usuario/PantallaPerfil';
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -27,9 +30,17 @@ locale('es');
 
 function App() {
   return (
-    <>
-      <PantallaRegistro />
-    </>
+    // <>
+    //   <PantallaRegistro />
+    // </>
+
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<PantallaRegistroPaciente />} />
+        <Route path="/medico" element={<PantallaRegistroMedico />} />
+        <Route path="/perfil" element={<PantallaPerfil />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
