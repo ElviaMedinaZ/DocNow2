@@ -1,18 +1,20 @@
 /**
- * Descripción:Modificación del App
+ * Descripción:Se agrega el App y se establece tiempo local.
  * Fecha:11 Junio de 2025
  * Programador: Elvia Medina
  */
 
 import 'primeicons/primeicons.css';
 import { addLocale, locale } from 'primereact/api';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import PantallaRegistroMedico from './components/usuario/PantallaRegistroMedico';
-import PantallaRegistroPaciente from './components/usuario/PantallaRegistroPaciente';
+import PantallaRegistroMedico from './components/medico/PantallaRegistroMedico';
+import PantallaLogin from './components/usuario/PantallaLogin';
 import PantallaPerfil from './components/usuario/PantallaPerfil';
+import PantallaRegistroPaciente from './components/usuario/PantallaRegistroPaciente';
+
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -25,20 +27,16 @@ addLocale('es', {
   clear: 'Limpiar',
 });
 
-// Establece el idioma global por defecto
 locale('es');
 
 function App() {
   return (
-    // <>
-    //   <PantallaRegistro />
-    // </>
-
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<PantallaRegistroPaciente />} />
         <Route path="/medico" element={<PantallaRegistroMedico />} />
         <Route path="/perfil" element={<PantallaPerfil />} />
+        <Route path="/login" element={<PantallaLogin />} />
       </Routes>
     </BrowserRouter>
   );

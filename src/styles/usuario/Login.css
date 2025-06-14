@@ -1,0 +1,121 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+:root {
+  --color-fondo: #f0f2f5;
+  --color-blanco: #ffffff;
+  --color-principal-hover: #031d3b;
+  --color-texto-secundario: #777;
+  --color-borde-imagen: #ccc;
+  --color-blanco: #ffffff;
+}
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  padding: 2rem;
+  background-color: var(--color-fondo);
+}
+
+.loginCard {
+  background: var(--color-blanco);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  width: 50px;
+  display: block;
+  margin: 0 auto 1.5rem auto;
+}
+
+.loginTitulo {
+  text-align: center;
+  color: #0a3b74;
+  font-size: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.loginLabel {
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  display: block;
+}
+
+.loginInput:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.25);
+}
+
+.loginInput.pInvalid {
+  border-color: #e53935;
+}
+
+.loginLink {
+  color: #0a3b74;
+  text-align: right;
+  font-size: 0.9rem;
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+
+.btnIngresar {
+  background-color: #0a3b74;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  border-radius: 10px;
+  width: 100%;
+  color: white;
+  font-size: 1rem;
+  font-weight: normal;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+}
+
+.btnIngresar:hover {
+  background-color: var(--color-principal-hover);
+}
+
+.loginFooter {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.loginFooter .loginLink {
+  color: #0a3b74;
+  font-weight: 500;
+}
+
+.p-password {
+  border: none !important;
+  background: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.loginInput,
+.btnIngresar {
+  height: 48px;
+}
