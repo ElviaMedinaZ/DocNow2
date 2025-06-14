@@ -1,5 +1,5 @@
 /**
- * Descripción: Diseño de vista Registro con SweetAlert2
+ * Descripción: Implementación de la vista de Registro para el médico
  * Fecha: 11 Junio de 2025
  * Programador: Elvia Medina
  */
@@ -170,19 +170,12 @@ export default function RegistroWeb() {
             Cambiar foto
             <input type="file" accept="image/*" onChange={handleFotoChange} hidden />
           </label>
-          {mensajes.fotoPerfil && <p className="ErrorMsg">{mensajes.fotoPerfil}</p>}
         </div>
 
         <div className="PFluid">
           <InputText placeholder="Nombre(s)" className={errores.nombres ? 'PInvalid' : ''} value={formData.nombres} onChange={(e) => handleChange('nombres', e.target.value)} />
-          {mensajes.nombres && <p className="ErrorMsg">{mensajes.nombres}</p>}
-
           <InputText placeholder="Apellido paterno" className={errores.apellidoP ? 'PInvalid' : ''} value={formData.apellidoP} onChange={(e) => handleChange('apellidoP', e.target.value)} />
-          {mensajes.apellidoP && <p className="ErrorMsg">{mensajes.apellidoP}</p>}
-
           <InputText placeholder="Apellido materno" className={errores.apellidoM ? 'PInvalid' : ''} value={formData.apellidoM} onChange={(e) => handleChange('apellidoM', e.target.value)} />
-          {mensajes.apellidoM && <p className="ErrorMsg">{mensajes.apellidoM}</p>}
-
           <InputText placeholder="Cédula profesional" className={errores.cedulaProfesional ? 'PInvalid' : ''} value={formData.cedulaProfesional} onChange={(e) => handleChange('cedulaProfesional', e.target.value)} />
           {mensajes.cedulaProfesional && <p className="ErrorMsg">{mensajes.cedulaProfesional}</p>}
 
@@ -196,26 +189,14 @@ export default function RegistroWeb() {
             placeholder="Sexo"
             className={errores.sexo ? 'PInvalid' : ''}
           />
-          {mensajes.sexo && <p className="ErrorMsg">{mensajes.sexo}</p>}
 
           <Calendar value={formData.fechaNacimiento} onChange={(e) => handleChange('fechaNacimiento', e.value)} placeholder="Fecha de nacimiento" showIcon dateFormat="dd/mm/yy" className={errores.fechaNacimiento ? 'PInvalid' : ''} />
-          {mensajes.fechaNacimiento && <p className="ErrorMsg">{mensajes.fechaNacimiento}</p>}
-
           <Dropdown value={formData.estadoCivil} options={opcionesEstadoCivil} onChange={(e) => handleChange('estadoCivil', e.value)} placeholder="Estado civil" className={errores.estadoCivil ? 'PInvalid' : ''} />
           {mensajes.estadoCivil && <p className="ErrorMsg">{mensajes.estadoCivil}</p>}
-
           <InputText placeholder="Correo electrónico" className={errores.correoElectronico ? 'PInvalid' : ''} value={formData.correoElectronico} onChange={(e) => handleChange('correoElectronico', e.target.value)} />
-          {mensajes.correoElectronico && <p className="ErrorMsg">{mensajes.correoElectronico}</p>}
-
           <InputText placeholder="Teléfono" className={errores.telefono ? 'PInvalid' : ''} value={formData.telefono} onChange={(e) => handleChange('telefono', e.target.value)} />
-          {mensajes.telefono && <p className="ErrorMsg">{mensajes.telefono}</p>}
-
           <Password placeholder="Contraseña" feedback={false} toggleMask value={formData.contrasena} onChange={(e) => handleChange('contrasena', e.target.value)} className={errores.contrasena ? 'PInvalid' : ''} />
-          {mensajes.contrasena && <p className="ErrorMsg">{mensajes.contrasena}</p>}
-
           <Password placeholder="Confirmar contraseña" feedback={false} toggleMask value={formData.confirmar} onChange={(e) => handleChange('confirmar', e.target.value)} className={errores.confirmar ? 'PInvalid' : ''} />
-          {mensajes.confirmar && <p className="ErrorMsg">{mensajes.confirmar}</p>}
-
           <Button label="Siguiente" onClick={validarYEnviar} className="BtnSiguiente p-button-primary" />
         </div>
       </div>

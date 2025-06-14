@@ -44,7 +44,7 @@ html, body, #root {
 }
 
 .Logo {
-  width: 80px;
+  width: 50px;
   display: block;
   margin: 0 auto 1.5rem auto;
 }
@@ -72,8 +72,8 @@ html, body, #root {
 }
 
 .PreviewImg {
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 50%;
   border: 2px solid var(--color-borde-imagen);

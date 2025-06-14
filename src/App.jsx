@@ -1,5 +1,5 @@
 /**
- * Descripción:Modificación del App
+ * Descripción:Se agrega el App y se establece tiempo local.
  * Fecha:11 Junio de 2025
  * Programador: Elvia Medina
  */
@@ -9,7 +9,9 @@ import { addLocale, locale } from 'primereact/api';
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 
-import PantallaRegistro from './components/usuario/PantallaRegistroMedico';
+//import PantallaRegistro from './components/medico/PantallaRegistroMedico';
+import PantallaLogin from './components/usuario/PantallaLogin';
+
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -22,13 +24,13 @@ addLocale('es', {
   clear: 'Limpiar',
 });
 
-// Establece el idioma global por defecto
 locale('es');
 
 function App() {
   return (
     <>
-      <PantallaRegistro />
+      <PantallaLogin/>
+      {/* <PantallaRegistro/> */}
     </>
   );
 }
