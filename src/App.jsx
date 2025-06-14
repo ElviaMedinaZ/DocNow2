@@ -8,9 +8,12 @@ import 'primeicons/primeicons.css';
 import { addLocale, locale } from 'primereact/api';
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-//import PantallaRegistro from './components/medico/PantallaRegistroMedico';
+import PantallaRegistroMedico from './components/medico/PantallaRegistroMedico';
 import PantallaLogin from './components/usuario/PantallaLogin';
+import PantallaPerfil from './components/usuario/PantallaPerfil';
+import PantallaRegistroPaciente from './components/usuario/PantallaRegistroPaciente';
 
 
 addLocale('es', {
@@ -28,10 +31,14 @@ locale('es');
 
 function App() {
   return (
-    <>
-      <PantallaLogin/>
-      {/* <PantallaRegistro/> */}
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<PantallaRegistroPaciente />} />
+        <Route path="/medico" element={<PantallaRegistroMedico />} />
+        <Route path="/perfil" element={<PantallaPerfil />} />
+        <Route path="/login" element={<PantallaLogin />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
