@@ -73,7 +73,7 @@ export default function PerfilWeb({ auth, db, subirImagenAImgBB }) {
                 <img 
                 src={nuevaFoto || placeholder} 
                 alt="Avatar" 
-                className={`PreviewImg ${modoEdicion ? 'oscurecida' : ''}`} 
+                className={`imagenPreview ${modoEdicion ? 'oscurecida' : ''}`} 
                 />
 
                 {modoEdicion && (
