@@ -11,9 +11,9 @@ import 'primereact/resources/themes/lara-light-blue/theme.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import PantallaRegistroMedico from './components/medico/PantallaRegistroMedico';
+import PantallaRegistroPaciente from './components/paciente/PantallaRegistroPaciente';
 import PantallaLogin from './components/usuario/PantallaLogin';
 import PantallaPerfil from './components/usuario/PantallaPerfil';
-import PantallaRegistroPaciente from './components/usuario/PantallaRegistroPaciente';
 
 
 addLocale('es', {
