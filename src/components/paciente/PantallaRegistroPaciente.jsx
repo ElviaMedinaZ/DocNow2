@@ -201,7 +201,6 @@ export default function RegistroWeb() {
       // 3) Guardar en Firestore
       await setDoc(doc(db, 'usuarios', uid), {
         ...formData,
-        uid,
         fotoPerfil: fotoURL,
         fechaNacimiento: formData.fechaNacimiento?.toISOString() || null,
         creadoEn: new Date().toISOString(),

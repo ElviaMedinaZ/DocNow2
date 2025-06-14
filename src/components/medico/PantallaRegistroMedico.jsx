@@ -12,6 +12,12 @@ import { Password } from 'primereact/password';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../../lib/firebase';   
+
+
 import placeholder from '../../assets/avatar_placeholder.png';
 import logo from '../../assets/logo.png';
 import '../../styles/usuario/Registro.css';
@@ -20,6 +26,7 @@ const MySwal = withReactContent(Swal);
 const HOY = new Date();
 const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 const cedulaRegex = /^\d{8}$/;
+const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
 
 export default function RegistroWeb() {
   const [formData, setFormData] = useState({
@@ -34,11 +41,43 @@ export default function RegistroWeb() {
     telefono: '',
     contrasena: '',
     confirmar: '',
+    rol: "Doctor",
+    turnoDia: "lunes a viernes",
+    turnoHora: "matutino"
   });
 
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [errores, setErrores] = useState({});
   const [mensajes, setMensajes] = useState({});
+
+  /* ------------ Utilidades para ImgBB ----------- */
+  const fileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(',')[1]); // quitamos 'data:image/...;base64,'
+      reader.onerror = (err) => reject(err);
+    });
+
+  const subirAImgbb = async (base64) => {
+    const body = new FormData();
+    body.append('key', imgbbApiKey);
+    body.append('image', base64);
+
+    try {
+      const res = await fetch('https://api.imgbb.com/1/upload', {
+        method: 'POST',
+        body,
+      });
+      const data = await res.json();
+      if (data.success) return data.data.url;
+      console.error('ImgBB error:', data);
+      return null;
+    } catch (e) {
+      console.error('Error subiendo imagen:', e);
+      return null;
+    }
+  };
 
   const opcionesEstadoCivil = [
     { label: 'Soltero/a', value: 'Soltero' },
@@ -68,7 +107,7 @@ export default function RegistroWeb() {
     return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
   };
 
-  const validarYEnviar = () => {
+  const validarYEnviar = async () => {
     const nuevosErrores = {};
     const nuevosMensajes = {};
 
@@ -146,14 +185,48 @@ export default function RegistroWeb() {
       return;
     }
 
-    MySwal.fire({
-      icon: 'success',
-      title: '¡Registro Exitoso',
-      text: 'El registro se completó correctamente',
-      confirmButtonColor: '#0A3B74',
-    }).then(() => {
-      console.log('Formulario válido:', { ...formData, fotoPerfil });
-    });
+ /* ------------ Proceso de registro ------------ */
+    try {
+      // 1) Foto → base64 → ImgBB
+      const fileInput = document.querySelector('input[type="file"]');
+      const file = fileInput?.files[0];
+      const base64 = await fileToBase64(file);
+      const fotoURL = await subirAImgbb(base64);
+      if (!fotoURL) throw new Error('No se pudo subir la imagen');
+
+      // 2) Crear usuario en Auth
+      const cred = await createUserWithEmailAndPassword(
+        auth,
+        formData.correoElectronico,
+        formData.contrasena
+      );
+      const uid = cred.user.uid;
+
+      // 3) Guardar en Firestore
+      await setDoc(doc(db, 'usuarios', uid), {
+        ...formData,
+        fotoPerfil: fotoURL,
+        fechaNacimiento: formData.fechaNacimiento?.toISOString() || null,
+        creadoEn: new Date().toISOString(),
+      });
+
+      // 4) Éxito
+      await MySwal.fire({
+        icon: 'success',
+        title: '¡Registro exitoso!',
+        text: 'Tu cuenta fue creada correctamente.',
+        confirmButtonColor: '#0A3B74',
+      });
+      // Limpia el formulario o redirige si lo deseas
+    } catch (e) {
+      console.error('❌ Error en el registro:', e);
+      MySwal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: e.message,
+        confirmButtonColor: '#0A3B74',
+      });
+    }
   };
 
   return (
