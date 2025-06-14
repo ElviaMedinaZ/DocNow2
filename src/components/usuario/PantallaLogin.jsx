@@ -11,7 +11,7 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import logo from '../../assets/logo.png';
-import '../../styles/usuario/login.css';
+import '../../styles/usuario/Login.css';
 const MySwal = withReactContent(Swal);
 const expresionCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
