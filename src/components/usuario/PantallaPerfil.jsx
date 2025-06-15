@@ -12,7 +12,7 @@ const MySwal = withReactContent(Swal);
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import placeholder from '../../assets/avatar_placeholder.png';
-import '../../styles/usuario/Perfil.css';
+import styles from '../../styles/usuario/Perfil.module.css';
 
 export default function PerfilWeb({ auth, db, subirImagenAImgBB }) {
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -43,87 +43,102 @@ export default function PerfilWeb({ auth, db, subirImagenAImgBB }) {
   };
 
   const handleCerrarSesion = () => {
-  MySwal.fire({
-    title: "¿Estás seguro?",
-    text: "¡Tendrás que iniciar sesión nuevamente!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Aceptar",
-    cancelButtonText: "Cancelar"
-  }).then((result) => {
-    if (result.isConfirmed) {
-      MySwal.fire({
-        title: "Sesión cerrada",
-        text: "Has salido correctamente.",
-        icon: "success"
-      });
-    }
-  });
-};
-
+    MySwal.fire({
+      title: "¿Estás seguro?",
+      text: "¡Tendrás que iniciar sesión nuevamente!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        MySwal.fire({
+          title: "Sesión cerrada",
+          text: "Has salido correctamente.",
+          icon: "success",
+          confirmButtonColor: "#0A3B74",
+        });
+      }
+    });
+  };
 
   return (
-    <div className="PerfilContainer">
-      <div className="PerfilForm">
+    <div className={styles.PerfilUsuarioContainer}>
+      <div className={styles.PerfiUsuarioForm}>
 
-        <div className="FotoPreview">
-            <div className="PreviewWrapper">
-                <img 
-                src={nuevaFoto || placeholder} 
-                alt="Avatar" 
-                className={`imagenPreview ${modoEdicion ? 'oscurecida' : ''}`} 
+        <div className={styles.FotoIconoPreview}>
+          <div className={styles.PreviewDeWrapper}>
+            <img 
+              src={nuevaFoto || placeholder} 
+              alt="Avatar" 
+              className={`${styles.imagenPerfilPreview} ${modoEdicion ? styles.oscurecida : ''}`} 
+            />
+
+            {modoEdicion && (
+              <>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={handleFotoChange} 
+                  hidden 
+                  id="fileInput" 
                 />
-
-                {modoEdicion && (
-                <>
-                    <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleFotoChange} 
-                    hidden 
-                    id="fileInput" 
-                    />
-                    <label htmlFor="fileInput" className="OverlayTexto">
-                    Editar
-                    </label>
-
-                </>
-                )}
-            </div>
+                <label htmlFor="fileInput" className={styles.OverlayDeTexto}>
+                  Editar
+                </label>
+              </>
+            )}
+          </div>
         </div>
 
-        <h2 className='nombreUsuario'>Nombre del usuario</h2>
+        <h2 className={styles.nombreDeUsuario}>Nombre del usuario</h2>
 
-        <div className="PFluid">
-          <label>Correo electrónico</label>
-          <InputText value={'ejemplo@gmail.com'} disabled />
+        <div className={styles.PFluidPerfil}>
+          <label className={styles.laberPerfil}>Correo electrónico</label>
+          <InputText className={styles.inputPerfil} value={'ejemplo@gmail.com'} disabled />
 
-          <label>Contraseña</label>
-          <Password value="ejemploContraseña" disabled type="password" hideIcon="pi pi-eye" showIcon="pi pi-eye-slash" toggleMask className="custom-password"/>
+          <label className={styles.laberPerfil}>Contraseña</label>
+          <Password 
+            value="ejemploContraseña" 
+            disabled 
+            type="password" 
+            hideIcon="pi pi-eye" 
+            showIcon="pi pi-eye-slash" 
+            toggleMask 
+            className={styles.passwordPerfil} 
+          />
 
           {modoEdicion && (
-                <>
-                    <label>Confirmar contraseña</label>
-                    <Password value="ejemploContraseña"  type="password" hideIcon="pi pi-eye" showIcon="pi pi-eye-slash" disabled toggleMask className="custom-password"/>
-                </>
-            )}
+            <>
+              <label className={styles.laberPerfil}>Confirmar contraseña</label>
+              <Password 
+                value="ejemploContraseña" 
+                type="password" 
+                hideIcon="pi pi-eye" 
+                showIcon="pi pi-eye-slash" 
+                disabled 
+                toggleMask 
+                className={styles.passwordPerfil} 
+              />
+            </>
+          )}
 
-          <label>Número telefónico</label>
-          <InputText value={'6122334467'} disabled />
+          <label className={styles.laberPerfil}>Número telefónico</label>
+          <InputText className={styles.inputPerfil} value={'6122334467'} disabled />
         </div>
 
-        <div className="BotonesPerfil">
+        <div className={styles.BotonesPerfilUsuario}>
           {modoEdicion ? (
             <>
-              <Button label="Guardar"  onClick={guardarCambios} className="btnPrincipal" />
-              <Button label="Cancelar"  onClick={() => setModoEdicion(false)} className="btnCancelar" />
+              <Button label="Guardar" onClick={guardarCambios} className={styles.btnGuardarCambios} />
+              <Button label="Cancelar" onClick={() => setModoEdicion(false)} className={styles.btnCancelarEdicion} />
             </>
           ) : (
             <>
-              <Button label="Editar" onClick={() => setModoEdicion(true)} className="btnPrincipal" />
-              <Button label="Cerrar sesión" onClick={handleCerrarSesion} className="btnCerrar" />
+              <Button label="Editar" onClick={() => setModoEdicion(true)} className={styles.btnEditarCambios} />
+              <Button label="Cerrar sesión" onClick={handleCerrarSesion} className={styles.btnCerrarPerfil} />
             </>
           )}
         </div>
@@ -131,4 +146,3 @@ export default function PerfilWeb({ auth, db, subirImagenAImgBB }) {
     </div>
   );
 }
-
