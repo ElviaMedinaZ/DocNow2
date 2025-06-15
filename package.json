@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "firebase": "^11.9.1",
+    "framer-motion": "^12.18.1",
+    "lucide-react": "^0.515.0",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.6",
