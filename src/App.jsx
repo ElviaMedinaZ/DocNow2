@@ -14,7 +14,9 @@ import PantallaPerfilMedico from './components/medico/PantallaPerfilMedico';
 import PantallaRegistroMedico from './components/medico/PantallaRegistroMedico';
 import PantallaRegistroPaciente from './components/paciente/PantallaRegistroPaciente';
 import PantallaLogin from './components/usuario/PantallaLogin';
-import { default as PantallaPerfil } from './components/usuario/PantallaPerfil';
+import PantallaPerfil from './components/usuario/PantallaPerfil';
+import PantallaBuscador from './components/admin/PantallaBuscador';
+
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -39,6 +41,7 @@ function App() {
         <Route path="/login" element={<PantallaLogin />} />
         <Route path="/PerfilMedico" element={<PantallaPerfilMedico />} />
 
+        <Route path="/buscador" element={<PantallaBuscador />} />
       </Routes>
     </BrowserRouter>
   );
