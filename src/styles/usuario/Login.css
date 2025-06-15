@@ -71,6 +71,11 @@ html, body {
   border-color: #e53935;
 }
 
+.PInvalid input {
+  border: 1px solid red !important;
+  border-radius: 4px;
+}
+
 .loginLink {
   color: #0a3b74;
   text-align: right;
@@ -118,4 +123,13 @@ html, body {
 .loginInput,
 .btnIngresar {
   height: 48px;
+}
+
+.p-password.PInvalid input {
+  border: 1px solid #e53935 !important;
+  border-radius: 4px;
+}
+
+.p-password.PInvalid {
+  box-shadow: none !important;
 }

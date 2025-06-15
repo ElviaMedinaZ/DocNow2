@@ -15,12 +15,13 @@ import withReactContent from 'sweetalert2-react-content';
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../../lib/firebase';
-
 
 import placeholder from '../../assets/avatar_placeholder.png';
 import logo from '../../assets/logo.png';
+import { auth, db } from '../../lib/firebase';
+
 import '../../styles/usuario/Registro.css';
+import '../../styles/usuario/Spinner.css';
 
 const MySwal = withReactContent(Swal);
 const HOY = new Date();
@@ -29,6 +30,7 @@ const cedulaRegex = /^\d{8}$/;
 const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
 
 export default function RegistroWeb() {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     nombres: '',
     apellidoP: '',
@@ -50,12 +52,11 @@ export default function RegistroWeb() {
   const [errores, setErrores] = useState({});
   const [mensajes, setMensajes] = useState({});
 
-  /* ------------ Utilidades para ImgBB ----------- */
   const fileToBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result.split(',')[1]); // quitamos 'data:image/...;base64,'
+      reader.onload = () => resolve(reader.result.split(',')[1]);
       reader.onerror = (err) => reject(err);
     });
 
@@ -118,6 +119,7 @@ export default function RegistroWeb() {
       }
     });
 
+    //Fotografia
     if (!fotoPerfil) {
       nuevosErrores.fotoPerfil = true;
       nuevosMensajes.fotoPerfil = 'La foto es obligatoria';
@@ -130,33 +132,31 @@ export default function RegistroWeb() {
       nuevosMensajes.correoElectronico = 'Correo electrónico inválido';
     }
 
-     //Telefono
+    //Telefono
     const telRegex = /^[0-9]{10,}$/;
     if (formData.telefono && !telRegex.test(formData.telefono)) {
       nuevosErrores.telefono = true;
       nuevosMensajes.telefono = 'Solo números, mínimo 10 dígitos';
     }
 
-     //Cedula
+    //Cedula
     if (formData.cedulaProfesional && !cedulaRegex.test(formData.cedulaProfesional)) {
       nuevosErrores.cedulaProfesional = true;
       nuevosMensajes.cedulaProfesional = 'La cédula debe contener 8 dígitos numéricos';
     }
 
-     //Contraseña
+    //Contraseña
     if (formData.contrasena && !passRegex.test(formData.contrasena)) {
       nuevosErrores.contrasena = true;
-      nuevosMensajes.contrasena =
-        'La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial';
+      nuevosMensajes.contrasena = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial';
     }
 
-     //Conirmar Contraseña
     if (formData.contrasena !== formData.confirmar) {
       nuevosErrores.confirmar = true;
       nuevosMensajes.confirmar = 'Las contraseñas no coinciden';
     }
 
-     //Fecha de nacimiento
+    //Fecha de nacimiento
     if (formData.fechaNacimiento) {
       const edad = calcularEdad(formData.fechaNacimiento);
       if (formData.fechaNacimiento > HOY) {
@@ -165,9 +165,9 @@ export default function RegistroWeb() {
       } else if (edad > 130) {
         nuevosErrores.fechaNacimiento = true;
         nuevosMensajes.fechaNacimiento = 'Favor de ingresar una fecha válida';
-      }else if (edad < 18) {
+      } else if (edad < 18) {
         nuevosErrores.fechaNacimiento = true;
-        nuevosMensajes.fechaNacimiento = 'Debe ser mayor de  edad';
+        nuevosMensajes.fechaNacimiento = 'Debe ser mayor de edad';
       }
     }
 
@@ -185,16 +185,15 @@ export default function RegistroWeb() {
       return;
     }
 
- /* ------------ Proceso de registro ------------ */
     try {
-      // 1) Foto → base64 → ImgBB
+      setLoading(true); // ← Loading activo
+
       const fileInput = document.querySelector('input[type="file"]');
       const file = fileInput?.files[0];
       const base64 = await fileToBase64(file);
       const fotoURL = await subirAImgbb(base64);
       if (!fotoURL) throw new Error('No se pudo subir la imagen');
 
-      // 2) Crear usuario en Auth
       const cred = await createUserWithEmailAndPassword(
         auth,
         formData.correoElectronico,
@@ -202,7 +201,6 @@ export default function RegistroWeb() {
       );
       const uid = cred.user.uid;
 
-      // 3) Guardar en Firestore
       await setDoc(doc(db, 'usuarios', uid), {
         ...formData,
         fotoPerfil: fotoURL,
@@ -210,27 +208,38 @@ export default function RegistroWeb() {
         creadoEn: new Date().toISOString(),
       });
 
-      // 4) Éxito
       await MySwal.fire({
         icon: 'success',
         title: '¡Registro exitoso!',
         text: 'Tu cuenta fue creada correctamente.',
         confirmButtonColor: '#0A3B74',
       });
-      // Limpia el formulario o redirige si lo deseas
     } catch (e) {
-      console.error('❌ Error en el registro:', e);
+      console.error('Error en el registro:', e);
       MySwal.fire({
         icon: 'error',
         title: 'Error',
         text: e.message,
         confirmButtonColor: '#0A3B74',
       });
+    } finally {
+      setLoading(false); // loading inactivo
     }
   };
 
   return (
     <div className="RegistroContainer">
+      {/* loading de carga */}
+      {loading && (
+        <div className="SpinnerOverlay">
+          <div className="lds-spinner">
+            {[...Array(12)].map((_, i) => (
+              <div key={i}></div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="RegistroForm">
         <img src={logo} alt="Logo" className="Logo" />
         <h2 className="Titulo">Registro</h2>
@@ -250,22 +259,9 @@ export default function RegistroWeb() {
           <InputText placeholder="Apellido paterno" className={errores.apellidoP ? 'PInvalid' : ''} value={formData.apellidoP} onChange={(e) => handleChange('apellidoP', e.target.value)} />
           <InputText placeholder="Apellido materno" className={errores.apellidoM ? 'PInvalid' : ''} value={formData.apellidoM} onChange={(e) => handleChange('apellidoM', e.target.value)} />
           <InputText placeholder="Cédula profesional" className={errores.cedulaProfesional ? 'PInvalid' : ''} value={formData.cedulaProfesional} onChange={(e) => handleChange('cedulaProfesional', e.target.value)} />
-          {mensajes.cedulaProfesional && <p className="ErrorMsg">{mensajes.cedulaProfesional}</p>}
-
-          <Dropdown
-            value={formData.sexo}
-            options={[
-              { label: 'Masculino', value: 'Masculino' },
-              { label: 'Femenino', value: 'Femenino' },
-            ]}
-            onChange={(e) => handleChange('sexo', e.value)}
-            placeholder="Sexo"
-            className={errores.sexo ? 'PInvalid' : ''}
-          />
-
+          <Dropdown value={formData.sexo} options={[{ label: 'Masculino', value: 'Masculino' }, { label: 'Femenino', value: 'Femenino' }]} onChange={(e) => handleChange('sexo', e.value)} placeholder="Sexo" className={errores.sexo ? 'PInvalid' : ''} />
           <Calendar value={formData.fechaNacimiento} onChange={(e) => handleChange('fechaNacimiento', e.value)} placeholder="Fecha de nacimiento" showIcon dateFormat="dd/mm/yy" className={errores.fechaNacimiento ? 'PInvalid' : ''} />
           <Dropdown value={formData.estadoCivil} options={opcionesEstadoCivil} onChange={(e) => handleChange('estadoCivil', e.value)} placeholder="Estado civil" className={errores.estadoCivil ? 'PInvalid' : ''} />
-          {mensajes.estadoCivil && <p className="ErrorMsg">{mensajes.estadoCivil}</p>}
           <InputText placeholder="Correo electrónico" className={errores.correoElectronico ? 'PInvalid' : ''} value={formData.correoElectronico} onChange={(e) => handleChange('correoElectronico', e.target.value)} />
           <InputText placeholder="Teléfono" className={errores.telefono ? 'PInvalid' : ''} value={formData.telefono} onChange={(e) => handleChange('telefono', e.target.value)} />
           <Password placeholder="Contraseña" feedback={false} toggleMask value={formData.contrasena} onChange={(e) => handleChange('contrasena', e.target.value)} className={errores.contrasena ? 'PInvalid' : ''} />
