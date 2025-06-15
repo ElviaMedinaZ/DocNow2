@@ -35,7 +35,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/paciente" element={<PantallaRegistroPaciente />} />
+        <Route path="/" element={<PantallaRegistroPaciente />} />
         <Route path="/medico" element={<PantallaRegistroMedico />} />
         <Route path="/perfil" element={<PantallaPerfil />} />
         <Route path="/login" element={<PantallaLogin />} />
