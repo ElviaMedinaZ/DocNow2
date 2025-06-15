@@ -1,0 +1,222 @@
+/**
+ * Descripción: estilos de buscador multitareas
+ * Fecha: 14 Junio de 2025
+ * Programador: Irais Reyes
+ */
+
+:root{
+  --azul-fuerte-buscador: #0A3B74;
+}
+
+.contenedor-buscador {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  background: #F1F1F1;
+}
+
+.BuscadorContainer{
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  padding-left: 15rem;
+  padding-right: 15rem;
+  background: #F1F1F1;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.inputIconContainer {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.iconoBuscadorDerecha {
+  position: absolute;
+  top: 50%;
+  right: 10px; 
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.inputBuscador {
+  padding-right: 2.5rem; 
+  width: 100%;
+  height: 40px;
+  border: 2px solid var(--azul-fuerte-buscador);
+  border-radius: 8px;
+}
+
+.TituloBuscador {
+  color: var(--azul-fuerte-buscador);
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+
+.TarjetaBuscador {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  justify-content: space-between;
+  gap: 16px;
+  flex-direction: row;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.inputBuscador {
+  border: 2px solid var(--azul-fuerte-buscador);
+  border-radius: 8px;
+  width: 100%;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 10%;
+}
+
+.Nombre {
+  color: #1C1F1E;
+  font-size: 20px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.citasInfo {
+  color: var(--azul-fuerte-buscador);
+  font-size: 18px;
+  margin-top: 4px;
+  cursor: 'pointer';
+}
+
+.info h4 {
+  display: flex;
+  flex: 1;
+}
+
+.Info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info p {
+  margin: 2px 0;
+  font-size: 14px;
+}
+
+.infoGrupo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+
+.PerfilUsuarioContainer {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.botonesLista {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+.btnEditar {
+  background-color: #1976D2;
+  color: white;
+  padding: 6px 23px;
+  border-radius: 6px;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.botEliminar {
+  background-color: #E53935;
+  color: white;
+  padding: 6px 13px;
+  border-radius: 6px;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.Resultados {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 600px) {
+
+    .contenedor-buscador {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    background: #f4f4f4;
+    }
+
+    .BuscadorContainer{
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        background: #f4f4f4;
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 10%;
+  }
+
+   .TarjetaBuscador {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+    .Nombre {
+    color: #1C1F1E;
+    font-size: 15px;
+    margin: 0;
+    font-weight: bold;
+  }
+
+    .citasInfo {
+    color: var(--azul-fuerte-buscador);
+    font-size: 15px;
+    margin-top: 4px;
+    }
+
+  .botonesLista {
+    flex-direction: colum;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .btnEditar {
+  padding: 6px 21px;
+  font-size: 16px;
+
+}
+
+.botEliminar {
+  padding: 6px 13px;
+  font-size: 16px;
+}
+}
