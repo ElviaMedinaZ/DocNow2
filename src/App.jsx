@@ -10,12 +10,12 @@ import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import PantallaBuscador from './components/admin/PantallaBuscador';
 import PantallaPerfilMedico from './components/medico/PantallaPerfilMedico';
 import PantallaRegistroMedico from './components/medico/PantallaRegistroMedico';
 import PantallaRegistroPaciente from './components/paciente/PantallaRegistroPaciente';
 import PantallaLogin from './components/usuario/PantallaLogin';
 import PantallaPerfil from './components/usuario/PantallaPerfil';
-import PantallaBuscador from './components/admin/PantallaBuscador';
 
 
 addLocale('es', {
@@ -35,13 +35,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PantallaRegistroPaciente />} />
-        <Route path="/medico" element={<PantallaRegistroMedico />} />
-        <Route path="/perfil" element={<PantallaPerfil />} />
+        <Route path="/RegistroPaciente" element={<PantallaRegistroPaciente />} />
+        <Route path="/Registromedico" element={<PantallaRegistroMedico />} />
+        <Route path="/perfilPaciente" element={<PantallaPerfil />} />
         <Route path="/login" element={<PantallaLogin />} />
         <Route path="/PerfilMedico" element={<PantallaPerfilMedico />} />
-
         <Route path="/buscador" element={<PantallaBuscador />} />
+        
+        <Route path="/" element={<PantallaLogin/>} />
       </Routes>
     </BrowserRouter>
   );

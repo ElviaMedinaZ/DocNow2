@@ -15,7 +15,7 @@ import withReactContent from 'sweetalert2-react-content';
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../../lib/firebase';   
+import { auth, db } from '../../lib/firebase';
 
 import placeholder from '../../assets/avatar_placeholder.png';
 import logo from '../../assets/logo.png';

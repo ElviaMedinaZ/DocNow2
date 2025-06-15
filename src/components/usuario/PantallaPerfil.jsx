@@ -4,15 +4,15 @@
  * Programador: Irais Reyes
  */
 
-import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
-const MySwal = withReactContent(Swal);
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import placeholder from '../../assets/avatar_placeholder.png';
 import styles from '../../styles/usuario/Perfil.module.css';
+const MySwal = withReactContent(Swal);
 
 export default function PerfilWeb({ auth, db, subirImagenAImgBB }) {
   const [modoEdicion, setModoEdicion] = useState(false);
