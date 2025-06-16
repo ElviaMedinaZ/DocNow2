@@ -16,6 +16,7 @@ import PantallaRegistroPaciente from './components/paciente/PantallaRegistroPaci
 import PantallaLogin from './components/usuario/PantallaLogin';
 import PantallaPerfil from './components/usuario/PantallaPerfil';
 import PantallaBuscador from './components/admin/PantallaBuscador';
+import PantallaLanding from './components/usuario/PantallaLanding';
 
 
 addLocale('es', {
@@ -42,6 +43,7 @@ function App() {
         <Route path="/PerfilMedico" element={<PantallaPerfilMedico />} />
 
         <Route path="/buscador" element={<PantallaBuscador />} />
+        <Route path="/landing" element={<PantallaLanding />} />
       </Routes>
     </BrowserRouter>
   );

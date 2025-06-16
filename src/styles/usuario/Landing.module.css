@@ -1,0 +1,121 @@
+:root {
+  --azul-fuerte-color: #0A3B74;
+  --verde-menta-color: #C9E5EB;
+  --color-label-perfil: #1C1F1E;
+  --color-bordes-perfil: #9D9D9D;
+  --blanco-color: #F5F5F5;
+  --color-rojo-perfil: #740A0A;
+  --fuente: "Almarai", sans-serif;
+}
+
+.headerLanding {
+  background-color: var(--blanco-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 2rem;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logoLanding {
+  width: 50px;
+  height: 50px;
+}
+
+.tituloPrincipal {
+  color: var(--azul-fuerte-color);
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-left: auto;
+}
+
+.contenedorMenu {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.menuHeader {
+  color: var(--color-label-perfil);
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.menuHeader:hover {
+  color: var(--azul-fuerte-color);
+}
+
+.btnInicio {
+  background-color: var(--azul-fuerte-color);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btnInicio:hover {
+  background-color: #062d59;
+}
+
+.section1 {
+  background-color: var(--azul-fuerte-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 5em;
+  gap: 2rem;
+  text-align: left;
+  flex-wrap: wrap; /* Para que se acomode mejor en pantallas pequeñas */
+}
+
+.textoContainer {
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.imgLanding {
+  max-width: 45%;
+  height: auto;
+  /* margin-top: 1rem; */
+}
+
+.textoPrincipal {
+  color: var(--blanco-color);
+  /* font-size: 1.6rem; */
+  line-height: 1.5;
+}
+
+.textoDescriptivo{
+    color: var(--blanco-color);
+    line-height: 1.5;
+    /* margin-bottom: 60rem; */
+}
+
+.btnRegistro{
+  background-color: var(--verde-menta-color);
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
