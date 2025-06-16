@@ -41,8 +41,6 @@ function App() {
         <Route path="/login" element={<PantallaLogin />} />
         <Route path="/PerfilMedico" element={<PantallaPerfilMedico />} />
         <Route path="/buscador" element={<PantallaBuscador />} />
-        
-        <Route path="/" element={<PantallaLogin/>} />
       </Routes>
     </BrowserRouter>
   );
