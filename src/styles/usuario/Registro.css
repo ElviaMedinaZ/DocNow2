@@ -109,6 +109,11 @@ html, body, #root {
   border: 1px solid red !important;
 }
 
+.PInvalid input {
+  border: 1px solid red !important;
+  border-radius: 4px;
+}
+
 .p-button {
   background-color: var(--color-principal);
 }
@@ -136,25 +141,4 @@ html, body, #root {
 
 .BtnSiguiente:hover {
   background-color: var(--color-principal-hover);
-}
-
-/* Responsivo */
-@media (max-width: 600px) {
-  .RegistroForm {
-    padding: 2rem 1rem;
-  }
-
-  .Titulo {
-    font-size: 1.5rem;
-  }
-
-  .SexoGroup {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .SexoGroup button {
-    width: 100%;
-  }
-  
 }

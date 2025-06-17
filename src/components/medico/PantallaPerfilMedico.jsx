@@ -16,6 +16,7 @@ import '../../styles/medico/PerfilMedico.css';
 // Datos de prueba
 const doctorDemo = {
   nombre: 'Dr. Mario Orantes',
+  especialidad:'Cardiologo',
   foto: 'https://i.pravatar.cc/150?img=64',
   telefono: '3453535345',
   email: 'mario@gmail.com',
@@ -66,17 +67,17 @@ export default function PerfilMedicoWeb({ doctor = doctorDemo }) {
 
   return (
     <div className="PerfilMedicoContainer">
-      {/* Encabezado doctor */}
+      {/* Encabezado doctor*/}
       <header className="DoctorHeader">
         <img className="DoctorImg" src={doctor.foto} alt={`Foto de ${doctor.nombre}`} />
         <div className="DoctorInfo">
           <h1 className="DoctorNombre">{doctor.nombre}</h1>
-          <Tag value={doctor.horario.turno} className="DoctorEspecialidad" />
+          <Tag value={doctor.especialidad} className="DoctorEspecialidad" />
         </div>
       </header>
 
       <main className="PerfilContent">
-        {/* CONTACTO ---------------------------------------------------- */}
+        {/* Contacto ---------------------------------------------------- */}
         <section className="BloqueContacto">
           <h2 className="BloqueTitulo">Datos de contacto</h2>
           <ul className="ListaContacto">
@@ -88,7 +89,7 @@ export default function PerfilMedicoWeb({ doctor = doctorDemo }) {
 
         <Divider />
 
-        {/* SERVICIOS ---------------------------------------------------- */}
+        {/* Servicios ---------------------------------------------------- */}
         <section className="BloqueServicios">
           <h2 className="BloqueTitulo">Servicios ofertados</h2>
           <table className="TablaServicios">
@@ -105,7 +106,7 @@ export default function PerfilMedicoWeb({ doctor = doctorDemo }) {
 
         <Divider />
 
-        {/* DISPONIBILIDAD ---------------------------------------------- */}
+        {/* Disponibilidad ---------------------------------------------- */}
         <section className="BloqueDisponibilidad">
           <h2 className="BloqueTitulo">Disponibilidad</h2>
           <p>{doctor.horario.dias}</p>
@@ -114,7 +115,7 @@ export default function PerfilMedicoWeb({ doctor = doctorDemo }) {
 
         <Divider />
 
-        {/* VALORACIONES ------------------------------------------------- */}
+        {/* Valoraciones ------------------------------------------------- */}
         <section className="BloqueValoraciones">
           <div className="ValoracionesHeader">
             <h2 className="BloqueTitulo">Valoraciones</h2>
@@ -141,7 +142,7 @@ export default function PerfilMedicoWeb({ doctor = doctorDemo }) {
           </ul>
         </section>
 
-        {/* BOTÓN CITA --------------------------------------------------- */}
+        {/* Boton cita --------------------------------------------------- */}
         <div className="AccionCita">
           <Button label="Solicitar cita" className="BtnCita p-button-lg" />
         </div>
