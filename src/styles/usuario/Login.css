@@ -133,3 +133,18 @@ html, body {
 .p-password.PInvalid {
   box-shadow: none !important;
 }
+
+.forgot-wrapper {
+  margin-top: 0.25rem;
+  text-align: right;
+}
+
+.forgot-link {
+  font-size: 0.85rem;
+  color: #0A3B74;
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}

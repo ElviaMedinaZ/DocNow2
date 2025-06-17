@@ -105,6 +105,10 @@ html, body, #root {
   font-size: 1rem;
 }
 
+.FileLabel{
+  color: #f0f2f5;
+}
+
 .PInvalid {
   border: 1px solid red !important;
 }
