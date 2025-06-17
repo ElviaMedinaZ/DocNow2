@@ -1,0 +1,480 @@
+:root {
+  --color-primary: #0a3b74;
+  --color-primary-light: #f5f9ff;
+  --color-border: #d0e4ff;
+  --color-bg: #f4f6fa;
+  --color-white: #ffffff;
+
+  --radius: 14px;
+  --shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  --maxW: 1300px;
+  --easing: 0.2s ease;
+}
+
+/* === Layout === */
+.home-container {
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--color-bg);
+  color: #333;
+}
+
+/* === Header === */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--color-white);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.home-logo {
+  width: 120px;
+}
+
+.home-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.home-logo-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.home-logo-text {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.home-nav a {
+  margin: 0 1rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+.home-nav a:hover {
+  text-decoration: underline;
+}
+
+.home-login-btn {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+}
+.home-login-btn:hover {
+  background: #082b56;
+}
+
+/* === Hero === */
+.home-hero {
+  background: linear-gradient(135deg, #ebf3ff, #dfe9ff);
+  text-align: center;
+  padding: 3.5rem 1rem 4rem;
+}
+
+.home-hero h1 {
+  font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+}
+
+.home-hero p {
+  max-width: 560px;
+  margin: 0 auto 2rem;
+  font-size: 1.15rem;
+}
+
+/* === Search bar === */
+.home-search {
+  position: relative;
+  margin: -1.6rem auto 2.6rem;
+  width: min(90%, 600px);
+}
+
+.home-search input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.9rem 3rem 0.9rem 1rem;
+}
+
+.home-search-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+}
+
+/* === Sección genérica === */
+.home-section {
+  width: min(var(--maxW), 92%);
+  margin: 0 auto 4rem;
+}
+.home-section h2 {
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+}
+
+/* === Servicios === */
+.servicios-grid {
+  display: grid;
+  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+}
+
+.servicio-card {
+  background: var(--color-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform var(--easing);
+}
+
+.servicio-card:hover {
+  transform: translateY(-5px);
+}
+
+.servicio-card img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.6rem;
+}
+
+.servicio-card span {
+  font-weight: 600;
+}
+
+/* === Médicos destacados === */
+.doctores-grid {
+  display: grid;
+  gap: 1.8rem;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
+.doctor-card {
+  background: var(--color-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+  padding-bottom: 1rem;
+  transition: transform var(--easing);
+}
+.doctor-card:hover {
+  transform: translateY(-6px);
+}
+
+.doctor-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.doctor-card h3 {
+  margin: 0.8rem 0 0.3rem;
+  font-size: 1.1rem;
+}
+
+.doctor-card .spec {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.doctor-card .rating {
+  color: #ffb400;
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+/* === Citas === */
+.citas-grid {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.cita-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.3rem;
+}
+
+.cita-card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.cita-info p {
+  margin: 0;
+}
+
+.cita-fecha {
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* === Recomendaciones === */
+.recomendaciones-grid {
+  display: grid;
+  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.recomendacion-card {
+  background: var(--color-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.recomendacion-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.recomendacion-card div {
+  padding: 0.9rem 1rem;
+}
+
+.recomendacion-card h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: var(--color-primary);
+}
+
+/* === CTA final === */
+.home-cta {
+  background: var(--color-primary);
+  color: var(--color-white);
+  text-align: center;
+  padding: 3rem 1rem 4rem;
+}
+
+.home-cta h2 {
+  margin-bottom: 1.8rem;
+  font-size: 2rem;
+}
+
+/* === Footer === */
+.home-footer {
+  background: #001e46;
+  color: #c9d8ff;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.85rem;
+}
+
+/* ------- Buscador con ícono (PrimeReact) ------- */
+.home-search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: -2rem auto 2.5rem;
+  width: 100%;
+}
+
+.home-search-box-with-button {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center; 
+  max-width: 800px;
+  width: 100%;
+  justify-content: center;
+}
+
+
+.home-search-box {
+  position: relative;
+  flex: 1;
+  justify-content: center;
+}
+
+.home-search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  font-size: 1rem;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.home-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.9rem;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.home-search-btn {
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.home-search-btn:hover {
+  background-color: #082b56;
+}
+
+/* ------- Servicio card tamaño fijo y texto centrado ------- */
+.servicio-card {
+  width: 170px;
+  height: 190px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.servicio-card img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.servicio-card span {
+  margin-top: .6rem;
+  text-align: center;
+  font-size: .95rem;
+  line-height: 1.2;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(22%) sepia(93%) saturate(650%) hue-rotate(180deg) brightness(90%) contrast(90%);
+}
+
+/* MÁS SEPARACIÓN DE LAS FLECHAS DEL CARRUSEL */
+.carousel-control-prev {
+  left: -4rem;  /* más lejos del borde izquierdo del carrusel */
+}
+
+.carousel-control-next {
+  right: -2rem; /* más lejos del borde derecho */
+}
+
+
+/* OPCIONAL: aumentar el tamaño del área clickeable */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 1px;
+}
+
+/* --- Corregir posición de flechas fuera del contenedor --- */
+#carouselServicios {
+  position: relative;
+}
+
+/* Posicionar las flechas fuera del área de tarjetas */
+#carouselServicios .carousel-control-prev,
+#carouselServicios .carousel-control-next {
+  top: 50%; /* centra verticalmente en el carrusel */
+  transform: translateY(-50%);
+  bottom: auto;
+  z-index: 2;
+
+  width: 3rem;
+  height: 3rem;
+  background-color: #ffffffcc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Izquierda: fuera del carrusel */
+#carouselServicios .carousel-control-prev {
+  left: -2.5rem;
+}
+
+/* Derecha: fuera del carrusel */
+#carouselServicios .carousel-control-next {
+  right: -2.5rem;
+}
+
+/* Opcional: mejorar el ícono */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-size: 1rem 1rem;
+  filter: invert(25%) sepia(95%) saturate(1500%) hue-rotate(195deg); /* azul */
+}
+
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .home-nav,
+  .home-login-btn {
+    display: none;
+  }
+
+  .doctor-card img {
+    height: 160px;
+  }
+
+.carouselServicios .carousel-inner {
+  display: flex;
+  flex-wrap: nowrap;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 1rem;
+  padding: 1rem 0.5rem;
+}
+
+
+
+  .servicio-card {
+    flex: 0 0 auto;
+    width: 140px;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem 0.5rem;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.07);
+    scroll-snap-align: start;
+    text-align: center;
+  }
+
+  .servicio-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+  }
+
+  .servicio-card span {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+
+}
