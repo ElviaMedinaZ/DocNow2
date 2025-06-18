@@ -37,14 +37,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<PantallaLanding />} />
-        <Route path="/RegistroMedico" element={<PantallaRegistroMedico />} />
-        <Route path="/RegistroPaciente" element={<PantallaRegistroPaciente />} />
+        <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
+        <Route path="/registro-paciente" element={<PantallaRegistroPaciente />} />
         <Route path="/perfil" element={<PantallaPerfil />} />
         <Route path="/login" element={<PantallaLogin />} />
-        <Route path="/PerfilMedico" element={<PantallaPerfilMedico />} />
+        <Route path="/perfil-medico" element={<PantallaPerfilMedico />} />
         <Route path="/buscador" element={<PantallaBuscador />} />
         <Route path="/landing" element={<PantallaLanding />} />
-        <Route path="/HomePaciente" element={<PantallaHomePaciente />} />
+        <Route path="/home-paciente" element={<PantallaHomePaciente />} />
       </Routes>
     </BrowserRouter>
   );
