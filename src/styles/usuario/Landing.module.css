@@ -191,10 +191,10 @@
 }
 
 .tarjeta {
-  background-color: #f1f1f1;
+  background-color: #FAFAFA ;
   padding: 1.5rem;
   border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -338,11 +338,23 @@
   margin-top: 1rem;
 }
 
+.estrellas{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.5rem 0;
+}
+
 /* pie de pagina */
 .piePagina {
   background-color: var(--azul-fuerte-color);
   padding: 2rem 5rem;
   color: white;
+}
+
+.tituloPie{
+  padding-left: 1rem;;
 }
 
 .footerTop {
@@ -362,6 +374,11 @@
   display: flex;
   flex-direction: column;
 }
+
+.contactosSeccion p {
+  margin: 0.1rem 0; 
+}
+
 
 .footerBottom {
   margin-top: 2rem;

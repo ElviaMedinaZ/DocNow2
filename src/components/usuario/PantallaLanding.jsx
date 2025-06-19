@@ -11,12 +11,14 @@ import menu from '../../assets/Iconos_Landing/MenuHamburguesa.png';
 import logoBlanco from '../../assets/Iconos_Landing/logo_blanco.png';
 import personaUno from '../../assets/Iconos_Landing/persona_1.jpeg';
 import personaDos from '../../assets/Iconos_Landing/persona_2.jpeg';
+import personaTres from '../../assets/Iconos_Landing/persona_3.jpg';
 import doctoresImg from '../../assets/Iconos_Landing/doctores.png';
-import Inyeccion from '../../assets/Iconos_Landing/injection.png';
+import Inyeccion from '../../assets/Iconos_Landing/Injection.png';
 import rayosX from '../../assets/Iconos_Landing/X-Ray.png';
 import ultrasonido from '../../assets/Iconos_Landing/Ultrasound.png';
 import consulta from '../../assets/Iconos_Landing/Out Patient Department.png';
 import doctorSeccion2 from '../../assets/Iconos_Landing/doctorLanding.png';
+import { FaStar } from "react-icons/fa";
 import styles from '../../styles/usuario/Landing.module.css';
 
 export default function PerfilWeb() {
@@ -268,6 +270,13 @@ export default function PerfilWeb() {
           <div className={styles.tarjetaOpinion}>
             <img src={personaUno} alt="persona" className={styles.usuario} />
             <h2 className={styles.nombreUsuario}>Alicia Martinez</h2>
+            <div className={styles.estrellas}>
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+            </div>
             <p className={styles.textoOpinion}>
               Necesitaba hacerme unos rayos X con <br />
               urgencia y aquí pude encontrar un <br />
@@ -279,12 +288,36 @@ export default function PerfilWeb() {
           <div className={styles.tarjetaOpinion}>
             <img src={personaDos} alt="persona" className={styles.usuario} />
             <h2 className={styles.nombreUsuario}>Pedro Fernández</h2>
+            <div className={styles.estrellas}>
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+            </div>
             <p className={styles.textoOpinion}>
               Me encanta que puedo ver las <br />
               especialidades, precios y opiniones de <br />
               otros pacientes antes de elegir. Es <br />
               como tener un directorio médico <br />
               confiable en la palma de la mano.
+            </p>
+          </div>
+          <div className={styles.tarjetaOpinion}>
+            <img src={personaTres} alt="persona" className={styles.usuario} />
+            <h2 className={styles.nombreUsuario}>Andrea Acevedo</h2>
+            <div className={styles.estrellas}>
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+              <FaStar color="#caa400" />
+            </div>
+            <p className={styles.textoOpinion}>
+              Como persona ocupada, valoro <br />
+              mucho poder agendar consultas  <br />
+              sin tener que llamar o hacer filas. <br />
+              Todo fue claro, rápido y seguro <br />
             </p>
           </div>
         </div>
