@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import menu from '../../assets/Iconos_Landing/MenuHamburguesa.png';
+// import menu from '../../assets/Iconos_Landing/MenuHamburguesa.png';
 import logoBlanco from '../../assets/Iconos_Landing/logo_blanco.png';
 import personaUno from '../../assets/Iconos_Landing/persona_1.jpeg';
 import personaDos from '../../assets/Iconos_Landing/persona_2.jpeg';
@@ -19,6 +19,7 @@ import ultrasonido from '../../assets/Iconos_Landing/Ultrasound.png';
 import consulta from '../../assets/Iconos_Landing/Out Patient Department.png';
 import doctorSeccion2 from '../../assets/Iconos_Landing/doctorLanding.png';
 import { FaStar } from "react-icons/fa";
+import { FiMoreVertical } from "react-icons/fi";
 import styles from '../../styles/usuario/Landing.module.css';
 
 export default function PerfilWeb() {
@@ -119,7 +120,8 @@ export default function PerfilWeb() {
         </div>
 
          <div onClick={toggleMenu}>
-          <img src={menu} alt="iconoMenu" className={styles.menuIcon}/>
+          {/* <img src={menu} alt="iconoMenu" className={styles.menuIcon}/> */}
+          <FiMoreVertical className={styles.menuIcon}/>
         </div>
         
 
@@ -158,7 +160,7 @@ export default function PerfilWeb() {
                 la salud, sin complicaciones. Dedicado a brindar<br />
                 atención médica compasiva y de alta calidad.
                 </p> 
-                <button className={styles.btnRegistro}>Regístrate</button>
+                <button className={styles.btnRegistro} onClick={() => navigate('/registro-paciente')}>Regístrate</button>
             </div>
             <img src={doctoresImg} alt="Doctores" className={styles.imgLanding} />
       </section>
