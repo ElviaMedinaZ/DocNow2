@@ -43,7 +43,6 @@ function App() {
         <Route path="/login" element={<PantallaLogin />} />
         <Route path="/PerfilMedico" element={<PantallaPerfilMedico />} />
         <Route path="/buscador" element={<PantallaBuscador />} />
-        <Route path="/landing" element={<PantallaLanding />} />
         <Route path="/HomePaciente" element={<PantallaHomePaciente />} />
       </Routes>
     </BrowserRouter>
