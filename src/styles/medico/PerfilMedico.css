@@ -1,172 +1,253 @@
 /**
- * Descripción: Diseño de la vista de Registro para el médico
+ * Descripción: Estilos del perfil del medico
  * Fecha: 11 Junio de 2025
  * Programador: Elvia Medina
  */
 
-
 :root {
-  --color-principal: #0A3B74;
-  --color-principal-hover: #031d3b;
-  --color-fondo: #f0f2f5;
-  --color-texto: #1a1a1a;
-  --color-texto-secundario: #555;
-  --color-borde: #e0e0e0;
-  --radius-lg: 16px;
-  --sombras: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --pm-primary:        #0a3b74;
+  --pm-primary-90:     #0d4c97;
+  --pm-primary-10:     #eef4ff;
+  --pm-bg:             #f7f9fc;
+  --pm-surface:        #ffffff;
+  --pm-border:         #dce3f0;
+  --pm-heading:        #183f73;
+  --pm-text:           #2d2d2d;
+  --pm-radius-sm:      8px;
+  --pm-radius:         16px;
+  --pm-shadow-sm:      0 2px 6px rgba(0,0,0,.08);
+  --pm-shadow:         0 3px 10px rgba(0,0,0,.06);
+  --pm-font:           'Segoe UI', system-ui, sans-serif;
 }
 
-.PerfilMedicoContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
-  background: var(--color-fondo);
-  color: var(--color-texto);
-  font-family: 'Segoe UI', sans-serif;
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-/* Encabezado */
-.DoctorHeader {
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  margin-bottom: 2.5rem;
+body {
+  margin: 0;
+  background: var(--pm-bg);
+  font-family: var(--pm-font);
+  color: var(--pm-text);
 }
 
-.DoctorImg {
-  flex-shrink: 0;
-  width: 260px;
-  height: 295px;
-  object-fit: cover;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--sombras);
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.DoctorInfo {
+.pm-container {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  min-height: 100vh;
 }
 
-.DoctorNombre {
-  font-size: 2rem;
+.pm-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem clamp(1rem, 4vw, 4rem);
+  background-color: var(--pm-primary);
+  color: white;
+  border-bottom: 1px solid var(--pm-border);
+}
+
+.pm-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: var(--pm-radius);
+  box-shadow: var(--pm-shadow-sm);
+}
+
+.pm-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pm-name {
   margin: 0;
-  color: var(--color-principal);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
 }
 
-.DoctorEspecialidad {
-  background: var(--color-principal);
-  color: #fff;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  padding: 0.25rem 0.6rem;
-  width: fit-content;
+.pm-tag.p-tag {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: var(--pm-radius-sm);
+  padding: 0.25rem 0.75rem;
 }
 
-/* Secciones */
-.BloqueTitulo {
-  font-size: 1.25rem;
-  margin: 0 0 1rem 0;
-  color: var(--color-principal);
-}
-
-.ListaContacto {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.75rem;
-  font-size: 1rem;
-  color: var(--color-texto-secundario);
-}
-
-.ListaContacto li i {
-  margin-right: 0.5rem;
-  color: var(--color-principal);
-}
-
-/* Tabla servicios */
-.TablaServicios {
+.pm-tabmenu {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 1rem;
+  max-width: 1100px;
+  margin: -1rem auto 2rem;
+  padding: 0 clamp(1rem, 4vw, 4rem);
+}
+.pm-tabmenu .p-tabmenu-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--pm-surface);
+  padding: 0.5rem 1rem;
+  border-radius: var(--pm-radius);
+  box-shadow: var(--pm-shadow-sm);
+  width: 100%;
+  /* ✅ eliminar esto si lo tenías */
+  min-width: unset;
+  white-space: normal;
 }
 
-.TablaServicios td {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--color-borde);
+.pm-tabmenu .p-menuitem-link {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 0.6rem 1rem;
+  border-radius: var(--pm-radius-sm);
 }
 
-.ServicioPrecio {
-  text-align: right;
+
+.pm-tabmenu .p-menuitem-link.p-highlight {
+  background: var(--pm-primary);
+  color: #fff !important;
   font-weight: 600;
 }
 
-/* Valoraciones */
-.ValoracionesHeader {
+.pm-tabmenu .p-menuitem-link.p-highlight .pi {
+  color: #fff !important;
+}
+
+.pm-tabmenu .p-menuitem-link:not(.p-highlight):hover {
+  background: var(--pm-primary-10);
+}
+
+.pm-main {
+  padding: 0 clamp(1rem, 4vw, 4rem);
+}
+
+.pm-card {
+  background: var(--pm-surface) !important;
+  max-width: 1100px;
+  margin: 0 auto 1.75rem;
+  padding: 1.75rem 2rem;
+  border-radius: var(--pm-radius);
+  border: none;
+  box-shadow: var(--pm-shadow);
+}
+
+.pm-section-title {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--pm-heading);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
 }
 
-.ListaValoraciones {
-  list-style: none;
+.pm-contact-list li,
+.pm-services-list li {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  line-height: 1.8;
+  border-bottom: 1px solid var(--pm-border);
+  padding: 0.4rem 0;
+}
+
+.pm-contact-list li:last-child,
+.pm-services-list li:last-child {
+  border-bottom: none;
+}
+
+.pm-contact-list i,
+.pm-services-list i {
+  margin-right: 0.5rem;
+  color: var(--pm-primary);
+}
+
+.pm-services-list li {
+  justify-content: space-between;
+}
+
+.pm-val-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--pm-border);
+}
+
+.pm-val-item:last-child {
+  border-bottom: none;
+}
+
+.pm-val-stars .p-rating-icon {
+  font-size: 1rem;
+  color: #f5b700;
+}
+
+.pm-val-com {
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.ItemValoracion {
-  display: flex;
-  gap: 1rem;
-}
-
-.ValoracionTexto {
-  flex: 1;
-}
-
-.ValoracionEstrellas {
-  margin-bottom: 0.25rem;
-}
-
-.ValoracionComentario {
-  margin: 0 0 0.25rem 0;
   font-size: 0.95rem;
 }
 
-.ValoracionFecha {
+.pm-val-date {
   font-size: 0.8rem;
-  color: var(--color-texto-secundario);
+  color: #777;
 }
 
-/* Acción cita */
-.AccionCita {
-  margin-top: 2.5rem;
-  text-align: center;
+.pm-cta {
+  display: flex;
+  justify-content: center;
+  margin: 1rem auto 3rem;
 }
 
-.BtnCita {
-  background: var(--color-principal);
-  border: none;
+.pm-btn-cita {
+  background: var(--pm-primary) !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 0.75rem 2.5rem;
+  font-size: 1rem;
+  border-radius: 2rem;
+  box-shadow: var(--pm-shadow-sm);
+  transition: background 0.25s;
 }
 
-.BtnCita:hover,
-.BtnCita:focus {
-  background: var(--color-principal-hover);
+.pm-btn-cita:hover {
+  background: var(--pm-primary-90) !important;
 }
-
-/* Movil*/
-@media (max-width: 950px) {
-  .DoctorHeader {
+@media (max-width: 768px) {
+  .pm-header {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .DoctorImg {
-    width: 100%;
-    height: auto;
+  .pm-info {
+    align-items: flex-start;
+  }
+
+  .pm-tabmenu {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* para iOS */
+  }
+
+  .pm-tabmenu .p-tabmenu-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 0.5rem; /* reducir gap para evitar corte */
+    min-width: max-content; /* asegura que los elementos no colapsen */
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .pm-tabmenu .p-menuitem-link {
+    flex-shrink: 0; /* evita que los tabs se achiquen demasiado */
+    white-space: nowrap;
   }
 }

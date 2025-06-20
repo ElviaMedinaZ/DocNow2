@@ -1,3 +1,9 @@
+/**
+ * Descripción: Estilos del Home de paciente
+ * Fecha: 11 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
 :root {
   --color-primary: #0a3b74;
   --color-primary-light: #f5f9ff;
@@ -11,14 +17,12 @@
   --easing: 0.2s ease;
 }
 
-/* === Layout === */
 .home-container {
-  font-family: 'Segoe UI', sans-serif;
   background: var(--color-bg);
-  color: #333;
+  color: var(--color-primary);
+
 }
 
-/* === Header === */
 .home-header {
   display: flex;
   justify-content: space-between;
@@ -29,10 +33,6 @@
   position: sticky;
   top: 0;
   z-index: 10;
-}
-
-.home-logo {
-  width: 120px;
 }
 
 .home-logo-container {
@@ -75,7 +75,55 @@
   background: #082b56;
 }
 
-/* === Hero === */
+.home-search-btn {
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.home-search-btn:hover {
+  background-color: #082b56;
+}
+
+.kebab-menu {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.kebab-dropdown {
+  position: absolute;
+  right: 1.5rem;
+  top: 100%;
+  margin-top: .5rem;
+  background: var(--color-white);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 20;
+}
+
+.kebab-dropdown a {
+  padding: .75rem 1rem;
+  text-decoration: none;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.kebab-dropdown a:hover {
+  background: var(--color-primary-light);
+}
+
 .home-hero {
   background: linear-gradient(135deg, #ebf3ff, #dfe9ff);
   text-align: center;
@@ -94,29 +142,49 @@
   font-size: 1.15rem;
 }
 
-/* === Search bar === */
-.home-search {
-  position: relative;
-  margin: -1.6rem auto 2.6rem;
-  width: min(90%, 600px);
+/*Buscar */
+.home-search-wrapper {
+  padding-inline: 1rem;
+  margin-top: -2rem;
+  margin-bottom: 2rem;
 }
 
-.home-search input {
+.home-search-box-with-button {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.home-search-box {
+  position: relative;
+  flex: 1;
+}
+
+.home-search-box input {
   width: 100%;
-  border: 1px solid var(--color-border);
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
   border-radius: var(--radius);
-  padding: 0.9rem 3rem 0.9rem 1rem;
+  border: 1px solid var(--color-border);
+  font-size: 1rem;
+  background: #fff;
+  box-shadow: var(--shadow);
 }
 
 .home-search-icon {
   position: absolute;
-  right: 14px;
   top: 50%;
+  left: 0.9rem;
   transform: translateY(-50%);
   color: #666;
+  font-size: 1rem;
+  pointer-events: none;
 }
 
-/* === Sección genérica === */
+/*Secciones*/
 .home-section {
   width: min(var(--maxW), 92%);
   margin: 0 auto 4rem;
@@ -126,11 +194,12 @@
   margin-bottom: 1.5rem;
 }
 
-/* === Servicios === */
+/* Servicios*/
 .servicios-grid {
   display: grid;
   gap: 1.2rem;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  justify-content: center;
 }
 
 .servicio-card {
@@ -141,28 +210,31 @@
   padding: 1rem;
   cursor: pointer;
   transition: transform var(--easing);
+  width: 170px;
+  height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-
 .servicio-card:hover {
   transform: translateY(-5px);
 }
-
 .servicio-card img {
   width: 90px;
   height: 90px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 0.6rem;
+  margin: 0 auto 0.5rem;
 }
-
 .servicio-card span {
   font-weight: 600;
+  font-size: 0.95rem;
 }
 
-/* === Médicos destacados === */
+/* Doctores*/
 .doctores-grid {
   display: grid;
-  gap: 1.8rem;
+  gap: 1.5rem;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
 }
 
@@ -170,38 +242,32 @@
   background: var(--color-white);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  overflow: hidden;
   text-align: center;
-  padding-bottom: 1rem;
   transition: transform var(--easing);
 }
 .doctor-card:hover {
   transform: translateY(-6px);
 }
-
 .doctor-card img {
   width: 100%;
   height: 180px;
   object-fit: cover;
 }
-
 .doctor-card h3 {
   margin: 0.8rem 0 0.3rem;
   font-size: 1.1rem;
 }
-
-.doctor-card .spec {
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.doctor-card .rating {
-  color: #ffb400;
+.doctor-rating {
   display: flex;
   justify-content: center;
-  gap: 0.25rem;
+  align-items: center;
+  color: #ffc107;
+  font-weight: bold;
+  gap: 0.3rem;
+  margin-bottom: 0.6rem;
 }
 
-/* === Citas === */
 .citas-grid {
   display: grid;
   gap: 1.2rem;
@@ -227,15 +293,13 @@
 .cita-info p {
   margin: 0;
 }
-
 .cita-fecha {
-  color: #555;
+  color: var(--color-texto-secundario);
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
 
-/* === Recomendaciones === */
 .recomendaciones-grid {
   display: grid;
   gap: 1.2rem;
@@ -254,25 +318,21 @@
   height: 140px;
   object-fit: cover;
 }
-
 .recomendacion-card div {
   padding: 0.9rem 1rem;
 }
-
 .recomendacion-card h4 {
   margin: 0 0 0.5rem;
   font-size: 1rem;
   color: var(--color-primary);
 }
 
-/* === CTA final === */
 .home-cta {
   background: var(--color-primary);
   color: var(--color-white);
   text-align: center;
   padding: 3rem 1rem 4rem;
 }
-
 .home-cta h2 {
   margin-bottom: 1.8rem;
   font-size: 2rem;
@@ -287,29 +347,59 @@
   font-size: 0.85rem;
 }
 
-/* ------- Buscador con ícono (PrimeReact) ------- */
-.home-search-wrapper {
-  display: flex;
-  justify-content: center;
-  margin: -2rem auto 2.5rem;
-  width: 100%;
+ .doctor-rating svg {
+    color: #caa400;
+  }
+  
+ .doctor-rating {
+    color: #000000;
+  }
+
+  .kebab-menu {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* movil*/
+@media (max-width: 768px) {
+  .home-nav,
+  .home-login-btn {
+    display: none;
+  }
+
+  .kebab-menu {
+    display: inline-block;
+  }
+
+  .servicios-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    padding: 0 1rem;
+  }
+
+
+  .home-search-wrapper {
+  padding-inline: 1rem;
+  margin-top: -2rem;
+  margin-bottom: 2rem;
 }
 
 .home-search-box-with-button {
   display: flex;
   gap: 1rem;
   align-items: center;
-  justify-content: center; 
-  max-width: 800px;
-  width: 100%;
   justify-content: center;
+  max-width: 500px;
+  margin: 0 auto;
+  flex-wrap: wrap;
 }
-
 
 .home-search-box {
   position: relative;
   flex: 1;
-  justify-content: center;
 }
 
 .home-search-box input {
@@ -322,159 +412,15 @@
   box-shadow: var(--shadow);
 }
 
-.home-search-icon {
-  position: absolute;
-  top: 50%;
-  left: 0.9rem;
-  transform: translateY(-50%);
-  color: #666;
-  font-size: 1rem;
-  pointer-events: none;
-}
-
-.home-search-btn {
-  padding: 0.75rem 1.25rem;
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
-  border-radius: var(--radius);
-  font-weight: bold;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.home-search-btn:hover {
-  background-color: #082b56;
-}
-
-/* ------- Servicio card tamaño fijo y texto centrado ------- */
-.servicio-card {
-  width: 170px;
-  height: 190px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.servicio-card img {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.servicio-card span {
-  margin-top: .6rem;
-  text-align: center;
-  font-size: .95rem;
-  line-height: 1.2;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  filter: invert(22%) sepia(93%) saturate(650%) hue-rotate(180deg) brightness(90%) contrast(90%);
-}
-
-/* MÁS SEPARACIÓN DE LAS FLECHAS DEL CARRUSEL */
-.carousel-control-prev {
-  left: -4rem;  /* más lejos del borde izquierdo del carrusel */
-}
-
-.carousel-control-next {
-  right: -2rem; /* más lejos del borde derecho */
-}
-
-
-/* OPCIONAL: aumentar el tamaño del área clickeable */
-.carousel-control-prev,
-.carousel-control-next {
-  width: 1px;
-}
-
-/* --- Corregir posición de flechas fuera del contenedor --- */
-#carouselServicios {
-  position: relative;
-}
-
-/* Posicionar las flechas fuera del área de tarjetas */
-#carouselServicios .carousel-control-prev,
-#carouselServicios .carousel-control-next {
-  top: 50%; /* centra verticalmente en el carrusel */
-  transform: translateY(-50%);
-  bottom: auto;
-  z-index: 2;
-
-  width: 3rem;
-  height: 3rem;
-  background-color: #ffffffcc;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-/* Izquierda: fuera del carrusel */
-#carouselServicios .carousel-control-prev {
-  left: -2.5rem;
-}
-
-/* Derecha: fuera del carrusel */
-#carouselServicios .carousel-control-next {
-  right: -2.5rem;
-}
-
-/* Opcional: mejorar el ícono */
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  background-size: 1rem 1rem;
-  filter: invert(25%) sepia(95%) saturate(1500%) hue-rotate(195deg); /* azul */
-}
-
-
-/* === Responsive === */
-@media (max-width: 768px) {
-  .home-nav,
-  .home-login-btn {
-    display: none;
-  }
-
   .doctor-card img {
     height: 160px;
   }
 
-.carouselServicios .carousel-inner {
-  display: flex;
-  flex-wrap: nowrap;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  gap: 1rem;
-  padding: 1rem 0.5rem;
-}
+  .doctor-rating {
+      color: #000000;
+    }
 
-
-
-  .servicio-card {
-    flex: 0 0 auto;
-    width: 140px;
-    background: white;
-    border-radius: 12px;
-    padding: 1rem 0.5rem;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.07);
-    scroll-snap-align: start;
-    text-align: center;
+  .doctor-rating svg {
+    color: #caa400;
   }
-
-  .servicio-card img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 0.5rem;
-  }
-
-  .servicio-card span {
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
-
-
 }

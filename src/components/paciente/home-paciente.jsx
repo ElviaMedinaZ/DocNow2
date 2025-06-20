@@ -7,12 +7,11 @@
 import { InputText } from 'primereact/inputtext';
 import { useState } from 'react';
 import { FaCalendarAlt, FaSearch, FaStar } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
-import logo from '../../assets/logo.png';
+import HeaderPaciente from '../../components/paciente/MenuPaciente';
 import '../../styles/paciente/HomePaciente.css';
+
 const MySwal = withReactContent(Swal);
 
 const doctor1 = 'https://www.lanacion.com.ar/resizer/v2/dr-VGT2DJVTCFHVXA5DCJWF6F7L5Y.jpg?auth=6744d4e14c7d06fc09def55b0ded72e7aba5bc63c8393aec488a6dd7bc97a678&width=880&height=586&quality=70&smart=true';
@@ -35,8 +34,6 @@ const medicos = [
 ];
 
 export default function HomePacienteWeb() {
-  
-  const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState('');
 
   const citas = [
@@ -52,49 +49,23 @@ export default function HomePacienteWeb() {
 
   return (
     <div className="home-container">
-      <header className="home-header">
-        
-      <div className="home-logo-container">
-        <img src={logo} alt="DocNow" className="home-logo-icon" />
-        <span className="home-logo-text">DocNow</span>
-      </div>
-
-        <nav className="home-nav">
-          <a href="#servicios">Servicios</a>
-          <a href="#medicos">Especialistas</a>
-          <a href="#citas">Mis Citas</a>
-        </nav>
-        
-        <button className="home-login-btn" onClick={async () => { const { isConfirmed } = await MySwal.fire({
-            title: '¿Cerrar sesión?',
-            text: 'Tendrás que volver a iniciar sesión para entrar de nuevo.',
-            icon: 'question',
-            confirmButtonText: 'Sí, cerrar',
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#0a3b74',
-            showCancelButton: true,
-            reverseButtons: true,
-          });
-          
-          if (isConfirmed) {
-            console.log('Sesión cerrada');
-            navigate('/login');
-          }
-          
-          }} >Cerrar sesión </button>
-      </header>
-
+      <HeaderPaciente/>
       <section className="home-hero">
         <h1>Tu salud, en un solo lugar</h1>
-        <p> Encuentra médicos confiables, reserva servicios fácilmente y mantén el control de tus citas. </p>
+        <p>Encuentra médicos confiables, reserva servicios fácilmente y mantén el control de tus citas.</p>
       </section>
 
       <div className="home-search-wrapper">
         <div className="home-search-box-with-button">
-          <div className="home-search-box"> <FaSearch className="home-search-icon" />
-            <InputText placeholder="Buscar médicos, servicios, especialidades…" value={busqueda} onChange={(e) => setBusqueda(e.target.value)} />
+          <div className="home-search-box">
+            <FaSearch className="home-search-icon" />
+            <InputText
+              placeholder="Buscar médicos, servicios, especialidades…"
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+            />
           </div>
-          <button className="home-login-btn">Buscar</button>
+          <button className="home-search-btn">Buscar</button>
         </div>
       </div>
 
@@ -150,9 +121,7 @@ export default function HomePacienteWeb() {
           {recomendaciones.map((r) => (
             <div className="recomendacion-card" key={r.id}>
               <img src={r.img} alt={r.titulo} />
-              <div>
-                <h4>{r.titulo}</h4>
-              </div>
+              <div><h4>{r.titulo}</h4></div>
             </div>
           ))}
         </div>
