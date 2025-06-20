@@ -6,13 +6,21 @@
 
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
+import { Card } from 'primereact/card';
+import { DataView } from 'primereact/dataview';
+import { Rating } from 'primereact/rating';
+import { TabMenu } from 'primereact/tabmenu';
+import { Tag } from 'primereact/tag';
+import { useState } from 'react';
 import { Divider } from 'primereact/divider';
 import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
-
 import { useState } from 'react';
+
+import HeaderPaciente from '../../components/paciente/MenuPaciente';
 import '../../styles/medico/PerfilMedico.css';
 
+/* -------------------- datos demo -------------------- */
 // Datos de prueba
 const doctorDemo = {
   nombre: 'Dr. Mario Orantes',
@@ -51,102 +59,119 @@ const doctorDemo = {
     {
       id: 3,
       usuario: 'Laura Reyes',
-      avatar: 'https://i.pravatar.cc/150?img=23',
+      avatar: 'https://i.pravatar.cc/100?img=23',
       estrellas: 5,
       comentario: 'Buen servicio 👍',
-      fecha: '27 de marzo de 2022',
+      fecha: '27 mar 2022',
     },
   ],
 };
+/* ---------------------------------------------------- */
 
-// Componente principal
-export default function PerfilMedicoWeb({ doctor = doctorDemo }) {
-  //Estado para mostrar más/menos valoraciones
-  const [mostrarTodas, setMostrarTodas] = useState(false);
-  const valoracionesVisibles = mostrarTodas ? doctor.valoraciones : doctor.valoraciones.slice(0, 3);
+export default function PerfilMedico({ doctor = doctorDemo }) {
+  const [active, setActive] = useState(0);
+
+  const tabs = [
+    { label: 'Datos',          icon: 'pi pi-id-card'   },
+    { label: 'Servicios',      icon: 'pi pi-list'      },
+    { label: 'Disponibilidad', icon: 'pi pi-calendar'  },
+    { label: 'Valoraciones',   icon: 'pi pi-star-fill' },
+  ];
+
+  const currency = (n) => `$${n.toLocaleString('es-MX')}`;
+
+  const valoracionTemplate = (v) => (
+    <div className="pm-val-item">
+      <Avatar image={v.avatar} shape="circle" size="large" />
+      <div className="pm-val-text">
+        <div className="pm-val-header">
+          <strong>{v.usuario}</strong>
+          <Rating value={v.estrellas} readOnly cancel={false} className="pm-val-stars" />
+        </div>
+        <p className="pm-val-com">{v.comentario}</p>
+        <span className="pm-val-date">{v.fecha}</span>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="PerfilMedicoContainer">
-      {/* Encabezado doctor*/}
-      <header className="DoctorHeader">
-        <img className="DoctorImg" src={doctor.foto} alt={`Foto de ${doctor.nombre}`} />
-        <div className="DoctorInfo">
-          <h1 className="DoctorNombre">{doctor.nombre}</h1>
-          <Tag value={doctor.especialidad} className="DoctorEspecialidad" />
+    <div className="pm-container">
+      {/* Barra superior global */}
+      <HeaderPaciente />
+
+      {/* Cabecera del perfil */}
+      <header className="pm-header">
+        <img src={doctor.foto} alt={doctor.nombre} className="pm-img" />
+        <div className="pm-info">
+          <h1 className="pm-name">{doctor.nombre}</h1>
+          <Tag value={doctor.horario.turno} rounded className="pm-tag" />
         </div>
       </header>
 
-      <main className="PerfilContent">
-        {/* Contacto ---------------------------------------------------- */}
-        <section className="BloqueContacto">
-          <h2 className="BloqueTitulo">Datos de contacto</h2>
-          <ul className="ListaContacto">
-            <li><i className="pi pi-phone" /> {doctor.telefono}</li>
-            <li><i className="pi pi-envelope" /> {doctor.email}</li>
-            <li><i className="pi pi-building" /> {doctor.consultorio}</li>
-          </ul>
-        </section>
+      {/* Menú de secciones */}
+      <TabMenu
+        model={tabs}
+        activeIndex={active}
+        onTabChange={(e) => setActive(e.index)}
+        className="pm-tabmenu"
+      />
 
-        <Divider />
+      {/* Contenido por pestaña */}
+      <div className="pm-main">
+        {/* Datos */}
+        {active === 0 && (
+          <Card className="pm-card">
+            <h3 className="pm-section-title">Datos de contacto</h3>
+            <ul className="pm-contact-list">
+              <li><i className="pi pi-phone"    /> {doctor.telefono}</li>
+              <li><i className="pi pi-envelope" /> {doctor.email}</li>
+              <li><i className="pi pi-building" /> {doctor.consultorio}</li>
+            </ul>
+          </Card>
+        )}
 
-        {/* Servicios ---------------------------------------------------- */}
-        <section className="BloqueServicios">
-          <h2 className="BloqueTitulo">Servicios ofertados</h2>
-          <table className="TablaServicios">
-            <tbody>
+        {/* Servicios */}
+        {active === 1 && (
+          <Card className="pm-card">
+            <h3 className="pm-section-title">Servicios ofertados</h3>
+            <ul className="pm-services-list">
               {doctor.servicios.map((s) => (
-                <tr key={s.nombre}>
-                  <td>{s.nombre}</td>
-                  <td className="ServicioPrecio">${s.precio}</td>
-                </tr>
+                <li key={s.nombre}>
+                  <span>{s.nombre}</span>
+                  <strong>{currency(s.precio)}</strong>
+                </li>
               ))}
-            </tbody>
-          </table>
-        </section>
+            </ul>
+          </Card>
+        )}
 
-        <Divider />
+        {/* Disponibilidad */}
+        {active === 2 && (
+          <Card className="pm-card">
+            <h3 className="pm-section-title">Disponibilidad</h3>
+            <p>{doctor.horario.dias}</p>
+            <p>{doctor.horario.turno}</p>
+          </Card>
+        )}
 
-        {/* Disponibilidad ---------------------------------------------- */}
-        <section className="BloqueDisponibilidad">
-          <h2 className="BloqueTitulo">Disponibilidad</h2>
-          <p>{doctor.horario.dias}</p>
-          <p>{doctor.horario.turno}</p>
-        </section>
+        {/* Valoraciones */}
+        {active === 3 && (
+          <Card title={`Valoraciones (${doctor.valoraciones.length})`} className="pm-card">
+            <DataView
+              value={doctor.valoraciones}
+              itemTemplate={valoracionTemplate}
+              layout="list"
+              paginator
+              rows={3}
+            />
+          </Card>
+        )}
 
-        <Divider />
-
-        {/* Valoraciones ------------------------------------------------- */}
-        <section className="BloqueValoraciones">
-          <div className="ValoracionesHeader">
-            <h2 className="BloqueTitulo">Valoraciones</h2>
-            {doctor.valoraciones.length > 3 && (
-              <Button
-                label={mostrarTodas ? 'Ocultar' : 'Ver todas →'}
-                link
-                className="BtnVerMas"
-                onClick={() => setMostrarTodas(!mostrarTodas)}
-              />
-            )}
-          </div>
-          <ul className="ListaValoraciones">
-            {valoracionesVisibles.map((v) => (
-              <li key={v.id} className="ItemValoracion">
-                <Avatar image={v.avatar} shape="circle" size="large" className="ValoracionAvatar" />
-                <div className="ValoracionTexto">
-                  <Rating value={v.estrellas} readOnly cancel={false} className="ValoracionEstrellas" />
-                  <p className="ValoracionComentario">{v.comentario}</p>
-                  <span className="ValoracionFecha">{v.fecha}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Boton cita --------------------------------------------------- */}
-        <div className="AccionCita">
-          <Button label="Solicitar cita" className="BtnCita p-button-lg" />
+        {/* CTA */}
+        <div className="pm-cta">
+          <Button label="Solicitar cita" className="pm-btn-cita p-button-lg" />
         </div>
-      </main>
+      </div>
     </div>
   );
 }
