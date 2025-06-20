@@ -1,0 +1,32 @@
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: #0A3B74;
+  color: #fff;
+}
+
+.logout-btn {
+  background: #fff;
+  color: #0A3B74;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.logout-btn:hover {
+  opacity: 0.9;
+}
+
+.home-main {
+  text-align: center;
+  margin-top: 96px;
+}
+
+.rol {
+  color: #0A3B74;
+}
