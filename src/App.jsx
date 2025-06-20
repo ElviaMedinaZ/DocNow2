@@ -10,22 +10,22 @@ import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import PantallaBuscador from './components/admin/PantallaBuscador';
-import PantallaRegistroMedico from './components/medico/PantallaRegistroMedico';
-import PerfilMedico from './components/medico/perfil-medico';
-import PantallaHomePaciente from './components/paciente/PantallaHomePaciente';
-import PantallaRegistroPaciente from './components/paciente/PantallaRegistroPaciente';
-import PantallaLanding from './components/usuario/PantallaLanding';
-import PantallaLogin from './components/usuario/PantallaLogin';
-import PantallaPerfil from './components/usuario/PantallaPerfil';
+import PantallaBuscador from './components/admin/buscador';
+import PantallaPerfilMedico from './components/medico/perfil-medico';
+import PantallaRegistroMedico from './components/medico/registro-medico';
+import PantallaHomePaciente from './components/paciente/home-paciente';
+import PantallaRegistroPaciente from './components/paciente/registro-paciente';
+import PantallaLanding from './components/usuario/landing';
+import PantallaLogin from './components/usuario/login';
+import PantallaPerfil from './components/usuario/perfil';
 
 addLocale('es', {
   firstDayOfWeek: 1,
-  dayNames: ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],
-  dayNamesShort: ['dom','lun','mar','mié','jue','vie','sáb'],
-  dayNamesMin: ['D','L','M','X','J','V','S'],
-  monthNames: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
-  monthNamesShort: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
+  dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+  dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+  dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+  monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+  monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
   today: 'Hoy',
   clear: 'Limpiar',
 });
@@ -41,9 +41,8 @@ function App() {
         <Route path="/registro-paciente" element={<PantallaRegistroPaciente />} />
         <Route path="/perfil" element={<PantallaPerfil />} />
         <Route path="/login" element={<PantallaLogin />} />
-        <Route path="/perfil-medico" element={<PerfilMedico />} />
+        <Route path="/perfil-medico" element={<PantallaPerfilMedico />} />
         <Route path="/buscador" element={<PantallaBuscador />} />
-        <Route path="/landing" element={<PantallaLanding />} />
         <Route path="/home-paciente" element={<PantallaHomePaciente />} />
       </Routes>
     </BrowserRouter>

@@ -1,6 +1,6 @@
 /**
- * Descripción: Creación del perfil del medico
- * Fecha: 11 Junio de 2025
+ * Descripción: Implementación de la vista de Perfil para el médico
+ * Fecha: 14 Junio de 2025
  * Programador: Elvia Medina
  */
 
@@ -12,40 +12,49 @@ import { Rating } from 'primereact/rating';
 import { TabMenu } from 'primereact/tabmenu';
 import { Tag } from 'primereact/tag';
 import { useState } from 'react';
+import { Divider } from 'primereact/divider';
+import { Rating } from 'primereact/rating';
+import { Tag } from 'primereact/tag';
+import { useState } from 'react';
 
 import HeaderPaciente from '../../components/paciente/MenuPaciente';
 import '../../styles/medico/PerfilMedico.css';
 
 /* -------------------- datos demo -------------------- */
+// Datos de prueba
 const doctorDemo = {
   nombre: 'Dr. Mario Orantes',
-  foto: 'https://i.pravatar.cc/300?img=13',
+  especialidad:'Cardiologo',
+  foto: 'https://i.pravatar.cc/150?img=64',
   telefono: '3453535345',
   email: 'mario@gmail.com',
   consultorio: 'Consultorio 2',
   servicios: [
-    { nombre: 'Inyecciones',  precio: 100 },
-    { nombre: 'Rayos X',      precio: 700 },
+    { nombre: 'Inyecciones', precio: 100 },
+    { nombre: 'Rayos X', precio: 700 },
     { nombre: 'Ultrasonidos', precio: 650 },
-    { nombre: 'Consulta',     precio: 400 },
+    { nombre: 'Consulta', precio: 400 },
   ],
-  horario: { dias: 'Lunes a viernes', turno: 'Matutino' },
+  horario: {
+    dias: 'Lunes a viernes',
+    turno: 'Matutino',
+  },
   valoraciones: [
     {
       id: 1,
       usuario: 'Ana López',
-      avatar: 'https://i.pravatar.cc/100?img=47',
+      avatar: 'https://i.pravatar.cc/150?img=47',
       estrellas: 4,
       comentario: 'El mejor médico, me encanta su amabilidad.',
-      fecha: '15 may 2024',
+      fecha: '15 de mayo de 2024',
     },
     {
       id: 2,
       usuario: 'Pedro Núñez',
-      avatar: 'https://i.pravatar.cc/100?img=12',
+      avatar: 'https://i.pravatar.cc/150?img=12',
       estrellas: 2,
       comentario: 'Pésimo servicio.',
-      fecha: '25 abr 2022',
+      fecha: '25 de abril de 2022',
     },
     {
       id: 3,

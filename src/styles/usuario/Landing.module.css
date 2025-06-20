@@ -1,10 +1,15 @@
+/**
+ * Descripción: Estilos de presentacion 
+ * de la pagina DocNow
+ * Fecha: 16 Junio de 2025
+ * Programador: Irais Reyes
+ */
+
 :root {
   --azul-fuerte-color: #0A3B74;
   --verde-menta-color: #C9E5EB;
-  --color-label-perfil: #1C1F1E;
-  --color-bordes-perfil: #9D9D9D;
+  --negro-color: #1C1F1E;
   --blanco-color: #F5F5F5;
-  --color-rojo-perfil: #740A0A;
   --fuente: "Almarai", sans-serif;
 }
 
@@ -14,6 +19,16 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 2rem;
+}
+
+.menuIcon{
+  display: none;
+  width: 50px;
+  height: 50px;
+}
+
+.menuHamburguesa {
+  display: none;
 }
 
 .leftSection {
@@ -47,7 +62,7 @@
 }
 
 .menuHeader {
-  color: var(--color-label-perfil);
+  color: var(--negro-color);
   cursor: pointer;
   text-decoration: none;
   font-size: 1rem;
@@ -61,61 +76,839 @@
 .btnInicio {
   background-color: var(--azul-fuerte-color);
   color: white;
-  padding: 10px 20px;
+  padding: 10px 30px;
   border: none;
   border-radius: 20px;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-weight: bold;
 }
 
 .btnInicio:hover {
   background-color: #062d59;
 }
 
+/* estilos seccion 1 */
 .section1 {
-  background-color: var(--azul-fuerte-color);
+ background-color: var(--azul-fuerte-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 3rem 5em;
+  padding: 3rem 5rem 0rem 5rem;
   gap: 2rem;
   text-align: left;
-  flex-wrap: wrap; /* Para que se acomode mejor en pantallas pequeñas */
+  flex-wrap: nowrap;
 }
 
 .textoContainer {
   max-width: 50%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 }
 
 .imgLanding {
-  max-width: 45%;
-  height: auto;
-  /* margin-top: 1rem; */
+  max-width: 100%;
+  height: 100%;
+  margin-top: 6rem;
+  margin: 1;
+  object-fit: contain;
 }
 
 .textoPrincipal {
   color: var(--blanco-color);
-  /* font-size: 1.6rem; */
-  line-height: 1.5;
+  margin: 0;
+  font-size: 64px;
 }
 
 .textoDescriptivo{
-    color: var(--blanco-color);
-    line-height: 1.5;
-    /* margin-bottom: 60rem; */
+  color: var(--blanco-color);
+  font-size: 24px;
 }
 
 .btnRegistro{
   background-color: var(--verde-menta-color);
   color: black;
-  padding: 10px 20px;
+  padding: 10px 40px;
   border: none;
   border-radius: 20px;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  align-self: center;
+  margin-right: 30%;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+/* estilos seccion 2 */
+.section2 {
+  background-color: var(--blanco-color);
+  padding: 5rem 5rem;
+}
+
+.contenidoServicios {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.textoServicios{
+  color: var(--azul-fuerte-color);
+  margin: 0;
+}
+
+.textoIntroductorio{
+  color: var(--negro-color);
+  font-size: 24px;
+  margin: 0;
+}
+
+.textoContainer {
+  flex: 1;
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 0;
+}
+
+.imgLanding {
+  max-width: 90%;
+  height: auto;
+  margin-top: 1rem;
+  margin: 0;
+}
+
+.tarjetasContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 20%;
+}
+
+.tarjeta {
+  background-color: #FAFAFA ;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-items: flex-start;
+  height: 400px;
+  width: 95%; 
+  box-sizing: border-box;
+}
+
+.encabezadoTarjeta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.numero {
+  background-color: #498FC0;
+  color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.4rem;
+}
+
+.tituloTarjeta {
+  color: var(--azul-fuerte-color);
+  font-weight: 700;
+  margin: 0;
+  font-weight: bold;
+}
+
+.logoTarjeta {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  margin: 1rem 0;
+  align-self: center;
+}
+
+.contenidoTarjeta {
+  color: #1c1f1e;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.tarjetasWrapper {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.columnaTarjetas {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+  min-width: 250px;
+}
+
+.columnaTarjetas:nth-child(2) {
+  margin-top: 3rem;
+}
+
+.desfasada {
+  margin-top: 2rem;
+}
+
+/* estilos seccion 3 */
+
+.section3 {
+  background-color: var(--verde-menta-color);
+  padding: 5rem 5rem;
+  position: relative;
+}
+
+.bancoOpiniones {
+  text-align: center;
+  max-width: 800px; 
+  margin: 0 auto;
+}
+
+.testimonio{
+  color: var(--negro-color);
+  font-size: 1.5rem;
+}
+
+.tituloResena{
+  color: var(--azul-fuerte-color)
+}
+
+.opinionesWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap; 
+  margin-top: 2rem;
+}
+
+
+.tarjetaOpinion {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+  text-align: left;
+  padding-top: 4rem; 
+}
+
+.usuario {
+  position: absolute;
+  top: -50px;
+  left: -40px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.nombreUsuario{
+  color: var(--negro-color);
+  padding-left: 5rem;
+}
+
+.textoOpinion {
+  color: #333;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-top: 1rem;
+}
+
+.estrellas{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.5rem 0;
+}
+
+/* pie de pagina */
+.piePagina {
+  background-color: var(--azul-fuerte-color);
+  padding: 2rem 5rem;
+  color: white;
+}
+
+.tituloPie{
+  padding-left: 1rem;;
+}
+
+.footerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.leftSectionPie {
+  display: flex;
+  align-items: center;
+}
+
+.contactosSeccion {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+}
+
+.contactosSeccion p {
+  margin: 0.1rem 0; 
+}
+
+
+.footerBottom {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* adaptable a  movil */
+@media (max-width: 600px) {
+
+  .rightSection  {
+    display: none;
+  }
+
+  .headerLanding {
+    align-items: center;
+    padding: 0.8rem 7rem;
+  }
+
+  .menuIcon{
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin-left: 5rem;
+    cursor: pointer;
+  }
+
+  .menuHamburguesa {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--blanco-color);
+    padding: 1rem 2rem;
+    position: absolute;
+    width: 97%;
+    top: 10%;
+    left: 0;
+    z-index: 1000;
+    gap: 1rem;
+    border-top: 1px solid #ccc;
+  }
+
+  .menuHeader {
+    font-size: 1rem;
+    color: var(--negro-color);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .section1 {
+    flex-direction: column; 
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .inicioMovil{
+    color: var(--azul-fuerte-color);
+  }
+
+  .imgLanding {
+    order: 2; 
+    width: 260%;
+    max-width: 800px;
+  }
+
+  .textoContainer {
+    order: 1; 
+  }
+
+  .textoPrincipal {
+    margin: 0;
+    font-size: 60px;
+  }
+
+  .textoDescriptivo{
+    font-size: 20px;
+  }
+  /* seccion 2 */
+
+.contenidoServicios {
+    flex-direction: column;
+  }
+
+  .textoContainer {
+    order: 0;
+  }
+
+  .tarjetasWrapper {
+    order: 1;
+  }
+
+  .imgLanding {
+    order: 2;
+    margin-top: 1.5rem;
+    width: 140%;
+    max-width: 400px;
+    align-self: center;
+  }
+
+  .contactosSeccion {
+    text-align: center;
+  }
+
+  .footerTop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 400px) {
+
+  .headerLanding {
+    padding: 0.5rem 5rem;
+  }
+
+  .menuIcon {
+    width: 35px;
+    height: 35px;
+    margin-left: 3rem;
+  }
+
+  .menuHamburguesa {
+    padding: 0.8rem 1.5rem;
+    width: 96%;
+    top: 11%;
+  }
+
+  .menuHeader {
+    font-size: 1rem;
+  }
+
+  .section1 {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .imgLanding {
+    order: 2;
+    width: 110%;
+    max-width: 320px;
+    margin-top: 1rem;
+  }
+
+  .textoContainer {
+    order: 1;
+  }
+
+  .textoPrincipal {
+    font-size: 42px;
+  }
+
+  .textoDescriptivo {
+    font-size: 16px;
+  }
+
+  .btnRegistro {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  /* Sección 2 */
+  .contenidoServicios {
+    flex-direction: column;
+    padding: 0 1rem;
+  }
+
+  .textoServicios {
+    font-size: 1.7rem;
+    text-align: center;
+  }
+
+  .textoIntroductorio {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .tarjetasWrapper {
+    order: 1;
+  }
+
+  .tarjeta {
+    padding: 0.7rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .numero {
+    font-size: 1.7rem;
+  }
+
+  .tituloTarjeta {
+    font-size: 1.1rem;
+  }
+
+  .contenidoTarjeta {
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+  }
+
+  .logoTarjeta {
+    width: 55px;
+    height: auto;
+  }
+
+  .imgLanding {
+    order: 2;
+    width: 120%;
+    max-width: 300px;
+    margin: 1.5rem auto 0 auto;
+  }
+
+  .footerTop {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .contactosSeccion {
+    padding: 1rem;
+    text-align: center;
+  }
+
+}
+
+
+@media (max-width: 300px) {
+
+  .headerLanding {
+    padding: 0.5rem 3rem;
+  }
+
+  .menuIcon {
+    width: 30px;
+    height: 30px;
+    margin-left: 2rem;
+  }
+
+  .menuHamburguesa {
+    padding: 0.5rem 1rem;
+    width: 100%;
+    top: 13%;
+  }
+
+  .menuHeader {
+    font-size: 0.9rem;
+  }
+
+  .section1 {
+    padding: 1rem;
+  }
+
+  .imgLanding {
+    width: 100%;
+    max-width: 260px;
+    margin-top: 1rem;
+  }
+
+  .textoPrincipal {
+    font-size: 36px;
+  }
+
+  .textoDescriptivo {
+    font-size: 14px;
+  }
+
+  /* Sección 2 */
+
+  .contenidoServicios {
+    padding: 0 1rem;
+  }
+
+  .textoServicios {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .textoIntroductorio {
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .tarjeta {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .numero {
+    font-size: 1.5rem;
+  }
+
+  .tituloTarjeta {
+    font-size: 1rem;
+  }
+
+  .contenidoTarjeta {
+    font-size: 0.85rem;
+    line-height: 1.2rem;
+  }
+
+  .logoTarjeta {
+    width: 50px;
+    height: auto;
+  }
+
+  .imgLanding {
+    width: 100%;
+    max-width: 200px;
+    margin: 1rem auto 0 auto;
+  }
+
+  .footerTop {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contactosSeccion {
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+
+  .headerLanding {
+    padding: 0.5rem 2rem; 
+  }
+
+  .menuIcon {
+    width: 30px;
+    height: 30px;
+    margin-left: 2rem;
+  }
+
+  .menuHamburguesa {
+    padding: 0.8rem 1.1rem;
+    width: 100%;
+    top: 10%;
+  }
+
+  .section1 {
+    padding: 1rem 0.5rem;
+  }
+
+  .textoPrincipal {
+    font-size: 36px;
+  }
+
+  .textoDescriptivo {
+    font-size: 15px;
+  }
+
+  .btnRegistro {
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+  }
+
+  /* Sección 2 */
+  .contenidoServicios {
+    padding: 0 0.8rem;
+  }
+
+  .textoServicios {
+    font-size: 1.5rem;
+  }
+
+  .textoIntroductorio {
+    font-size: 0.95rem;
+  }
+
+  .tarjeta {
+    padding: 0.5rem;
+  }
+
+  .numero {
+    font-size: 1.5rem;
+  }
+
+  .tituloTarjeta {
+    font-size: 1rem;
+  }
+
+  .contenidoTarjeta {
+    font-size: 0.85rem;
+    line-height: 1.2rem;
+  }
+
+  .logoTarjeta {
+    width: 50px;
+  }
+
+  .imgLanding {
+    width: 100%;
+    max-width: 270px;
+    margin-top: 1rem;
+  }
+
+  .footerTop {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .contactosSeccion {
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 420px) {
+
+  .headerLanding {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 3rem;
+  }
+
+  .menuIcon {
+    display: block;
+    width: 36px;
+    height: 36px;
+    margin-left: auto;
+  }
+
+  .menuHamburguesa {
+    padding: 1rem;
+    width: 100%;
+    top: 7%;
+  }
+
+  .menuHeader {
+    font-size: 1rem;
+  }
+
+  .section1 {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .textoPrincipal {
+    font-size: 40px;
+    line-height: 1.2;
+  }
+
+  .textoDescriptivo {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+
+  .btnRegistro {
+    font-size: 1rem;
+    padding: 0.6rem 1.4rem;
+  }
+
+  .imgLanding {
+    width: 100%;
+    max-width: 340px;
+    margin: 1rem auto;
+    order: 2;
+  }
+
+  /* Sección 2 */
+
+  .contenidoServicios {
+    flex-direction: column;
+    padding: 0 1rem;
+  }
+
+  .textoServicios {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .textoIntroductorio {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .tarjeta {
+    padding: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .numero {
+    font-size: 1.6rem;
+  }
+
+  .tituloTarjeta {
+    font-size: 1.1rem;
+  }
+
+  .contenidoTarjeta {
+    font-size: 0.95rem;
+    line-height: 1.4rem;
+  }
+
+  .logoTarjeta {
+    width: 60px;
+    height: auto;
+  }
+
+  /* Reseñas */
+  .estrellas {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Footer */
+
+  .footerTop {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .contactosSeccion {
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  .footerBottom {
+    text-align: center;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+  }
+}
+
+
+
 }
