@@ -14,12 +14,15 @@ import withReactContent from 'sweetalert2-react-content';
 import logo from '../../assets/logo.png';
 import '../../styles/usuario/Login.css';
 
+//Firebase
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../../lib/firebase';
+
+
 const MySwal = withReactContent(Swal);
 const correoReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const credencialesValidas = {
-  correo: 'paciente@paciente.com',
-  contrasena: 'Paciente$123'
-};
+
 
 export default function Login() {
   const navigate = useNavigate();
@@ -47,17 +50,6 @@ export default function Login() {
       err.contrasena = true;
       msg.contrasena = 'La contraseña es obligatoria';
     }
-    if (
-      datos.correoElectronico &&
-      datos.contrasena &&
-      (datos.correoElectronico !== credencialesValidas.correo ||
-        datos.contrasena !== credencialesValidas.contrasena)
-    ) {
-      err.correoElectronico = true;
-      err.contrasena = true;
-      msg.general = 'Correo o contraseña incorrectos';
-    }
-
     setErrores(err);
     if (Object.keys(err).length) {
       await MySwal.fire({
@@ -69,13 +61,60 @@ export default function Login() {
       return;
     }
 
-    await MySwal.fire({
-      icon: 'success',
-      title: '¡Bienvenido!',
-      timer: 1200,
-      showConfirmButton: false
-    });
-    navigate('/home-paciente');
+
+    /* -------- Inicio de sesión en Firebase -------- */
+    try {
+      const cred = await signInWithEmailAndPassword(
+        auth,
+        datos.correoElectronico.trim(),
+        datos.contrasena.trim()
+      );                                            
+
+      const uid = cred.user.uid;
+
+      /* --------- Obtén el rol en Firestore --------- */
+      
+      const snap = await getDoc(doc(db, 'usuarios', uid));        
+
+      if (!snap.exists()) {
+        throw new Error('Usuario autenticado sin perfil en Firestore');
+      }
+
+      const { rol } = snap.data();
+
+      /* --------- Feedback & routing según rol -------- */
+      await MySwal.fire({
+        icon: 'success',
+        title: `¡Bienvenido${rol ? ',' : ''} ${rol || ''}!`,
+        timer: 1200,
+        showConfirmButton: false
+      });
+
+      switch (rol) {
+        case 'Paciente':
+          navigate('/home-paciente');
+          break;
+        case 'Doctor':
+          navigate('/home-medico');
+          break;
+        case 'Admin':
+          navigate('/home-admin');
+          break;
+        default:
+          navigate('/'); 
+      }
+    } catch (error) {
+      /* --------- Mapeo de errores comunes -------- */
+      const cod = error.code || '';
+      let msg  = 'Ocurrió un error, inténtalo de nuevo';
+
+      if (['auth/invalid-email', 'auth/user-not-found', 'auth/wrong-password'].includes(cod))
+        msg = 'Correo o contraseña incorrectos';
+      else if (cod === 'auth/too-many-requests')
+        msg = 'Demasiados intentos, prueba más tarde';
+
+      await MySwal.fire({ icon: 'error', title: 'Error', text: msg, confirmButtonColor: '#0A3B74' });
+    }
   };
 
   return (

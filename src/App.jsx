@@ -10,14 +10,26 @@ import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import PantallaBuscador from './components/admin/buscador';
-import PantallaPerfilMedico from './components/medico/perfil-medico';
-import PantallaRegistroMedico from './components/medico/registro-medico';
-import PantallaHomePaciente from './components/paciente/home-paciente';
-import PantallaRegistroPaciente from './components/paciente/registro-paciente';
+//Usuario
 import PantallaLanding from './components/usuario/landing';
 import PantallaLogin from './components/usuario/login';
+
+//Admin
+import PantallaBuscador from './components/admin/buscador';
+import PantallaHomeAdmin from './components/admin/home-admin';
+
+//Paciente
+import PantallaHomePaciente from './components/paciente/home-paciente';
+import PantallaRegistroPaciente from './components/paciente/registro-paciente';
 import PantallaPerfil from './components/usuario/perfil';
+
+//Medico
+import PantallaPerfilMedico from './components/medico/perfil-medico';
+import PantallaRegistroMedico from './components/medico/registro-medico';
+import PantallaHomeMedico from './components/medico/home-medico';
+
+
+
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -36,14 +48,24 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/*Usuario*/}
         <Route path="/" element={<PantallaLanding />} />
-        <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
-        <Route path="/registro-paciente" element={<PantallaRegistroPaciente />} />
-        <Route path="/perfil" element={<PantallaPerfil />} />
         <Route path="/login" element={<PantallaLogin />} />
-        <Route path="/perfil-medico" element={<PantallaPerfilMedico />} />
-        <Route path="/buscador" element={<PantallaBuscador />} />
+
+        {/*Paciemnte*/}
+        <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
+        <Route path="/perfil" element={<PantallaPerfil />} />
         <Route path="/home-paciente" element={<PantallaHomePaciente />} />
+
+        {/*Medico*/}
+        <Route path="/registro-paciente" element={<PantallaRegistroPaciente />} />
+        <Route path="/perfil-medico" element={<PantallaPerfilMedico />} />
+        <Route path='/home-medico' element={<PantallaHomeMedico/>}/>
+        
+        {/*Admin*/}
+        <Route path="/buscador" element={<PantallaBuscador />} />
+        <Route path='/home-admin' element={<PantallaHomeAdmin/>}/>
+
       </Routes>
     </BrowserRouter>
   );
