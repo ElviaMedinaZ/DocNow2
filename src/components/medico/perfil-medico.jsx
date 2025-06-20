@@ -12,11 +12,6 @@ import { Rating } from 'primereact/rating';
 import { TabMenu } from 'primereact/tabmenu';
 import { Tag } from 'primereact/tag';
 import { useState } from 'react';
-import { Divider } from 'primereact/divider';
-import { Rating } from 'primereact/rating';
-import { Tag } from 'primereact/tag';
-import { useState } from 'react';
-
 import HeaderPaciente from '../../components/paciente/MenuPaciente';
 import '../../styles/medico/PerfilMedico.css';
 
