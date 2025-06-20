@@ -49,7 +49,7 @@ export default function HomePacienteWeb() {
 
   return (
     <div className="home-container">
-      <HeaderPaciente />
+      <HeaderPaciente/>
       <section className="home-hero">
         <h1>Tu salud, en un solo lugar</h1>
         <p>Encuentra médicos confiables, reserva servicios fácilmente y mantén el control de tus citas.</p>

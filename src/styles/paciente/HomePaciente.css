@@ -113,7 +113,6 @@
   z-index: 20;
 }
 
-
 .kebab-dropdown a {
   padding: .75rem 1rem;
   text-decoration: none;
@@ -143,7 +142,7 @@
   font-size: 1.15rem;
 }
 
-/* === Search === */
+/*Buscar */
 .home-search-wrapper {
   padding-inline: 1rem;
   margin-top: -2rem;
@@ -185,7 +184,7 @@
   pointer-events: none;
 }
 
-/* === Secciones === */
+/*Secciones*/
 .home-section {
   width: min(var(--maxW), 92%);
   margin: 0 auto 4rem;
@@ -195,7 +194,7 @@
   margin-bottom: 1.5rem;
 }
 
-/* === Servicios === */
+/* Servicios*/
 .servicios-grid {
   display: grid;
   gap: 1.2rem;
@@ -232,7 +231,7 @@
   font-size: 0.95rem;
 }
 
-/* === Doctores === */
+/* Doctores*/
 .doctores-grid {
   display: grid;
   gap: 1.5rem;
@@ -365,7 +364,7 @@
   cursor: pointer;
 }
 
-/* === Responsivo === */
+/* movil*/
 @media (max-width: 768px) {
   .home-nav,
   .home-login-btn {

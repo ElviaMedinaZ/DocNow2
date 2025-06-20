@@ -4,7 +4,6 @@
  * Programador: Elvia Medina
  */
 
-/* Variables globales */
 :root {
   --color-fondo: #f0f2f5;
   --color-principal: #0A3B74;
@@ -146,3 +145,36 @@ html, body, #root {
 .BtnSiguiente:hover {
   background-color: var(--color-principal-hover);
 }
+
+/* movil */
+@media (max-width: 768px) {
+  .RegistroForm {
+    padding: 2rem 1.5rem;
+    max-width: 600px;
+  }
+
+  .Titulo {
+    font-size: 1.75rem;
+  }
+
+  .Subtitulo {
+    font-size: 0.95rem;
+  }
+
+  .PreviewImg {
+    width: 85px;
+    height: 85px;
+  }
+
+  .FileLabel {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .BtnSiguiente {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+}
+
+

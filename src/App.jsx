@@ -11,8 +11,8 @@ import 'primereact/resources/themes/lara-light-blue/theme.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import PantallaBuscador from './components/admin/PantallaBuscador';
-import PantallaPerfilMedico from './components/medico/PantallaPerfilMedico';
 import PantallaRegistroMedico from './components/medico/PantallaRegistroMedico';
+import PerfilMedico from './components/medico/perfil-medico';
 import PantallaHomePaciente from './components/paciente/PantallaHomePaciente';
 import PantallaRegistroPaciente from './components/paciente/PantallaRegistroPaciente';
 import PantallaLanding from './components/usuario/PantallaLanding';
@@ -41,7 +41,7 @@ function App() {
         <Route path="/registro-paciente" element={<PantallaRegistroPaciente />} />
         <Route path="/perfil" element={<PantallaPerfil />} />
         <Route path="/login" element={<PantallaLogin />} />
-        <Route path="/perfil-medico" element={<PantallaPerfilMedico />} />
+        <Route path="/perfil-medico" element={<PerfilMedico />} />
         <Route path="/buscador" element={<PantallaBuscador />} />
         <Route path="/landing" element={<PantallaLanding />} />
         <Route path="/home-paciente" element={<PantallaHomePaciente />} />

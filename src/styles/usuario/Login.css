@@ -148,3 +148,59 @@ html, body {
 .forgot-link:hover {
   text-decoration: underline;
 }
+
+/* =========================================================
+ *  RESPONSIVE – Login
+ * =======================================================*/
+
+/* 1. Tablets y pantallas medianas (≤ 768 px)  */
+@media (max-width: 768px) {
+  .loginCard {
+    max-width: 340px;          /* tarjeta un poco más angosta      */
+    padding: 2.5rem 1.75rem;   /* menor relleno interno             */
+  }
+
+  .loginTitulo {
+    font-size: 1.5rem;         /* título ligeramente más pequeño    */
+  }
+
+  .loginInput,
+  .btnIngresar {
+    height: 44px;              /* controles un poco más compactos    */
+    font-size: 0.95rem;
+  }
+}
+
+/* 2. Móviles (≤ 480 px) */
+@media (max-width: 480px) {
+  .loginContainer {
+    padding: 1rem;             /* menos padding externo              */
+  }
+
+  .loginCard {
+    max-width: 100%;
+    padding: 2rem 1.25rem;
+    box-shadow: none;
+    border-radius: 12px;
+  }
+
+  .logo {
+    width: 42px;
+    margin-bottom: 1rem;
+  }
+
+  .loginTitulo {
+    font-size: 1.35rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .loginInput,
+  .btnIngresar {
+    height: 42px;
+    font-size: 0.9rem;
+  }
+
+  .loginFooter {
+    font-size: 0.8rem;
+  }
+}
