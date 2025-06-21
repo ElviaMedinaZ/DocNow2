@@ -157,7 +157,7 @@ export default function Login() {
         {/* ---- enlace REGISTRATE ---- */}
         <p className="register-text">
           ¿No tienes cuenta?{' '}
-          <Link to="/registroPaciente" className="register-link">
+          <Link to="/registro-Paciente" className="register-link">
             Regístrate
           </Link>
         </p>
