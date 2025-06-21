@@ -13,56 +13,46 @@ import { Tag } from 'primereact/tag';
 import '../../styles/paciente/perfil-medico-paciente.css';
 import HeaderPaciente from '../paciente/menu-paciente';
 
-/* ――― datos demo ――― */
+/* datos demo */
 const doctorDemo = {
-  nombre: 'Dr. Mario Orantes',
-  especialidad: 'Cardiólogo',
+  nombre: 'Dr. Mario González',
+  turno: 'Matutino',
+  experiencia: 15, // años
   foto: 'https://i.pravatar.cc/150?img=13',
-  telefono: '3453535345',
-  email: 'mario@gmail.com',
-  consultorio: 'Consultorio 2',
+  telefono: '612 158 4464',
+  email: 'mario.gonzalez@gmail.com',
+  consultorio: '3',
   servicios: [
-    { nombre: 'Inyecciones',  precio: 100 },
-    { nombre: 'Rayos X',      precio: 700 },
-    { nombre: 'Ultrasonidos', precio: 650 },
-    { nombre: 'Consulta',     precio: 400 },
+    { nombre: 'Consulta general',  precio: 500, desc: 'Revisión médica', dur: '45 min' },
+    { nombre: 'Inyecciones', precio: 200, desc: 'Aplicacion de medicación o vacunas',      dur: '30 min' },
+    { nombre: 'Ultrasonidos', precio: 80,  desc: 'Descarta cualquier tumor',  dur: '15 min' },
   ],
-  horario: {
-    dias:  'Lunes a viernes',
-    turno: 'Matutino',
-  },
+  horario: [
+    { dia: 'Lunes',     horas: '8:00 AM - 1:00 PM' },
+    { dia: 'Martes',    horas: '8:00 AM - 1:00 PM' },
+    { dia: 'Miércoles', horas: '8:00 AM - 1:00 PM' },
+    { dia: 'Jueves',    horas: '8:00 AM - 1:00 PM' },
+    { dia: 'Viernes',   horas: '8:00 AM - 1:00 PM' },
+    { dia: 'Sábado',    horas: '8:00 AM - 12:00 PM' },
+    { dia: 'Domingo',   horas: 'No disponible' },
+  ],
   valoraciones: [
-    {
-      id: 1,
-      usuario: 'Ana López',
-      avatar: 'https://i.pravatar.cc/150?img=47',
-      estrellas: 4,
-      comentario: 'El mejor médico, me encanta su amabilidad.',
-      fecha: '15 de mayo de 2024',
-    },
-    {
-      id: 2,
-      usuario: 'Pedro Núñez',
-      avatar: 'https://i.pravatar.cc/150?img=12',
-      estrellas: 2,
-      comentario: 'Pésimo servicio.',
-      fecha: '25 de abril de 2022',
-    },
-    {
-      id: 3,
-      usuario: 'Laura Reyes',
-      avatar: 'https://i.pravatar.cc/100?img=23',
-      estrellas: 5,
-      comentario: 'Buen servicio 👍',
-      fecha: '27 mar 2022',
-    },
+    { id: 1, usuario: 'Ana Martínez',  avatar: 'https://i.pravatar.cc/150?img=47', estrellas: 5, comentario: 'Excelente doctora, muy profesional y empática. Me explicó todo detalladamente y el tratamiento ha sido muy efectivo.', fecha: '14/1/2024' },
+    { id: 2, usuario: 'Carlos López',  avatar: 'https://i.pravatar.cc/150?img=12', estrellas: 5, comentario: 'La Dra. González es excepcional. Su conocimiento y experiencia son evidentes. Altamente recomendada.', fecha: '9/1/2024' },
+    { id: 3, usuario: 'Laura Rodríguez', avatar: 'https://i.pravatar.cc/100?img=23', estrellas: 4, comentario: 'Muy buena atención, aunque tuve que esperar un poco más de lo esperado. El diagnóstico fue acertado.', fecha: '4/1/2024' },
+    { id: 4, usuario: 'Miguel Torres', avatar: 'https://i.pravatar.cc/150?img=15', estrellas: 5, comentario: 'Increíble profesional. Me ayudó mucho con mi problema cardiaco. Muy recomendable.', fecha: '27/12/2023' },
+    { id: 5, usuario: 'Sofía Hernández', avatar: 'https://i.pravatar.cc/150?img=8', estrellas: 5, comentario: 'La mejor cardióloga que he visitado. Muy detallada en sus explicaciones y muy cálida en el trato.', fecha: '19/12/2023' },
   ],
 };
 
 export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
   const currency = (n) => `$${n.toLocaleString('es-MX')}`;
 
-  /* plantilla para cada valoración */
+  /* valoracion promedio*/
+  const promedio = doctor.valoraciones.reduce((acc, v) => acc + v.estrellas, 0) / doctor.valoraciones.length;
+  const totalReseñas = doctor.valoraciones.length;
+
+  /* valoracion */
   const valoracionTemplate = (v) => (
     <div className="pm-val-item">
       <Avatar image={v.avatar} shape="circle" size="large" />
@@ -79,84 +69,85 @@ export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
 
   return (
     <div className="pm-container">
-      {/* barra de navegación global */}
       <HeaderPaciente />
 
-      {/* cabecera azul */}
-      <header className="pm-header">
-        <img src={doctor.foto} alt={doctor.nombre} className="pm-img" />
-        <div className="pm-info">
-          <h1 className="pm-name">{doctor.nombre}</h1>
-          <Tag value={doctor.horario.turno} rounded className="pm-tag" />
-        </div>
-      </header>
-
-      {/* FILA PRINCIPAL – contacto · servicios · disponibilidad */}
-      <div className="pm-top-row">
-        {/* tarjeta – Datos de contacto */}
-        <Card className="pm-card">
-          <h3 className="pm-section-title">Datos de contacto</h3>
-
-          <div className="pm-contact-item">
-            <i className="pi pi-phone pm-contact-icon phone" />
-            <div>
-              <span className="pm-info-title">Teléfono</span>
-              <h2 className="pm-info-value">{doctor.telefono}</h2>
+      <div className="pm-layout">
+        <aside className="pm-aside">
+          {/* tarjeta perfil */}
+          <Card className="pm-card pm-profile-card">
+            <div className="pm-profile-center">
+              <Avatar image={doctor.foto} shape="circle" size="xlarge" className="pm-avatar" />
+              <h2 className="pm-name">{doctor.nombre}</h2>
+              <Tag value={doctor.turno} rounded className="pm-tag" />
+              <div className="pm-rating-row">
+                <Rating value={promedio} readOnly cancel={false} className="pm-val-stars" />
+                <span className="pm-rating-text">{promedio.toFixed(1)} ({totalReseñas} reseñas)</span>
+              </div>
+              <p className="pm-exp">{doctor.experiencia} años de experiencia</p>
+              <Button label="Agendar Cita" icon="pi pi-calendar-plus" className="pm-btn-cita" />
             </div>
-          </div>
+          </Card>
 
-          <div className="pm-contact-item">
-            <i className="pi pi-envelope pm-contact-icon mail" />
-            <div>
-              <span className="pm-info-title">Correo</span>
-              <h2 className="pm-info-value">{doctor.email}</h2>
+          {/* tarjeta contacto */}
+          <Card className="pm-card">
+            <h3 className="pm-section-title">Información de Contacto</h3>
+            <div className="pm-contact-item">
+              <i className="pi pi-phone pm-contact-icon phone" />
+              <div>
+                <span className="pm-info-title">Teléfono</span>
+                <h2 className="pm-info-value">{doctor.telefono}</h2>
+              </div>
             </div>
-          </div>
-
-          <div className="pm-contact-item">
-            <i className="pi pi-building pm-contact-icon building" />
-            <div>
-              <span className="pm-info-title">Consultorio</span>
-              <h2 className="pm-info-value">{doctor.consultorio}</h2>
+            <div className="pm-contact-item">
+              <i className="pi pi-envelope pm-contact-icon mail" />
+              <div>
+                <span className="pm-info-title">Correo</span>
+                <h2 className="pm-info-value">{doctor.email}</h2>
+              </div>
             </div>
-          </div>
-        </Card>
+            <div className="pm-contact-item">
+              <i className="pi pi-building pm-contact-icon building" />
+              <div>
+                <span className="pm-info-title">Consultorio</span>
+                <h2 className="pm-info-value">{doctor.consultorio}</h2>
+              </div>
+            </div>
+          </Card>
 
-        {/* tarjeta – Servicios */}
-        <Card className="pm-card">
-          <h3 className="pm-section-title">Servicios ofertados</h3>
-          <ul className="pm-services-list">
-            {doctor.servicios.map((s) => (
-              <li key={s.nombre}>
-                <span>{s.nombre}</span>
-                <strong>{currency(s.precio)}</strong>
-              </li>
+          {/* tarjeta horarios */}
+          <Card className="pm-card">
+            <h3 className="pm-section-title">Horarios de Atención</h3>
+            {doctor.horario.map((d) => (
+              <p key={d.dia} className="pm-schedule-row">
+                <span className="pm-day">{d.dia}</span>
+                <span className="pm-hours">{d.horas}</span>
+              </p>
             ))}
-          </ul>
-        </Card>
+          </Card>
+        </aside>
 
-        {/* tarjeta – Disponibilidad */}
-        <Card className="pm-card">
-          <h3 className="pm-section-title">Disponibilidad</h3>
-          <p>{doctor.horario.dias}</p>
-          <p>{doctor.horario.turno}</p>
-        </Card>
-      </div>
+        <main className="pm-main">
+          {/* servicios médicos */}
+          <Card className="pm-card pm-services-card" title="Servicios Médicos">
+            <div className="pm-services-grid">
+              {doctor.servicios.map((s) => (
+                <div key={s.nombre} className="pm-service-box">
+                  <div className="pm-service-head">
+                    <h4>{s.nombre}</h4>
+                    <Tag value={currency(s.precio)} className="pm-tag-precio" />
+                  </div>
+                  <p className="pm-service-desc">{s.desc}</p>
+                  <span className="pm-service-time">⏱ {s.dur}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
 
-      {/* Valoraciones (ancho completo) */}
-      <Card title={`Valoraciones (${doctor.valoraciones.length})`} className="pm-card full">
-        <DataView
-          value={doctor.valoraciones}
-          itemTemplate={valoracionTemplate}
-          layout="list"
-          paginator
-          rows={3}
-        />
-      </Card>
-
-      {/* botón CTA */}
-      <div className="pm-cta">
-        <Button label="Solicitar cita" className="pm-btn-cita p-button-lg" />
+          {/* reseñas */}
+          <Card className="pm-card full" title={`Reseñas de Pacientes  ·  ${promedio.toFixed(1)} (${totalReseñas})`}>
+            <DataView value={doctor.valoraciones} itemTemplate={valoracionTemplate} layout="list" paginator rows={5} />
+          </Card>
+        </main>
       </div>
     </div>
   );
