@@ -9,8 +9,8 @@ import { useState } from 'react';
 import { FaCalendarAlt, FaSearch, FaStar } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import HeaderPaciente from '../../components/paciente/MenuPaciente';
-import '../../styles/paciente/HomePaciente.css';
+import '../../styles/paciente/home-paciente.css';
+import HeaderPaciente from './menu-paciente';
 
 const MySwal = withReactContent(Swal);
 

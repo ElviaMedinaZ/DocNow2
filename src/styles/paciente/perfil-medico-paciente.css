@@ -1,0 +1,218 @@
+/**
+ * Descripción: Estilos del perfil del medico
+ * Fecha: 11 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+:root {
+  --pm-primary:        #0a3b74;
+  --pm-primary-90:     #0d4c97;
+  --pm-primary-10:     #eef4ff;
+  --pm-bg:             #f7f9fc;
+  --pm-surface:        #ffffff;
+  --pm-border:         #dce3f0;
+  --pm-heading:        #183f73;
+  --pm-text:           #2d2d2d;
+  --pm-radius-sm:      8px;
+  --pm-radius:         16px;
+  --pm-shadow-sm:      0 2px 6px rgba(0, 0, 0, .08);
+  --pm-shadow:         0 3px 10px rgba(0, 0, 0, .06);
+
+}
+
+/* reset*/
+*, *::before, *::after{
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--pm-bg);
+  font-family: var(--pm-font);
+  color: var(--pm-text);
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Contenedor principal*/
+.pm-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.pm-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem clamp(1rem, 4vw, 4rem);
+  background: var(--pm-primary);
+  color: #fff;
+}
+
+.pm-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: var(--pm-radius);
+  border: 2px solid var(--pm-border);
+  box-shadow: var(--pm-shadow-sm);
+}
+
+.pm-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.pm-name {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.pm-tag.p-tag {
+  background: rgba(255, 255, 255, .2);
+  font-weight: 600;
+  font-size: .85rem;
+  border-radius: var(--pm-radius-sm);
+  padding: .25rem .75rem;
+}
+
+.pm-top-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem auto;
+  max-width: 1100px;
+  padding: 0 clamp(1rem, 4vw, 4rem);
+}
+
+.pm-card {
+  background: var(--pm-surface);
+  border: 1px solid var(--pm-border);
+  border-radius: var(--pm-radius);
+  padding: 1.5rem 1.5rem 1.25rem;
+  box-shadow: var(--pm-shadow-sm);
+}
+
+.pm-card.full {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  box-shadow: var(--pm-shadow);
+}
+
+
+/* titulos, subtitulos y listas*/
+.pm-section-title {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--pm-heading);
+}
+
+.pm-info-title {
+  font-size: .9rem;
+  color: #666;
+  display: block;
+  margin-top: .5rem;
+}
+
+.pm-info-value {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--pm-heading);
+}
+
+/* Lista de servicios */
+.pm-services-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: .4rem 0;
+  border-bottom: 1px solid var(--pm-border);
+  font-size: 1rem;
+}
+
+.pm-services-list li:last-child {
+  border-bottom: none;
+}
+
+/* Contacto (icono y texto)*/
+.pm-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.pm-contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.pm-contact-icon {
+  font-size: 1.3rem;
+  padding: .6rem;
+  border-radius: 10px;
+}
+
+.pm-contact-icon.phone    { background: #e6f4ff; color: #3182ce; }
+.pm-contact-icon.mail     { background: #fcefe3; color: #dd6b20; }
+.pm-contact-icon.building { background: #e9f5ec; color: #2f855a; }
+
+/* valoraciones */
+.pm-val-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--pm-border);
+}
+
+.pm-val-item:last-child {
+  border-bottom: none;
+}
+
+.pm-val-stars .p-rating-icon { font-size: 1rem; color: #f5b700; }
+.pm-val-com  { margin: 0; font-size: .95rem; }
+.pm-val-date { font-size: .8rem; color: #777; }
+
+/* btn solicitar cita*/
+.pm-cta {
+  display: flex;
+  justify-content: center;
+  margin: 2rem auto 3rem;
+}
+
+.pm-btn-cita {
+  background: var(--pm-primary) !important;
+  color: #fff !important;
+  border: none !important;
+  padding: .75rem 2.5rem;
+  font-size: 1rem;
+  border-radius: 2rem;
+  box-shadow: var(--pm-shadow-sm);
+  transition: background .25s;
+}
+
+.pm-btn-cita:hover {
+  background: var(--pm-primary-90) !important;
+}
+
+/* movil*/
+@media (max-width: 768px) {
+  .pm-header { 
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+
+  .pm-info { 
+    align-items: flex-start; 
+  }
+
+  .pm-card.full { 
+    padding: 1.5rem; 
+  }
+}
