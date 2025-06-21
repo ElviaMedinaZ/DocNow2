@@ -19,14 +19,14 @@ import PantallaBuscador from './components/admin/buscador';
 import PantallaHomeAdmin from './components/admin/home-admin';
 
 //Paciente
+import PantallaPerfilMedico from './components/medico/perfil-medico-paciente';
 import PantallaHomePaciente from './components/paciente/home-paciente';
 import PantallaRegistroPaciente from './components/paciente/registro-paciente';
 import PantallaPerfil from './components/usuario/perfil';
 
 //Medico
-import PantallaPerfilMedico from './components/medico/perfil-medico';
-import PantallaRegistroMedico from './components/medico/registro-medico';
 import PantallaHomeMedico from './components/medico/home-medico';
+import PantallaRegistroMedico from './components/medico/registro-medico';
 
 
 
@@ -59,7 +59,7 @@ function App() {
 
         {/*Medico*/}
         <Route path="/registro-paciente" element={<PantallaRegistroPaciente />} />
-        <Route path="/perfil-medico" element={<PantallaPerfilMedico />} />
+        <Route path="/perfil-medico-paciente" element={<PantallaPerfilMedico />} />
         <Route path='/home-medico' element={<PantallaHomeMedico/>}/>
         
         {/*Admin*/}

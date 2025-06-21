@@ -11,8 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import logo from '../../assets/logo.png';
-import '../../styles/paciente/HomePaciente.css';
-import '../../styles/paciente/MenuPaciente.css';
+import '../../styles/paciente/home-paciente.css';
+import '../../styles/paciente/menu-paciente.css';
 
 const MySwal = withReactContent(Swal);
 
@@ -43,7 +43,7 @@ export default function HeaderPaciente() {
           <span className="home-logo-text">DocNow</span>
         </div>
 
-        {/* ---------- navegacion web ---------- */}
+        {/*navegacion de web*/}
         <nav className="home-nav">
           <a href="#servicios">Servicios</a>
           <a href="#medicos">Especialistas</a>
@@ -52,7 +52,7 @@ export default function HeaderPaciente() {
 
         <Button  icon="pi pi-ellipsis-v" className="p-button-text kebab-menu" onClick={(e) => op.current.toggle(e)} aria-label="Abrir menú" />
 
-        {/* ---------- botón cerrar sesión (escritorio) ---------- */}
+        {/*botón cerrar sesión (escritorio*/}
         <button className="home-login-btn" onClick={cerrarSesion}> Cerrar sesión </button>
       </header>
 
@@ -60,7 +60,8 @@ export default function HeaderPaciente() {
       <OverlayPanel ref={op} className="kebab-panel" dismissable>
         <a href="#servicios" onClick={() => op.current.hide()}> Servicios</a>
         <a href="#medicos" onClick={() => op.current.hide()}>Especialistas</a>
-        <a href="#citas" onClick={() => op.current.hide()}> Mis Citas </a> <a href="#logout" onClick={async (e) => {
+        <a href="#citas" onClick={() => op.current.hide()}> Mis Citas </a>
+        <a href="#logout" className="btn-logout" onClick={async (e) => {
             e.preventDefault();
             op.current.hide();
             await cerrarSesion();
