@@ -23,6 +23,9 @@ import { auth, db } from '../../lib/firebase';
 import '../../styles/usuario/Registro.css';
 import '../../styles/usuario/Spinner.css';
 
+import { useEffect } from 'react';
+import { obtenerEspecialidades } from '../../utils/firebaseEspecialidades'; // ruta correcta
+
 const MySwal = withReactContent(Swal);
 const HOY = new Date();
 const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
@@ -36,6 +39,7 @@ export default function RegistroWeb() {
     apellidoP: '',
     apellidoM: '',
     cedulaProfesional: '',
+    especialidades: '',
     sexo: '',
     fechaNacimiento: null,
     estadoCivil: '',
@@ -48,6 +52,7 @@ export default function RegistroWeb() {
     turnoHora: "matutino"
   });
 
+  const [especialidades, setEspecialidades] = useState([]);
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [errores, setErrores] = useState({});
   const [mensajes, setMensajes] = useState({});
@@ -64,7 +69,6 @@ export default function RegistroWeb() {
     const body = new FormData();
     body.append('key', imgbbApiKey);
     body.append('image', base64);
-
     try {
       const res = await fetch('https://api.imgbb.com/1/upload', {
         method: 'POST',
@@ -79,6 +83,15 @@ export default function RegistroWeb() {
       return null;
     }
   };
+
+  useEffect(() => {
+    const cargarEspecialidades = async () => {
+      const data = await obtenerEspecialidades();
+      setEspecialidades(data);
+    };
+    cargarEspecialidades();
+  }, []);
+
 
   const opcionesEstadoCivil = [
     { label: 'Soltero/a', value: 'Soltero' },
@@ -259,6 +272,7 @@ export default function RegistroWeb() {
           <InputText placeholder="Apellido paterno" className={errores.apellidoP ? 'PInvalid' : ''} value={formData.apellidoP} onChange={(e) => handleChange('apellidoP', e.target.value)} />
           <InputText placeholder="Apellido materno" className={errores.apellidoM ? 'PInvalid' : ''} value={formData.apellidoM} onChange={(e) => handleChange('apellidoM', e.target.value)} />
           <InputText placeholder="Cédula profesional" className={errores.cedulaProfesional ? 'PInvalid' : ''} value={formData.cedulaProfesional} onChange={(e) => handleChange('cedulaProfesional', e.target.value)} />
+          <Dropdown value={formData.especialidades} options={especialidades} onChange={(e) => handleChange('especialidades', e.value)} placeholder="Especialidades" className={errores.estadoCivil ? 'PInvalid' : ''} />
           <Dropdown value={formData.sexo} options={[{ label: 'Masculino', value: 'Masculino' }, { label: 'Femenino', value: 'Femenino' }]} onChange={(e) => handleChange('sexo', e.value)} placeholder="Sexo" className={errores.sexo ? 'PInvalid' : ''} />
           <Calendar value={formData.fechaNacimiento} onChange={(e) => handleChange('fechaNacimiento', e.value)} placeholder="Fecha de nacimiento" showIcon dateFormat="dd/mm/yy" className={errores.fechaNacimiento ? 'PInvalid' : ''} />
           <Dropdown value={formData.estadoCivil} options={opcionesEstadoCivil} onChange={(e) => handleChange('estadoCivil', e.value)} placeholder="Estado civil" className={errores.estadoCivil ? 'PInvalid' : ''} />

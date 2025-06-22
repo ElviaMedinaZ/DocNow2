@@ -53,12 +53,13 @@ function App() {
         <Route path="/login" element={<PantallaLogin />} />
 
         {/*Paciemnte*/}
-        <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
+        <Route path="/registro-paciente" element={<PantallaRegistroPaciente />} />
         <Route path="/perfil" element={<PantallaPerfil />} />
         <Route path="/home-paciente" element={<PantallaHomePaciente />} />
 
         {/*Medico*/}
-        <Route path="/registro-paciente" element={<PantallaRegistroPaciente />} />
+        
+        <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
         <Route path="/perfil-medico-paciente" element={<PantallaPerfilMedico />} />
         <Route path='/home-medico' element={<PantallaHomeMedico/>}/>
         

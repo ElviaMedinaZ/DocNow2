@@ -5,12 +5,16 @@
  */
 
 import { InputText } from 'primereact/inputtext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaCalendarAlt, FaSearch, FaStar } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import '../../styles/paciente/home-paciente.css';
 import HeaderPaciente from './menu-paciente';
+
+//Firebase
+
+import { obtenerServicios } from '../../utils/firebaseServicios';
 
 const MySwal = withReactContent(Swal);
 
@@ -18,14 +22,6 @@ const doctor1 = 'https://www.lanacion.com.ar/resizer/v2/dr-VGT2DJVTCFHVXA5DCJWF6
 const doctor2 = 'https://resizer.glanacion.com/resizer/v2/ellen-pompeo-asegura-que-meredith-tardo-un-tiempo-SIRFKCI6XJBYXKY6T3POUM5XOY.jpg?auth=d79d4a436783dc72ea16c67e1ccf49d789ff8f559abce6e00d3a07a1e94d4481&width=780&height=520&quality=70&smart=true';
 const doctor3 = 'https://resizer.glanacion.com/resizer/v2/sandra-oh-interpretaba-a-la-cirujana-cristina-VAWMIDRLFNHFRC3O3T3ANVQMRI.jpg?auth=1be97810e2b60cb9eccc3e6b3a27db4df22ef40f329aa2706c09a603657dd787&width=780&height=520&quality=70&smart=true';
 
-const servicios = [
-  { id: 1, nombre: 'Medicina Familiar', img: 'https://endoscopynet.com/wp-content/uploads/consulta-Dra-Walkenys-wordpress-2048x1365.jpg' },
-  { id: 2, nombre: 'Rayos X', img: 'https://azura.mx/cancun/wp-content/uploads/sites/3/2022/11/para-que-sirven-los-rayos-x-1-768x490.png' },
-  { id: 3, nombre: 'Ultrasonidos', img: 'https://cirugiamorelos.com/wp-content/uploads/2020/08/types-of-ultrasounds.jpg' },
-  { id: 4, nombre: 'Laboratorio', img: 'https://diariofarma.com/wp-content/uploads/2023/05/Depositphotos_474408074_XL1.jpg' },
-  { id: 5, nombre: 'Psicología', img: 'https://www.exitopersonal.com/imagenes/como-elegir-psicologo-para-el-desarrollo-personal.jpg' },
-  { id: 6, nombre: 'Nutrición', img: 'https://escuelaclinica.com/wp-content/uploads/CSA175.jpg' },
-];
 
 const medicos = [
   { id: 1, nombre: 'Dr.Gregory House', img: doctor1, calificacion: 4.8 },
@@ -34,7 +30,19 @@ const medicos = [
 ];
 
 export default function HomePacienteWeb() {
+  
   const [busqueda, setBusqueda] = useState('');
+  const [servicios, setServicios] = useState([]);
+
+  useEffect(() => {
+    const cargarServicios = async () => {
+      const datos = await obtenerServicios();
+      setServicios(datos);
+    };
+
+    cargarServicios();
+  }, []);
+
 
   const citas = [
     { id: 1, doctor: medicos[0], fecha: '16 junio 2025', hora: '10:00 AM' },
@@ -82,7 +90,7 @@ export default function HomePacienteWeb() {
       </section>
 
       <section id="medicos" className="home-section">
-        <h2>Médicos destacados</h2>
+        <h2> Médicos especialistas</h2>
         <div className="doctores-grid">
           {medicos
             .filter((m) => m.nombre.toLowerCase().includes(busqueda.toLowerCase()))
@@ -129,7 +137,6 @@ export default function HomePacienteWeb() {
 
       <section className="home-cta">
         <h2>¿Listo para cuidar tu salud?</h2>
-        <button className="home-login-btn">Agenda tu cita ahora</button>
       </section>
 
       <footer className="home-footer">
