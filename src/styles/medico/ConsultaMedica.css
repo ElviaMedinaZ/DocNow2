@@ -1,0 +1,437 @@
+.contenido-pagina {
+  padding: 2rem 4rem;
+}
+
+.volver-btn {
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 500;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.volver-btn:hover {
+  background-color: #f2f2f2;
+}
+
+.consulta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.consulta-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.info-textos h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.info-textos p {
+  margin: 0.2rem 0;
+}
+
+.fechaAtendido {
+  border: 1px solid #afafaf;
+  border-radius: 15px;
+  font-weight: bold;
+  padding: 0.3rem 1.5rem;
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
+.datos-paciente {
+  background-color: #e6f0ff;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  position: relative;
+  border: 1px solid #015bd0;
+   padding-bottom: 5rem;
+}
+
+.titulo-seccion {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.titulo-azul {
+  color: #0A3B74;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-group p {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.alergias-group {
+  grid-column: span 2;
+}
+
+.boton-guardar-container {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+.form-group input,
+.form-group .p-inputnumber,
+.form-group .p-float-label {
+  width: 100%;
+}
+
+.boton-guardar {
+  background-color: #0A3B74;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.p-invalid {
+  border: 1px solid red !important;
+}
+
+.mensaje-error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.boton-guardar:hover {
+  background-color: #00347a;
+}
+
+.contenedorPacienteSignos {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-start; 
+}
+
+.imgPacientePerfil{
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 0.5rem;
+}
+
+.datos-paciente.hidden {
+  display: none !important;
+}
+
+.perfilMedicoPaciente {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 350px;
+  width: 400px;
+  /* height: 350px; */
+  min-height: 350px;
+  margin: 2rem auto;
+  text-align: center;
+  flex-shrink: 0;
+  align-self: flex-start;
+  word-wrap: break-word; 
+}
+
+.contactoPaciente p, 
+.alergias-tags {
+  word-wrap: break-word;
+}
+
+.nombreCompletoPaciente {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.signosVitalesPaciente {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  height: fit-content;
+  flex: 1;
+}
+
+.perfilCompletoPaciente {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  /* width: 350px;  */
+  width: 700px;
+  max-width: 400px;
+  /* height: 600px; */
+  margin: 2rem auto;
+  text-align: center;
+  flex-shrink: 0;
+  word-wrap: break-word; 
+   overflow-wrap: break-word;
+}
+
+.fotoPaciente {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.edadPaciente {
+  color: #888;
+  font-size: 16px;
+}
+
+.datosMedicos {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.datos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.dato {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.icono {
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+
+.label {
+  font-size: 12px;
+  color: #888;
+}
+
+.valor {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.alergiasPaciente {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.alergias-tags {
+  margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag-alergia {
+  background-color: #f44336;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  max-width: 120px; /* limita ancho para que no se salga */
+  white-space: normal; /* permite que el texto dentro del tag se quiebre */
+}
+
+.contactoPaciente {
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  text-align: left;
+  color: #666;
+  font-size: 14px;
+}
+
+
+.signosVitalesPaciente h2 {
+  color: #0A3B74;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.3rem;
+}
+
+.signos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.campo-signo {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo-signo p {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.campo-signo input {
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+.tarjetaDetallesConsulta {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+}
+
+.tarjetaDetallesConsulta h2 {
+  color: #0A3B74;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.campoConsulta {
+  margin-bottom: 1.5rem;
+}
+
+.campoConsulta p {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.campoConsulta .p-inputtextarea {
+  width: 100%;
+}
+
+
+.btnGuardarConsulta{
+  background-color: #0A3B74;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tarjetaHistorial {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tarjetaHistorial {
+  margin-top: 2rem;
+}
+
+.tarjetaHistorial h2{
+  color: #0A3B74;
+}
+
+.contenidoHistorial {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem 1rem 0.5rem;
+  background-color: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.headerHistorial {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.infoDoctor {
+  display: flex;
+  flex-direction: column;
+}
+
+.especialidadDoctor {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 0.1rem;
+}
+
+.nombreDoctor {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.fechaHistorial {
+  font-weight: 500;
+  background-color: #f0f0f0;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.95rem;
+}
+
+.gridHistorial {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.columnaHistorial {
+  display: flex;
+  flex-direction: column;
+}
+
+.tituloCampo {
+  font-weight: 600;
+  /* margin-top: 1rem; */
+  margin-bottom: 0;
+  margin-top: 0.6rem;
+}

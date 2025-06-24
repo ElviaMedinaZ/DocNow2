@@ -1,0 +1,392 @@
+.homeDoctorContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+}
+
+.layoutContenido {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.infoHomeDoctor{
+  border: 1px;
+  /* border: 1px solid #afafaf;
+  border-radius: 15px; */
+}
+
+.asideDoctor {
+  width: 280px;
+  background-color: white;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  height: 100%; 
+}
+
+.imgPerfilDoctor {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.asideDoctor p {
+  font-size: 0.95rem;
+  margin: 0.3rem 0;
+  text-align: center;
+  color: #333;
+}
+
+.contenidoDoctor {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background-color: #f1f5f9;
+}
+
+.nombreHomeDoctor{
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.profesionHomeDoctor{
+  font-weight: bold;
+}
+
+.imgPerfilDoctor {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.nombreHomeDoctor {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+  text-align: center;
+}
+
+.profesionHomeDoctor {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.7rem 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.iconoDoctor {
+  font-size: 1.2rem;
+}
+
+.contenidoDoctor {
+  flex: 1;
+  padding: 1rem;
+  overflow-x: auto;
+  background-color: #f1f5f9;
+  flex-direction: column;
+}
+
+.resumenPacientes {
+  display: flex;
+  justify-content: center; 
+  gap: 2rem; 
+  margin-top: 1rem;
+}
+
+.bloqueResumen span {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  line-height: 1.4;
+  font-weight: bold;
+}
+
+.pacienteNumero {
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.pacienteTexto {
+  font-size: 1rem;
+}
+
+
+.bloqueResumen:nth-child(1) span {
+  color: #0A3B74; 
+}
+
+.bloqueResumen:nth-child(2) span {
+  color: #7993B1; 
+}
+
+.calendarioCitasDoctor {
+  background-color: white;
+  max-width: 500px; 
+  margin-bottom: 0rem;
+  zoom: 0.85;
+  transform-origin: top left; 
+  min-width: 500px;
+  min-height: 330px;
+  overflow: hidden;
+  padding: 1rem;
+  background: white;
+  border-radius: 15px;
+}
+
+.citasHomeDoctor{
+  background-color: white;
+  border-radius: 15px;
+  padding: 1rem;
+  height: fit-content;
+  max-width: 740px; 
+  width: 100%;
+  flex-grow: 1;
+  margin-top: 0;
+  margin-bottom: 0;
+  overflow-y: auto;
+}
+
+.botonAtenderCita:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.calendarioAgendaContainer {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap; 
+  align-items: flex-start;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  gap: 1rem;
+}
+
+.botonVerMas {
+  background-color: transparent;
+  color: #0A3B74;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  margin-top: 0.3rem;
+}
+
+.botonVerMas:hover {
+  transform: translateX(2px);
+}
+
+.tarjetaCitas {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 0.1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #D9D9D9;
+  margin-bottom: 1rem;
+}
+
+
+.imgPerfilPaciente{
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 0.5rem;
+}
+
+.infoPaciente {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-left: 1rem;
+}
+
+.nombrePaciente {
+  font-weight: bold;
+  margin: 0;
+}
+
+
+.accionesPaciente {
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  gap: 3rem; 
+  margin-left: auto; 
+}
+
+.contenedorEstado {
+  background-color: #7993B1;
+  border-radius: 20px;
+  padding: 0.3rem 1rem;
+}
+
+.estadoCita {
+  color: white;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.horaPaciente{
+  padding-right: 2rem;
+  padding-top: 1rem;
+}
+
+.botonAtenderCita{
+  background-color: #0A3B74;
+  padding: 0.3rem 1rem;
+  border-radius: 0.7rem;
+  color: white;
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+}
+
+.contenedorEstado.cancelado {
+  background-color: #dc3545;
+   margin-right: 3rem;
+}
+
+.contenedorEstado.atendido {
+  background-color: #0A3B74; 
+  margin-right: 2rem;
+  padding-right: 1.5rem;
+}
+
+
+.botonAtenderCita:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.estadisticasDoctor {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.7rem;
+  margin-top: 0;
+  flex-wrap: wrap;
+}
+
+.estadisticasDoctor {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 0;
+  padding-top: 0;
+  flex-wrap: wrap;
+}
+
+.tarjetaEstadistica {
+  flex: 1;
+  min-width: 280px;
+  max-width: 210px;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.cantidad {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0A3B74;
+  margin-bottom: 0.5rem;
+}
+
+.descripcion {
+  font-size: 1rem;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .layoutContenido {
+    flex-direction: column; /* Apila aside y contenido principal */
+  }
+
+
+  .asideDoctor {
+    width: 100%;
+    height: auto;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    border: 1px solid #dcdcdc;
+    background-color: #fff;
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+  }
+
+  .calendarioAgendaContainer {
+    flex-direction: column; /* Apila calendario, agenda y estadísticas */
+  }
+ 
+  .calendarioCitasDoctor,
+  .citasHomeDoctor,
+  .estadisticasDoctor {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .tarjetaCitas {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .accionesPaciente {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-left: 0;
+  }
+
+  .horaPaciente {
+    padding: 0;
+    margin: 0.5rem 0;
+  }
+
+  .imgPerfilPaciente {
+    width: 70px;
+    height: 70px;
+  }
+
+  .resumenPacientes {
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .bloqueResumen {
+    width: 80%;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .tarjetaEstadistica {
+    max-width: 100%;
+    flex: none;
+    width: 100%;
+  }
+
+}
