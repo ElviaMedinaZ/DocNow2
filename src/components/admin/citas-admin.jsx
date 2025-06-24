@@ -1,3 +1,11 @@
+/**
+ * Descripción: Componente para gestión de citas agendadas por el administrador.
+ * Permite buscar, cambiar estado, cancelar citas y acceder a acciones por fila.
+ *
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
 import { useState } from 'react';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';

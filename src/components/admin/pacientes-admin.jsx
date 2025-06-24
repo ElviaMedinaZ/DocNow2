@@ -1,3 +1,9 @@
+/**
+ * Descripción: Componente de administración para gestionar pacientes.
+ * Fecha: 23 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
 import { useState } from 'react';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';

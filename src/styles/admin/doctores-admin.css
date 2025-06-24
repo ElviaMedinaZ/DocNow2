@@ -1,4 +1,11 @@
-/* ---------- Contenedor principal ---------- */
+
+ /*
+ * Descripción: Estilos de la vista de doctores desde administrador.
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+/*Contenedor principal*/
 .admin-doctores-container {
   padding: 2rem;
   background: #f7f9fc;
@@ -6,7 +13,7 @@
   min-height: 100vh;
 }
 
-/* ---------- Encabezado ---------- */
+/* Encabezado*/
 .admin-doctores-header {
   display: flex;
   justify-content: space-between;
@@ -16,7 +23,7 @@
   gap: 1rem;
 }
 
-/* ---------- Botón Agregar ---------- */
+/* Botón Agregar*/
 .btn-agregar {
   display: flex;
   align-items: center;
@@ -32,7 +39,7 @@
 }
 .btn-agregar:hover { background: #08315f; }
 
-/* ---------- Buscador ---------- */
+/*Buscador*/
 .busqueda-doctores {
   display: flex;
   align-items: center;
@@ -52,7 +59,7 @@
   color: #333;
 }
 
-/* ---------- Modal ---------- */
+/*Modal*/
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -109,7 +116,7 @@
   cursor: pointer;
 }
 
-/* ---------- Formulario ---------- */
+/* Formulario*/
 .formulario-doctor {
   display: flex;
   flex-direction: column;
@@ -163,7 +170,7 @@ input[type="radio"] {
   background: var(--color-rojo-perfil);
 }
 
-/* ---------- Focus primario ---------- */
+/*Focus primario*/
 input:focus,
 select:focus {
   border-color: #0a3b74;
@@ -171,8 +178,15 @@ select:focus {
   outline: none;
 }
 
-/* ---------- Responsive ---------- */
+/*movil*/
 @media (max-width: 768px) {
-  .admin-doctores-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  .busqueda-doctores    { width: 100%; }
+
+  .admin-doctores-header {
+    flex-direction: column;
+    align-items: flex-start; gap: 1rem; 
+  }
+
+  .busqueda-doctores { 
+    width: 100%; 
+  }
 }
