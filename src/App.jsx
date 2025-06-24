@@ -1,6 +1,6 @@
 /**
- * Descripción:Se agrega el App y se establece tiempo local.
- * Fecha:11 Junio de 2025
+ * Descripción: Se agrega el App y se establece tiempo local.
+ * Fecha: 11 Junio de 2025
  * Programador: Elvia Medina
  */
 
@@ -10,33 +10,39 @@ import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-//Usuario
+// Usuario
 import PantallaLanding from './components/usuario/landing';
 import PantallaLogin from './components/usuario/login';
-
-//Admin
-import PantallaBuscador from './components/admin/buscador';
-import PantallaHomeAdmin from './components/admin/home-admin';
-
-//Paciente
-import PantallaPerfilMedico from './components/medico/perfil-medico-paciente';
-import PantallaHomePaciente from './components/paciente/home-paciente';
-import PantallaRegistroPaciente from './components/paciente/registro-paciente';
 import PantallaPerfil from './components/usuario/perfil';
 
-//Medico
+// Paciente
+import PantallaHomePaciente from './components/paciente/home-paciente';
+import PantallaRegistroPaciente from './components/paciente/registro-paciente';
+
+// Médico
 import PantallaHomeMedico from './components/medico/home-medico';
+import PantallaPerfilMedico from './components/medico/perfil-medico-paciente';
 import PantallaRegistroMedico from './components/medico/registro-medico';
 
-
-
+// Admin
+import { default as AdminDashboard, default as PantallaDashboardAdmin } from './components/admin/admin-dashboard';
+import AdminLayout from './components/admin/admin-layout';
+import PantallaBuscador from './components/admin/buscador';
+import CitasAdmin from './components/admin/citas-admin';
+import DoctoresAdmin from './components/admin/doctores-admin';
+import EspecialidadesAdmin from './components/admin/especialidades-admin';
+import PacientesAdmin from './components/admin/pacientes-admin';
+import ServiciosAdmin from './components/admin/servicios-admin';
 
 addLocale('es', {
   firstDayOfWeek: 1,
   dayNames: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
   dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
   dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
-  monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+  monthNames: [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ],
   monthNamesShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
   today: 'Hoy',
   clear: 'Limpiar',
@@ -48,24 +54,33 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/*Usuario*/}
+        {/* Usuario */}
         <Route path="/" element={<PantallaLanding />} />
         <Route path="/login" element={<PantallaLogin />} />
-
-        {/*Paciemnte*/}
-        <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
         <Route path="/perfil" element={<PantallaPerfil />} />
+
+        {/* Paciente */}
         <Route path="/home-paciente" element={<PantallaHomePaciente />} />
-
-        {/*Medico*/}
         <Route path="/registro-paciente" element={<PantallaRegistroPaciente />} />
-        <Route path="/perfil-medico-paciente" element={<PantallaPerfilMedico />} />
-        <Route path='/home-medico' element={<PantallaHomeMedico/>}/>
-        
-        {/*Admin*/}
-        <Route path="/buscador" element={<PantallaBuscador />} />
-        <Route path='/home-admin' element={<PantallaHomeAdmin/>}/>
 
+        {/* Médico */}
+        <Route path="/home-medico" element={<PantallaHomeMedico />} />
+        <Route path="/perfil-medico-paciente" element={<PantallaPerfilMedico />} />
+        <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
+        <Route path="/registro-medico/:id" element={<PantallaRegistroMedico />} />
+
+        {/* Admin */}
+        <Route path="/buscador" element={<PantallaBuscador />} />
+        <Route path="/dashboard-admin" element={<AdminDashboard />} />
+
+        <Route path="/dashboard-admin/*" element={<AdminLayout />}>
+          <Route index element={<PantallaDashboardAdmin />} />
+          <Route path="doctores" element={<DoctoresAdmin />} />
+          <Route path="especialidades" element={<EspecialidadesAdmin />} />
+          <Route path="servicios" element={<ServiciosAdmin />} />
+          <Route path="pacientes" element={<PacientesAdmin />} />
+          <Route path="citas" element={<CitasAdmin />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
