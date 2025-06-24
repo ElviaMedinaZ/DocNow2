@@ -10,24 +10,23 @@ import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-// Usuario
+import PantallaBuscador from './components/admin/buscador';
+import PantallaRegistroMedico from './components/medico/registro-medico';
+import PantallaHomePaciente from './components/paciente/home-paciente';
+import PantallaRegistroPaciente from './components/paciente/registro-paciente';
 import PantallaLanding from './components/usuario/landing';
 import PantallaLogin from './components/usuario/login';
 import PantallaPerfil from './components/usuario/perfil';
 
 // Paciente
-import PantallaHomePaciente from './components/paciente/home-paciente';
-import PantallaRegistroPaciente from './components/paciente/registro-paciente';
 
 // Médico
 import PantallaHomeMedico from './components/medico/home-medico';
 import PantallaPerfilMedico from './components/medico/perfil-medico-paciente';
-import PantallaRegistroMedico from './components/medico/registro-medico';
 
 // Admin
 import { default as AdminDashboard, default as PantallaDashboardAdmin } from './components/admin/admin-dashboard';
 import AdminLayout from './components/admin/admin-layout';
-import PantallaBuscador from './components/admin/buscador';
 import CitasAdmin from './components/admin/citas-admin';
 import DoctoresAdmin from './components/admin/doctores-admin';
 import EspecialidadesAdmin from './components/admin/especialidades-admin';
