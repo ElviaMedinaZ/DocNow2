@@ -7,6 +7,7 @@
 import { InputText } from 'primereact/inputtext';
 import { useState } from 'react';
 import { FaCalendarAlt, FaSearch, FaStar } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import '../../styles/paciente/home-paciente.css';
@@ -34,6 +35,7 @@ const medicos = [
 ];
 
 export default function HomePacienteWeb() {
+  const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState('');
 
   const citas = [
@@ -119,7 +121,16 @@ export default function HomePacienteWeb() {
         <h2>Recomendaciones para ti</h2>
         <div className="recomendaciones-grid">
           {recomendaciones.map((r) => (
-            <div className="recomendacion-card" key={r.id}>
+            <div
+              className="recomendacion-card"
+              key={r.id}
+              onClick={() => {
+                if (r.id === 1) navigate('/chequeo-preventivo');
+                if (r.id === 2) navigate('/psicologo');
+                if (r.id === 3) navigate('/ultrasonido-prenatal');
+              }}
+              style={{ cursor: 'pointer' }}
+            >
               <img src={r.img} alt={r.titulo} />
               <div><h4>{r.titulo}</h4></div>
             </div>
@@ -129,7 +140,6 @@ export default function HomePacienteWeb() {
 
       <section className="home-cta">
         <h2>¿Listo para cuidar tu salud?</h2>
-        <button className="home-login-btn">Agenda tu cita ahora</button>
       </section>
 
       <footer className="home-footer">
