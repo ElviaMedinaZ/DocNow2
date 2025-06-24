@@ -1,0 +1,84 @@
+/**
+ * Descripción: Estilos de la vista de historial medica
+ * Fecha: 23 Junio de 2025
+ * Programador: Irais Reyes
+ */
+
+.contenido-pagina {
+  padding: 2rem 4rem;
+}
+
+.tarjetaHistorial {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tarjetaHistorial {
+  margin-top: 2rem;
+}
+
+.tarjetaHistorial h2{
+  color: #0A3B74;
+}
+
+.contenidoHistorial {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem 1rem 0.5rem;
+  background-color: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.headerHistorial {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.infoDoctor {
+  display: flex;
+  flex-direction: column;
+}
+
+.especialidadDoctor {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 0.1rem;
+}
+
+.nombreDoctor {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.fechaHistorial {
+  font-weight: 500;
+  background-color: #f0f0f0;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.95rem;
+}
+
+.gridHistorial {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.columnaHistorial {
+  display: flex;
+  flex-direction: column;
+}
+
+.tituloCampo {
+  font-weight: 600;
+  /* margin-top: 1rem; */
+  margin-bottom: 0;
+  margin-top: 0.6rem;
+}
