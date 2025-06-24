@@ -1,0 +1,184 @@
+/* admin-dashboard.module.css personalizado con el diseño mostrado */
+
+/* ---------- Variables de color y estilo ---------- */
+:root {
+  --color-bg: #f4f6fa;
+  --color-card: #ffffff;
+  --color-main: #0a3b74;
+  --color-muted: #5f6f94;
+  --color-border: #e5eaf4;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Tarjetas superiores ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.statCard {
+  background: var(--color-card);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.statIcon {
+  font-size: 1.6rem;
+  color: var(--color-main);
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+.statValue {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--color-main);
+}
+
+.statSubtitle {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* ---------- Paneles inferiores ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1.5rem;
+}
+
+.panel {
+  background: var(--color-card);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.panel h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-main);
+}
+
+.panelSub {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  margin-bottom: 1rem;
+}
+
+/* ---------- Barras horizontales ---------- */
+.barRow {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1rem; /* Aumenta el espacio entre barras */
+  min-height: 28px;     /* Asegura altura mínima para evitar solapamiento */
+}
+
+.barLabel {
+  font-size: 0.85rem;
+  color: var(--color-main);
+  white-space: nowrap;
+}
+
+.barBg {
+  background: #e5eaf4;
+  height: 10px; /* Aumenta la altura de la barra */
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 6px 0 0 6px;
+  transition: width 0.3s ease-in-out;
+}
+
+.barValue {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Color fijo para citas */
+.citasFill {
+  background: #0a3b74;
+}
+
+/* ---------- Actividad reciente ---------- */
+.full {
+  grid-column: 1 / -1;
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0;
+  list-style: none;
+  margin-top: 1rem;
+}
+
+.activityList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.bullet {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-top: 6px;
+}
+
+.success .bullet {
+  background: #22c55e;
+}
+.info .bullet {
+  background: #3b82f6;
+}
+.warning .bullet {
+  background: #eab308;
+}
+
+.text small {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  display: block;
+  margin-top: 2px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .barRow {
+    grid-template-columns: 80px 1fr 30px;  /* 🔹 más ancho para nombres largos */
+    padding: 0.4rem 0;
+    min-height: 36px;
+  }
+
+  .barLabel {
+    font-size: 0.8rem;
+  }
+
+  .barValue {
+    font-size: 0.75rem;
+  }
+
+  .statCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+

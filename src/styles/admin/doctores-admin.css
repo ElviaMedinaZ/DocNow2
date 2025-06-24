@@ -1,0 +1,178 @@
+/* ---------- Contenedor principal ---------- */
+.admin-doctores-container {
+  padding: 2rem;
+  background: #f7f9fc;
+  color: #0a3b74;
+  min-height: 100vh;
+}
+
+/* ---------- Encabezado ---------- */
+.admin-doctores-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ---------- Botón Agregar ---------- */
+.btn-agregar {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  background: #0a3b74;
+  color: #fff;
+  border: none;
+  padding: .6rem 1.2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.btn-agregar:hover { background: #08315f; }
+
+/* ---------- Buscador ---------- */
+.busqueda-doctores {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #dce3f0;
+  border-radius: 8px;
+  padding: .55rem .9rem;
+  max-width: 420px;
+  margin-bottom: 1.5rem;
+}
+.busqueda-doctores svg { margin-right: .6rem; color: #999; }
+.busqueda-doctores input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* ---------- Modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 27, 51, 0.5); /* Fondo azul oscuro translúcido */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px); /* Difuminado leve detrás */
+}
+
+.modal-contenido {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-contenido {
+  background: #fff;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2rem;
+  border-radius: 10px;
+  position: relative;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cerrar-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--c-muted);
+  cursor: pointer;
+}
+
+/* ---------- Formulario ---------- */
+.formulario-doctor {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+.formulario-doctor label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #0a3b74;
+  gap: .4rem;
+}
+.formulario-doctor input,
+.formulario-doctor select {
+  width: 100%;
+  padding: .65rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  color: #333;
+  font-size: .95rem;
+}
+.grupo        { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.grupo > *    { flex: 1; }
+.sexo-radios  { display: flex; gap: 1.5rem; margin-top: .5rem; }
+
+input[type="radio"] {
+  accent-color: #0a3b74;
+  cursor: pointer;
+  background: #fff !important;
+}
+
+.modal-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.modal-acciones button[type="button"] {
+  background: #b52020;
+  color: #fff;
+  border: none;
+  padding: .6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.modal-acciones button[type="button"]:hover {
+  background: var(--color-rojo-perfil);
+}
+
+/* ---------- Focus primario ---------- */
+input:focus,
+select:focus {
+  border-color: #0a3b74;
+  box-shadow: 0 0 0 2px rgba(10,59,116,.15);
+  outline: none;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .admin-doctores-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .busqueda-doctores    { width: 100%; }
+}
