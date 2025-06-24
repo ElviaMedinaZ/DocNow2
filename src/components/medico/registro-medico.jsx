@@ -1,7 +1,7 @@
 /**
- * Descripción : Vista Registro (médico / paciente) sin CURP
- * Fecha        : 22-jun-2025
- * Programador  : Elvia Medina
+ * Descripción: Creacion de registro medico
+ * Fecha: 21 Junio de 2025
+ * Programador: Elvia Medina
  */
 
 /* ---------- PrimeReact ---------- */

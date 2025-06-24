@@ -1,3 +1,9 @@
+/**
+ * Descripción: Formulario para registrar o editar una especialidad médica.
+ * Fecha: 23 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
 import { useEffect, useState } from 'react';
 
 export default function RegistroEspecialidad({ modo, datosIniciales, onSave, onClose }) {

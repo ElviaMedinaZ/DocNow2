@@ -1,3 +1,12 @@
+/**
+ * Descripción: Componente de administración de doctores. 
+ * Permite listar, buscar, agregar, editar, activar/inactivar, 
+ * eliminar doctores y gestionar los servicios que ofrecen.
+ *
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
 import { useState } from 'react';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';

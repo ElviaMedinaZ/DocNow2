@@ -1,4 +1,11 @@
-/* ---------- Contenedor general ---------- */
+
+ /**
+ * Descripción: Estilos base y utilitarios para las vistas administrativas (Admin).
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+/* Contenedor general */
 [class^="admin-"][class$="-container"] {
   padding: 2rem;
   background: #f7f9fc;
@@ -6,7 +13,7 @@
   min-height: 100vh;
 }
 
-/* ---------- Encabezado de sección ---------- */
+/* Encabezado de seccion */
 [class^="admin-"][class$="-header"] {
   display: flex;
   justify-content: space-between;
@@ -16,7 +23,7 @@
   gap: 1rem;
 }
 
-/* ---------- Botón “Agregar” ---------- */
+/* boton agregar */
 .btn-agregar {
   display: flex;
   align-items: center;
@@ -34,7 +41,7 @@
   background: #08315f;
 }
 
-/* ---------- Buscadores ---------- */
+/* buscadores */
 [class^="buscador-"],
 [class^="busqueda-"] {
   display: flex;
@@ -62,7 +69,7 @@
   color: #333;
 }
 
-/* ---------- Estado (Activo/Inactivo) ---------- */
+/*Estado (activo e inactivo)*/
 .estado-tag.activo {
   color: green;
   font-weight: bold;
@@ -73,7 +80,7 @@
   font-weight: bold;
 }
 
-/* ---------- Inputs dentro de tabla ---------- */
+/* inputs dentro de la tabla */
 .tabla-input,
 .tabla-select {
   width: 100%;
@@ -94,7 +101,7 @@
   box-shadow: 0 0 0 1px #0a3b7433;
 }
 
-/* ---------- Botones de acción (Guardar / Cancelar) ---------- */
+/* Botones de acción (Guardar / Cancelar)*/
 .fila-botones {
   display: flex;
   gap: 0.5rem;

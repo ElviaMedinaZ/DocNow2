@@ -1,4 +1,10 @@
-/* ---------- Tabla contenedora ---------- */
+/*
+ * Descripción: Estilos del componente de tabla generica.
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+/* Tabla contenedora*/
 .tabla-wrapper {
   background: #fff;
   border-radius: 10px;
@@ -25,7 +31,7 @@
 }
 
 
-/* ---------- Estructura tabla ---------- */
+/* Estructura de la tabla*/
 .tabla-generica {
   width: 100%;
   border-collapse: collapse;
@@ -46,17 +52,23 @@
   color: #333;
 }
 
-/* ---------- Tag Estado ---------- */
+/* tag estado*/
 .estado-tag {
   padding: .3rem .7rem;
   border-radius: 6px;
   font-weight: 600;
   font-size: .85rem;
 }
-.estado-tag.activo   { background: #e0fbe6; color: #1e9c44; }
-.estado-tag.inactivo { background: #fce8e6; color: #d13b3b; }
+.estado-tag.activo { 
+  background: #e0fbe6; 
+  color: #1e9c44; 
+}
+.estado-tag.inactivo { 
+  background: #fce8e6; 
+  color: #d13b3b;
+}
 
-/* ---------- Botón tres puntos ---------- */
+/* Botón tres puntos*/
 .btn-acciones {
   background: none;
   border: none;
@@ -67,9 +79,12 @@
   border-radius: 4px;
   transition: background .2s ease;
 }
-.btn-acciones:hover { background: #e6eefc; color: #0a3b74; }
+.btn-acciones:hover {
+  background: #e6eefc;
+  color: #0a3b74;
+}
 
-/* ---------- Menú de acciones ---------- */
+/* Menú de acciones*/
 .acciones-wrapper { position: relative; display: inline-block; }
 .menu-acciones {
   position: absolute;
@@ -94,10 +109,14 @@
   cursor: pointer;
   transition: background .2s ease;
 }
-.menu-acciones button:hover { background: #f3f6fa; }
-.menu-acciones .eliminar    { color: #d13b3b; }
+.menu-acciones button:hover { 
+  background: #f3f6fa; 
+}
+.menu-acciones .eliminar{ 
+  color: #d13b3b; 
+}
 
-/* ---------- Footer tabla ---------- */
+/*Footer tabla */
 .tabla-footer {
   margin-top: .9rem;
   font-size: .85rem;
@@ -149,10 +168,7 @@
   background-color: #fff;
 }
 
-
-
-
-/* ---------- Responsive tabla ---------- */
+/* Tabla movil*/
 @media (max-width: 768px) {
   .tabla-generica th,
   .tabla-generica td { font-size: .85rem; }

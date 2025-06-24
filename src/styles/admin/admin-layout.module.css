@@ -1,4 +1,10 @@
-/* ---------- Variables ---------- */
+
+ /*
+ * Descripción: Estilos base para el menu del admin.
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
 :root {
   --sidebar-w: 240px;
 
@@ -14,7 +20,7 @@
   --ease: 0.3s ease;
 }
 
-/* ---------- Layout base ---------- */
+/*Layout base */
 .adminWrapper {
   display: flex;
   min-height: 100vh;
@@ -23,13 +29,13 @@
   overflow-x: hidden;
 }
 
-/* ---------- Sidebar ---------- */
+/*Sidebar */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 240px; /* FIJO EN PX */
-  height: 100vh; /* alto completo */
+  width: 240px;
+  height: 100vh;
   background: var(--bg-white);
   overflow-y: auto;
   z-index: 1000;
@@ -75,7 +81,6 @@
   cursor: pointer;
 }
 
-/* Branding estilo MediCare */
 .branding {
   display: flex;
   align-items: center;
@@ -187,7 +192,7 @@
   padding: 1rem 1.4rem;
   position: fixed;
   top: 0;
-  left: var(--sidebar-w); /* ← IMPORTANTE si sidebar está visible */
+  left: var(--sidebar-w);
   right: 0;
   height: 64px;
   z-index: 999;
@@ -227,7 +232,6 @@
   margin-top: 64px; 
 }
 
-/* Si el menú está cerrado, el topbar y el main deben ajustarse */
 .mainFull {
   margin-left: 0 !important;
 }

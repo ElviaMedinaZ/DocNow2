@@ -1,3 +1,13 @@
+/**
+ * Descripción: Componente para la gestión de especialidades médicas. 
+ * Permite listar, buscar, agregar, editar, eliminar y cambiar el estado 
+ * (Activo/Inactivo) de cada especialidad desde una tabla editable.
+ *
+ * Fecha: 24 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+
 import { useState } from 'react';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';

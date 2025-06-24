@@ -1,3 +1,12 @@
+/**
+ * Descripción: Componente de diseño principal para la vista de administrador.
+ * Incluye la barra lateral con navegación, barra superior y contenedor de contenido.
+ * Controla la visibilidad del menú lateral de forma responsive.
+ *
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
 import { useEffect, useState } from 'react';
 import {
   FaBars, FaCalendarAlt,

@@ -1,5 +1,10 @@
-import { useEffect, useState } from 'react';
+/**
+ * Descripción: Formulario para registrar o editar un  servicio médico.
+ * Fecha: 23 Junio de 2025
+ * Programador: Elvia Medina
+ */
 
+import { useEffect, useState } from 'react';
 export default function RegistroServicio({ modo, datosIniciales, onSave, onClose }) {
   const [nombre, setNombre] = useState('');
   const [categoria, setCategoria] = useState('');

@@ -1,5 +1,9 @@
-// src/components/admin/AdminDashboard.jsx
-//-------------------------------------------------
+/**
+ * Descripción: Vista de dashboard de Administrador
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
 import { useEffect, useState } from 'react';
 import {
   FaCalendarCheck,
@@ -11,7 +15,7 @@ import {
 import styles from '../../styles/admin/admin-dashboard.module.css';
 
 export default function AdminDashboard() {
-  /* ---------- Tarjetas resumen ---------- */
+  /* Tarjetas */
   const stats = [
     {
       id: 1,
@@ -43,7 +47,7 @@ export default function AdminDashboard() {
     },
   ];
 
-  /* ---------- Datos dinámicos ---------- */
+  /* Datos demo */
   const [citasMensuales, setCitasMensuales] = useState([
     { mes: 'Ene', total: 65 },
     { mes: 'Feb', total: 78 },
@@ -67,7 +71,7 @@ export default function AdminDashboard() {
       const now = new Date();
       const curr = now.toLocaleString('es-ES', { month: 'short' }).slice(0, 3);
 
-      // -- Citas por mes
+      // Citas por mes
       setCitasMensuales(prev =>
         prev.map(c =>
           c.mes.toLowerCase() === curr.toLowerCase()
@@ -76,7 +80,7 @@ export default function AdminDashboard() {
         )
       );
 
-      // -- Especialidades
+      // Especialidades
       setEspecialidades(prev => {
         const i = Math.floor(Math.random() * prev.length);
         return prev.map((e, idx) => (idx === i ? { ...e, total: e.total + 1 } : e));
@@ -86,7 +90,7 @@ export default function AdminDashboard() {
     return () => clearInterval(id);
   }, []);
 
-  /* ---------- Actividad reciente ---------- */
+  /*Actividades recientes */
   const actividad = [
     {
       id: 1,
@@ -108,7 +112,7 @@ export default function AdminDashboard() {
     },
   ];
 
-  /* ---------- Render ---------- */
+  /*Render */
   return (
     <>
       {/* ---- Tarjetas resumen ---- */}
@@ -125,7 +129,7 @@ export default function AdminDashboard() {
         ))}
       </section>
 
-      {/* ---- Paneles principales ---- */}
+      {/*Paneles principales */}
       <section className={styles.grid}>
         {/* Citas por mes */}
         <div className={styles.panel}>
@@ -141,7 +145,6 @@ export default function AdminDashboard() {
                 <span className={styles.barLabel}>{c.mes}</span>
 
                 <div className={styles.barBg}>
-                  {/* Color fijo -> styles.citasFill */}
                   <div
                     className={`${styles.barFill} ${styles.citasFill}`}
                     style={{ width: `${width}%` }}

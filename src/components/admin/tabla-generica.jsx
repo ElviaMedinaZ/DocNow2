@@ -1,5 +1,10 @@
-import '../../styles/admin/tabla-generica.css';
+/**
+ * Descripción: Componente reutilizable para renderizar tablas genéricas.
+ * Fecha: 24 Junio de 2025
+ * Programador: Elvia Medina
+ */
 
+import '../../styles/admin/tabla-generica.css';
 export default function TablaGenerica({ columns, data, emptyMsg, footer }) {
   return (
     <div className="tabla-wrapper">
