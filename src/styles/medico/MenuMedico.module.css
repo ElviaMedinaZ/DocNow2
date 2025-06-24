@@ -1,0 +1,89 @@
+/**
+ * Descripción: Estilos del menu de navegacion del paciente
+ * Fecha: 11 Junio de 2025
+ * Programador: Irais Reyes
+ */
+
+.headerMedico {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.kebabMenuMedico {
+  display: none; /* Oculto por defecto */
+}
+
+.kebabMenu{
+  display: none;
+}
+
+.logoContainerMedico {
+  display: flex;
+  align-items: center;
+}
+
+.logoIconMedico {
+  height: 40px;
+  margin-right: 0.5rem;
+}
+
+.logoTextMedico {
+  font-size: 1.5rem;
+  color: #0a3b74;
+  font-weight: bold;
+}
+
+.kebabMenuMedico {
+  font-size: 1.35rem;
+  color: var(--color-primary);
+}
+
+.loginBtnMedico {
+  background-color: #0a3b74;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.kebabPanelMedico {
+  padding: 0.25rem 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  min-width: 170px;
+}
+
+.kebabLinkMedico {
+  display: block;
+  padding: 0.8rem 1rem;
+  color: var(--color-primary);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background var(--easing);
+}
+
+.kebabLinkMedico:hover {
+  background: var(--color-primary-light);
+}
+
+@media (max-width: 768px) {
+  .kebabMenuMedico {
+    display: inline-flex;
+    font-size: 1.35rem;
+    color: var(--color-primary);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .loginBtnMedico {
+    display: none; /* Ocultamos el botón de cerrar sesión para móvil */
+  }
+}
