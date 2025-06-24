@@ -1,0 +1,148 @@
+.chequeo-main {
+  font-family: "Segoe UI", sans-serif;
+  color: #1f2d3d;
+  padding: 2rem;
+}
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  color: white;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.hero-text {
+  flex: 1;
+  padding: 2rem;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero-text span {
+  color: #9af0c2;
+}
+
+.hero-text p {
+  font-size: 1.1rem;
+  max-width: 500px;
+}
+
+.hero-image {
+  flex: 1;
+  padding: 2rem;
+}
+
+.hero-image img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.alerta {
+  background: #e8fdf4;
+  color: #1a3c34;
+  padding: 1rem;
+  border-left: 5px solid #00b894;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.beneficios h2,
+.frecuencia h2,
+.testimonios h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin: 2rem 0 1rem;
+}
+
+.beneficio-grid,
+.edad-grid,
+.testimonios-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.beneficio-card,
+.edad-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-left: 5px solid #00cec9;
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.beneficio-card:hover,
+.edad-card:hover {
+  transform: translateY(-5px);
+}
+
+.beneficio-icon {
+  font-size: 3rem;
+  color: var(--primary-color, #007ad9);
+  margin-bottom: 1rem;
+}
+
+.beneficio-card ul,
+.edad-card ul {
+  list-style: none;
+  padding: 0;
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+.edad-card .edad-num {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 1rem;
+  background: #e0f7fa;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 50%;
+}
+
+.edad-card.destacado {
+  border-left-color: #00b894;
+}
+
+.frecuencia-texto {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #009688;
+  margin: 0.5rem 0;
+}
+
+.testimonios-grid blockquote {
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  font-style: italic;
+  border-left: 4px solid #00b894;
+}
+
+.testimonios-grid footer {
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #2d3748;
+}
+
+.header-fixed {
+  background: white;
+  z-index: 100;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+}

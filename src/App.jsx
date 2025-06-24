@@ -4,34 +4,38 @@
  * Programador: Elvia Medina
  */
 
+
 import 'primeicons/primeicons.css';
 import { addLocale, locale } from 'primereact/api';
 import 'primereact/resources/primereact.min.css';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import PantallaBuscador from './components/admin/buscador';
-import PantallaRegistroMedico from './components/medico/registro-medico';
-import PantallaHomePaciente from './components/paciente/home-paciente';
-import PantallaRegistroPaciente from './components/paciente/registro-paciente';
+// Usuario
 import PantallaLanding from './components/usuario/landing';
 import PantallaLogin from './components/usuario/login';
 import PantallaPerfil from './components/usuario/perfil';
 
+
 // Paciente
+import Psicologo from './components/paciente/acudir-psicologo';
+import ChequeoPreventivo from "./components/paciente/chequeo-preventivo";
+import PantallaHomePaciente from './components/paciente/home-paciente';
+import PantallaRegistroPaciente from './components/paciente/registro-paciente';
+import UltrasonidoPrenatal from "./components/paciente/ultrasonido-prenatal";
+
 
 // Médico
 import PantallaConsultaMedica from './components/medico/consulta-medica';
 import PantallaHistorialMedico from './components/medico/historial-medico';
 import PantallaHomeMedico from './components/medico/home-medico';
-
-
-
 import PantallaPerfilMedico from './components/medico/perfil-medico-paciente';
+import PantallaRegistroMedico from './components/medico/registro-medico';
 
-// Admin
-import { default as AdminDashboard, default as PantallaDashboardAdmin } from './components/admin/admin-dashboard';
+// Administrador
+import PantallaDashboardAdmin from './components/admin/admin-dashboard';
 import AdminLayout from './components/admin/admin-layout';
+import PantallaBuscador from './components/admin/buscador';
 import CitasAdmin from './components/admin/citas-admin';
 import DoctoresAdmin from './components/admin/doctores-admin';
 import EspecialidadesAdmin from './components/admin/especialidades-admin';
@@ -58,26 +62,31 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Usuario */}
+
+        {/* --- Usuario --- */}
         <Route path="/" element={<PantallaLanding />} />
         <Route path="/login" element={<PantallaLogin />} />
         <Route path="/perfil" element={<PantallaPerfil />} />
 
-        {/* Paciente */}
+        {/* --- Paciente --- */}
         <Route path="/home-paciente" element={<PantallaHomePaciente />} />
         <Route path="/registro-paciente" element={<PantallaRegistroPaciente />} />
+        <Route path="/chequeo-preventivo" element={<ChequeoPreventivo />} />
+        <Route path="/ultrasonido-prenatal" element={<UltrasonidoPrenatal />} />
+        <Route path="/psicologo" element={<Psicologo />} />
 
-        {/* Médico */}
+
+        {/* --- Médico --- */}
         <Route path="/home-medico" element={<PantallaHomeMedico />} />
         <Route path="/perfil-medico-paciente" element={<PantallaPerfilMedico />} />
         <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
         <Route path="/registro-medico/:id" element={<PantallaRegistroMedico />} />
-        <Route path='/consulta-medica' element={<PantallaConsultaMedica/>}/>
+        <Route path="/consulta-medica" element={<PantallaConsultaMedica />} />
         <Route path='/historial-medico' element={<PantallaHistorialMedico/>}/>
 
+        {/* --- Administrador --- */}
         <Route path="/buscador" element={<PantallaBuscador />} />
-        <Route path="/dashboard-admin" element={<AdminDashboard />} />
-
+        <Route path="/dashboard-admin" element={<PantallaDashboardAdmin />} />
         <Route path="/dashboard-admin/*" element={<AdminLayout />}>
           <Route index element={<PantallaDashboardAdmin />} />
           <Route path="doctores" element={<DoctoresAdmin />} />
@@ -86,6 +95,7 @@ function App() {
           <Route path="pacientes" element={<PacientesAdmin />} />
           <Route path="citas" element={<CitasAdmin />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
-  FaBars, FaCalendarAlt, FaSearch, FaSignOutAlt, FaStethoscope,
+  FaBars, FaCalendarAlt,
+  FaSignOutAlt, FaStethoscope,
   FaThLarge, FaTimes, FaUser, FaUserCircle, FaUserMd
 } from 'react-icons/fa';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
@@ -81,10 +82,6 @@ export default function AdminLayout() {
           <button className={styles.hamburger} onClick={toggleSidebar}>
             <FaBars />
           </button>
-          <div className={styles.searchBox}>
-            <FaSearch className={styles.searchIcon} />
-            <input type="text" placeholder="Buscar pacientes, doctores…" />
-          </div>
         </header>
 
         <div className={styles.mainContent}>

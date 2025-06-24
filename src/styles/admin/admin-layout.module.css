@@ -26,17 +26,13 @@
 /* ---------- Sidebar ---------- */
 .sidebar {
   position: fixed;
-  inset: 0 auto 0 0;
-  width: var(--sidebar-w);
+  top: 0;
+  left: 0;
+  width: 240px; /* FIJO EN PX */
+  height: 100vh; /* alto completo */
   background: var(--bg-white);
-  border-right: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  overflow-y: auto;
   z-index: 1000;
-  transition: transform var(--ease);
-  transform: translateX(0);
 }
 
 .branding {
