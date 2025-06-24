@@ -1,5 +1,5 @@
 /**
- * Descripción: Implementación de la vista de Perfil para el médico
+ * Descripción: Implementación de la vista de Perfil para el médico desde la vista del paciente
  * Fecha: 14 Junio de 2025
  * Programador: Elvia Medina
  */
