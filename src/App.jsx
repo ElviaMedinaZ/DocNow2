@@ -27,6 +27,7 @@ import UltrasonidoPrenatal from "./components/paciente/ultrasonido-prenatal";
 
 // Médico
 import PantallaConsultaMedica from './components/medico/consulta-medica';
+import PantallaHistorialMedico from './components/medico/historial-medico';
 import PantallaHomeMedico from './components/medico/home-medico';
 import PantallaPerfilMedico from './components/medico/perfil-medico-paciente';
 import PantallaRegistroMedico from './components/medico/registro-medico';
@@ -81,6 +82,7 @@ function App() {
         <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
         <Route path="/registro-medico/:id" element={<PantallaRegistroMedico />} />
         <Route path="/consulta-medica" element={<PantallaConsultaMedica />} />
+        <Route path='/historial-medico' element={<PantallaHistorialMedico/>}/>
 
         {/* --- Administrador --- */}
         <Route path="/buscador" element={<PantallaBuscador />} />

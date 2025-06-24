@@ -1,8 +1,13 @@
+/**
+ * Descripción: Implementación de la vista de consulta medica
+ * Fecha: 14 Junio de 2025
+ * Programador: Irais Reyes
+ */
+
 import React, { useState } from "react";
 // import { signOut } from 'firebase/auth';
 // import { auth } from '../../lib/firebase';
 import { LuUserRound } from "react-icons/lu";
-import HeaderMedico from '../../components/medico/MenuMedico';
 import { InputNumber } from 'primereact/inputnumber';
 import { FloatLabel } from 'primereact/floatlabel';
 import { Dropdown } from 'primereact/dropdown';
@@ -23,6 +28,8 @@ import { LuRuler } from "react-icons/lu";
 import { IoIosCalendar } from "react-icons/io";
 import { IoWarningOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
+import HeaderMedico from '../../components/medico/MenuMedico';
+import HistorialMedico from '../../components/medico/historial-medico';
 import '../../styles/medico/ConsultaMedica.css';
 
 export default function HomeMedico() {
@@ -435,40 +442,7 @@ return (
                 </button>
               </div>
 
-            <div className="tarjetaHistorial">
-              <h2><MdHistory /> Historial médico</h2>
-
-              {paciente.historial.map((registro, index) => (
-                <div className="contenidoHistorial" key={index}>
-                  <div className="headerHistorial">
-                    <div className="infoDoctor">
-                      <h4 className="nombreDoctor">{registro.medico}</h4>
-                      <p className="especialidadDoctor">{registro.especialidad}</p>
-                    </div>
-                    <p className="fechaHistorial">{registro.fecha}</p>
-                  </div>
-
-                  <div className="gridHistorial">
-                    <div className="columnaHistorial">
-                      <p className="tituloCampo">Diagnóstico:</p>
-                      <p>{registro.diagnostico}</p>
-
-                      <p className="tituloCampo">Tratamiento:</p>
-                      <p>{registro.tratamiento}</p>
-                    </div>
-
-                    <div className="columnaHistorial">
-                      <p className="tituloCampo">Síntomas:</p>
-                      <p>{registro.sintomas}</p>
-
-                      <p className="tituloCampo">Notas:</p>
-                      <p>{registro.notas}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-            </div>
+            <HistorialMedico />
 
          </div>
       </div>
