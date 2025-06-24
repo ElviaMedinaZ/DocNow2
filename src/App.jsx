@@ -22,6 +22,7 @@ import PantallaPerfil from './components/usuario/perfil';
 
 // Médico
 import PantallaConsultaMedica from './components/medico/consulta-medica';
+import PantallaHistorialMedico from './components/medico/historial-medico';
 import PantallaHomeMedico from './components/medico/home-medico';
 
 
@@ -72,8 +73,8 @@ function App() {
         <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
         <Route path="/registro-medico/:id" element={<PantallaRegistroMedico />} />
         <Route path='/consulta-medica' element={<PantallaConsultaMedica/>}/>
+        <Route path='/historial-medico' element={<PantallaHistorialMedico/>}/>
 
-        {/* Admin */}
         <Route path="/buscador" element={<PantallaBuscador />} />
         <Route path="/dashboard-admin" element={<AdminDashboard />} />
 
