@@ -1,4 +1,8 @@
-
+/**
+ * Descripción: Implementación de recomendacion chequeo preventivo
+ * Fecha: 24 Junio de 2025
+ * Programador: Elvia Medina
+ */
 
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.min.css';
@@ -17,14 +21,14 @@ export default function ChequeoPreventivo() {
       <main className="chequeo-main">
         <section className="hero">
           <div className="hero-text">
-            <h1><span>Beneficios del</span> <br />Chequeo Preventivo</h1>
+            <h1><br/>Beneficios del chequeo Preventivo</h1>
             <p>
               La prevención es la mejor medicina. Descubre cómo los chequeos regulares
               pueden detectar problemas de salud antes de que se conviertan en algo serio y costoso.
             </p>
           </div>
           <div className="hero-image">
-            <img src="https://www.diagnose.com.mx/wp-content/uploads/2025/02/1-Chequeo-medico-mujeres.jpg" alt="Chequeo Preventivo" />
+            <img src="https://felizfamilycare.com/wp-content/uploads/2024/06/Medium-shot-smiley-doctor-checking-woman-explaining-what-is-wellness-check-1024x683.jpg" alt="Chequeo Preventivo" />
           </div>
         </section>
 
@@ -120,6 +124,9 @@ export default function ChequeoPreventivo() {
           </div>
         </section>
       </main>
+      <footer className="home-footer">
+            © {new Date().getFullYear()} DocNow. Todos los derechos reservados.
+      </footer>
     </>
   );
 }
