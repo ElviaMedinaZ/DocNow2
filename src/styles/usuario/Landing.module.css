@@ -13,6 +13,12 @@
   --fuente: "Almarai", sans-serif;
 }
 
+.containerLanding {
+  position: relative;
+  z-index: 1;
+}
+
+
 .headerLanding {
   background-color: var(--blanco-color);
   display: flex;
@@ -22,13 +28,22 @@
 }
 
 .menuIcon{
-  display: none;
   width: 50px;
   height: 50px;
 }
 
 .menuHamburguesa {
-  display: none;
+   display: flex;
+  flex-direction: column;
+  background-color: var(--blanco-color);
+  padding: 1rem 2rem;
+  position: absolute;
+  width: 100%;
+  top: 100%; /* justo debajo del header */
+  left: 0;
+  z-index: 1000;
+  gap: 1rem;
+  border-top: 1px solid #ccc;
 }
 
 .leftSection {
@@ -127,8 +142,8 @@
 }
 
 .btnRegistro{
-  background-color: var(--verde-menta-color);
-  color: black;
+  background-color: #F5F5F5;
+  color: #0B3B74;
   padding: 10px 40px;
   border: none;
   border-radius: 20px;
@@ -406,7 +421,7 @@
     cursor: pointer;
   }
 
-  .menuHamburguesa {
+  /* .menuHamburguesa {
     display: flex;
     flex-direction: column;
     background-color: var(--blanco-color);
@@ -418,6 +433,15 @@
     z-index: 1000;
     gap: 1rem;
     border-top: 1px solid #ccc;
+  } */
+
+  .menuHamburguesa a {
+      display: block;
+      /* padding: 10px 0; */
+      border-bottom: 1px solid #ccc; /* opcional, para separar visualmente */
+      color: #333; /* asegúrate que el color sea visible */
+      text-decoration: none;
+       padding: 0.8rem 1rem;
   }
 
   .menuHeader {
@@ -425,6 +449,7 @@
     color: var(--negro-color);
     text-decoration: none;
     cursor: pointer;
+    padding: 2rem;
   }
 
   .section1 {
@@ -909,6 +934,52 @@
   }
 }
 
+@media (max-width: 700px) {
+  .menuIcon {
+    display: flex;
+  }
 
+  .rightSection {
+    display: none;
+  }
+
+  .menuHamburguesa {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--blanco-color);
+    padding: 1rem 2rem;
+    border-top: 1px solid #ccc;
+    z-index: 1000;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .menuIcon {
+    display: flex!important;
+  }
+
+  .rightSection {
+    display: none !important;
+  }
+
+  .menuHamburguesa {
+    display: flex !important;
+    flex-direction: column;
+    background-color: var(--blanco-color);
+    padding: 1rem 2rem;
+    position: absolute;
+    width: 97%;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    gap: 1rem;
+    border-top: 1px solid #ccc;
+  }
+}
 
 }
