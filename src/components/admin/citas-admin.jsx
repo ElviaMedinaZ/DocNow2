@@ -1,7 +1,5 @@
-/**
+/*
  * Descripción: Componente para gestión de citas agendadas por el administrador.
- * Permite buscar, cambiar estado, cancelar citas y acceder a acciones por fila.
- *
  * Fecha: 22 Junio de 2025
  * Programador: Elvia Medina
  */
@@ -79,7 +77,7 @@ export default function CitasAdmin() {
               <button onClick={() => console.log('Editar cita de', row.paciente)}>Editar</button>
 
               <div className="estado-switcher">
-                {['Confirmada', 'Pendiente', 'Cancelada'].map((estado) => (
+                {['Confirmada', 'Pendiente'].map((estado) => (
                   <button
                     key={estado}
                     className={`estado-option ${row.estado === estado ? 'activo' : ''}`}
@@ -89,6 +87,7 @@ export default function CitasAdmin() {
                   </button>
                 ))}
               </div>
+
 
               <button className="eliminar" onClick={() => cancelarCita(row.id)}>
                 Cancelar

@@ -1,4 +1,4 @@
-/**
+/*
  * Descripción: Implementación de la vista de Perfil para el médico desde la vista del paciente
  * Fecha: 14 Junio de 2025
  * Programador: Elvia Medina
@@ -10,49 +10,54 @@ import { Card } from 'primereact/card';
 import { DataView } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
+import { useState } from 'react';
 import '../../styles/paciente/perfil-medico-paciente.css';
 import HeaderPaciente from '../paciente/menu-paciente';
 
-/* datos demo */
+import '../../styles/admin/admin-base.css'; // Para estilos de modal
+import '../../styles/admin/doctores-admin.css'; // Para reusar modal
+import '../../styles/paciente/perfil-medico-paciente.css';
+
+import AgendarCita from '../../components/paciente/agendar-cita';
+
 const doctorDemo = {
   nombre: 'Dr. Mario González',
   turno: 'Matutino',
-  experiencia: 15, // años
+  experiencia: 15,
   foto: 'https://i.pravatar.cc/150?img=13',
   telefono: '612 158 4464',
   email: 'mario.gonzalez@gmail.com',
   consultorio: '3',
   servicios: [
-    { nombre: 'Consulta general',  precio: 500, desc: 'Revisión médica', dur: '45 min' },
-    { nombre: 'Inyecciones', precio: 200, desc: 'Aplicacion de medicación o vacunas',      dur: '30 min' },
-    { nombre: 'Ultrasonidos', precio: 80,  desc: 'Descarta cualquier tumor',  dur: '15 min' },
+    { nombre: 'Consulta general', precio: 500, desc: 'Revisión médica', dur: '45 min' },
+    { nombre: 'Inyecciones', precio: 200, desc: 'Aplicación de medicación o vacunas', dur: '30 min' },
+    { nombre: 'Ultrasonidos', precio: 80, desc: 'Descarta cualquier tumor', dur: '15 min' },
   ],
   horario: [
-    { dia: 'Lunes',     horas: '8:00 AM - 1:00 PM' },
-    { dia: 'Martes',    horas: '8:00 AM - 1:00 PM' },
+    { dia: 'Lunes', horas: '8:00 AM - 1:00 PM' },
+    { dia: 'Martes', horas: '8:00 AM - 1:00 PM' },
     { dia: 'Miércoles', horas: '8:00 AM - 1:00 PM' },
-    { dia: 'Jueves',    horas: '8:00 AM - 1:00 PM' },
-    { dia: 'Viernes',   horas: '8:00 AM - 1:00 PM' },
-    { dia: 'Sábado',    horas: '8:00 AM - 12:00 PM' },
-    { dia: 'Domingo',   horas: 'No disponible' },
+    { dia: 'Jueves', horas: '8:00 AM - 1:00 PM' },
+    { dia: 'Viernes', horas: '8:00 AM - 1:00 PM' },
+    { dia: 'Sábado', horas: '8:00 AM - 12:00 PM' },
+    { dia: 'Domingo', horas: 'No disponible' },
   ],
   valoraciones: [
-    { id: 1, usuario: 'Ana Martínez',  avatar: 'https://i.pravatar.cc/150?img=47', estrellas: 5, comentario: 'Excelente doctora, muy profesional y empática. Me explicó todo detalladamente y el tratamiento ha sido muy efectivo.', fecha: '14/1/2024' },
-    { id: 2, usuario: 'Carlos López',  avatar: 'https://i.pravatar.cc/150?img=12', estrellas: 5, comentario: 'La Dra. González es excepcional. Su conocimiento y experiencia son evidentes. Altamente recomendada.', fecha: '9/1/2024' },
-    { id: 3, usuario: 'Laura Rodríguez', avatar: 'https://i.pravatar.cc/100?img=23', estrellas: 4, comentario: 'Muy buena atención, aunque tuve que esperar un poco más de lo esperado. El diagnóstico fue acertado.', fecha: '4/1/2024' },
-    { id: 4, usuario: 'Miguel Torres', avatar: 'https://i.pravatar.cc/150?img=15', estrellas: 5, comentario: 'Increíble profesional. Me ayudó mucho con mi problema cardiaco. Muy recomendable.', fecha: '27/12/2023' },
-    { id: 5, usuario: 'Sofía Hernández', avatar: 'https://i.pravatar.cc/150?img=8', estrellas: 5, comentario: 'La mejor cardióloga que he visitado. Muy detallada en sus explicaciones y muy cálida en el trato.', fecha: '19/12/2023' },
+    { id: 1, usuario: 'Ana Martínez', avatar: 'https://i.pravatar.cc/150?img=47', estrellas: 5, comentario: 'Excelente doctora, muy profesional y empática.', fecha: '14/1/2024' },
+    { id: 2, usuario: 'Carlos López', avatar: 'https://i.pravatar.cc/150?img=12', estrellas: 5, comentario: 'Altamente recomendada.', fecha: '9/1/2024' },
+    { id: 3, usuario: 'Laura Rodríguez', avatar: 'https://i.pravatar.cc/100?img=23', estrellas: 4, comentario: 'Buena atención, aunque tardó un poco.', fecha: '4/1/2024' },
+    { id: 4, usuario: 'Miguel Torres', avatar: 'https://i.pravatar.cc/150?img=15', estrellas: 5, comentario: 'Me ayudó mucho con mi problema cardiaco.', fecha: '27/12/2023' },
+    { id: 5, usuario: 'Sofía Hernández', avatar: 'https://i.pravatar.cc/150?img=8', estrellas: 5, comentario: 'Muy detallada y cálida en el trato.', fecha: '19/12/2023' },
   ],
 };
 
 export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
-  const currency = (n) => `$${n.toLocaleString('es-MX')}`;
+  const [modalCita, setModalCita] = useState(false);
 
-  /* valoracion promedio*/
+  const currency = (n) => `$${n.toLocaleString('es-MX')}`;
   const promedio = doctor.valoraciones.reduce((acc, v) => acc + v.estrellas, 0) / doctor.valoraciones.length;
   const totalReseñas = doctor.valoraciones.length;
 
-  /* valoracion */
   const valoracionTemplate = (v) => (
     <div className="pm-val-item">
       <Avatar image={v.avatar} shape="circle" size="large" />
@@ -73,7 +78,6 @@ export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
 
       <div className="pm-layout">
         <aside className="pm-aside">
-          {/* tarjeta perfil */}
           <Card className="pm-card pm-profile-card">
             <div className="pm-profile-center">
               <Avatar image={doctor.foto} shape="circle" size="xlarge" className="pm-avatar" />
@@ -84,11 +88,15 @@ export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
                 <span className="pm-rating-text">{promedio.toFixed(1)} ({totalReseñas} reseñas)</span>
               </div>
               <p className="pm-exp">{doctor.experiencia} años de experiencia</p>
-              <Button label="Agendar Cita" icon="pi pi-calendar-plus" className="pm-btn-cita" />
+              <Button
+                label="Agendar Cita"
+                icon="pi pi-calendar-plus"
+                className="pm-btn-cita"
+                onClick={() => setModalCita(true)}
+              />
             </div>
           </Card>
 
-          {/* tarjeta contacto */}
           <Card className="pm-card">
             <h3 className="pm-section-title">Información de Contacto</h3>
             <div className="pm-contact-item">
@@ -114,7 +122,6 @@ export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
             </div>
           </Card>
 
-          {/* tarjeta horarios */}
           <Card className="pm-card">
             <h3 className="pm-section-title">Horarios de Atención</h3>
             {doctor.horario.map((d) => (
@@ -127,7 +134,6 @@ export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
         </aside>
 
         <main className="pm-main">
-          {/* servicios médicos */}
           <Card className="pm-card pm-services-card" title="Servicios Médicos">
             <div className="pm-services-grid">
               {doctor.servicios.map((s) => (
@@ -143,12 +149,20 @@ export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
             </div>
           </Card>
 
-          {/* reseñas */}
           <Card className="pm-card full" title={`Reseñas de Pacientes  ·  ${promedio.toFixed(1)} (${totalReseñas})`}>
             <DataView value={doctor.valoraciones} itemTemplate={valoracionTemplate} layout="list" paginator rows={5} />
           </Card>
         </main>
       </div>
+
+      {modalCita && (
+        <div className="modal-overlay" onClick={() => setModalCita(false)}>
+          <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
+            <button className="cerrar-modal" onClick={() => setModalCita(false)}>×</button>
+            <AgendarCita />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

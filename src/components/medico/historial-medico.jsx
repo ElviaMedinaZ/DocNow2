@@ -1,10 +1,10 @@
-/**
+/*
  * Descripción: Implementación de la vista de historial medica
  * Fecha: 23 Junio de 2025
  * Programador: Irais Reyes
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { MdHistory } from "react-icons/md";
 import '../../styles/medico/HistorialMedico.css';
 

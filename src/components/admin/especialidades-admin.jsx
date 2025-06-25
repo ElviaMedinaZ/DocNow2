@@ -1,14 +1,10 @@
-/**
+/*
  * Descripción: Componente para la gestión de especialidades médicas. 
- * Permite listar, buscar, agregar, editar, eliminar y cambiar el estado 
- * (Activo/Inactivo) de cada especialidad desde una tabla editable.
- *
  * Fecha: 24 Junio de 2025
  * Programador: Elvia Medina
  */
 
-
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import '../../styles/admin/admin-base.css';
@@ -27,6 +23,17 @@ export default function EspecialidadesAdmin() {
   const [menuAbierto, setMenu] = useState(null);
   const [nueva, setNueva] = useState(null);
   const [enEdicion, setEnEdicion] = useState(null);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenu(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const toggleMenu = (id) => setMenu((p) => (p === id ? null : id));
   const cancelarNueva = () => setNueva(null);
@@ -186,7 +193,7 @@ export default function EspecialidadesAdmin() {
               <FaEllipsisV />
             </button>
             {menuAbierto === row.id && (
-              <div className="menu-acciones">
+              <div className="menu-acciones" ref={menuRef}>
                 <button onClick={() => editarFila(row)}>Editar</button>
                 <button onClick={() => toggleEstado(row.id)}>
                   {row.estado === 'Activo' ? 'Inactivar' : 'Activar'}

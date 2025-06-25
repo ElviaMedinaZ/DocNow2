@@ -19,6 +19,7 @@ import PantallaPerfil from './components/usuario/perfil';
 
 // Paciente
 import Psicologo from './components/paciente/acudir-psicologo';
+import AgendarCita from "./components/paciente/agendar-cita";
 import ChequeoPreventivo from "./components/paciente/chequeo-preventivo";
 import PantallaHomePaciente from './components/paciente/home-paciente';
 import PantallaRegistroPaciente from './components/paciente/registro-paciente';
@@ -42,6 +43,7 @@ import DoctoresAdmin from './components/admin/doctores-admin';
 import EspecialidadesAdmin from './components/admin/especialidades-admin';
 import PacientesAdmin from './components/admin/pacientes-admin';
 import ServiciosAdmin from './components/admin/servicios-admin';
+import HistorialMedico from './components/medico/historial-medico';
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -75,6 +77,7 @@ function App() {
         <Route path="/chequeo-preventivo" element={<ChequeoPreventivo />} />
         <Route path="/ultrasonido-prenatal" element={<UltrasonidoPrenatal />} />
         <Route path="/psicologo" element={<Psicologo />} />
+        <Route path="/agendar-cita" element={<AgendarCita />} />
 
 
         {/* --- Médico --- */}
@@ -98,6 +101,7 @@ function App() {
           <Route path="servicios" element={<ServiciosAdmin />} />
           <Route path="pacientes" element={<PacientesAdmin />} />
           <Route path="citas" element={<CitasAdmin />} />
+          <Route path="historial/:pacienteId" element={<HistorialMedico />} />
         </Route>
 
       </Routes>

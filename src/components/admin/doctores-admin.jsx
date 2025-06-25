@@ -1,13 +1,10 @@
-/**
+/*
  * Descripción: Componente de administración de doctores. 
- * Permite listar, buscar, agregar, editar, activar/inactivar, 
- * eliminar doctores y gestionar los servicios que ofrecen.
- *
  * Fecha: 22 Junio de 2025
  * Programador: Elvia Medina
  */
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import '../../styles/admin/admin-base.css';
@@ -15,74 +12,44 @@ import '../../styles/admin/doctores-admin.css';
 import RegistroWeb from '../medico/registro-medico';
 import GenericTable from './tabla-generica';
 
-/* Servicios disponibles*/
+/* Servicios disponibles */
 const catalogoServicios = [
-  'Consulta',
-  'Toma de presión',
-  'Inyecciones',
-  'Ultrasonido',
-  'Electrocardiograma',
-  'Curaciones',
-  'Papanicolaou',
-  'Colocación de sueros',
-  'Revisión oftalmológica',
-  'Audiometría',
-  'Vacunación',
-  'Chequeo general',
-  'Extracción de puntos',
-  'Pruebas COVID-19',
-  'Rayos X',
+  'Consulta', 'Toma de presión', 'Inyecciones', 'Ultrasonido', 'Electrocardiograma',
+  'Curaciones', 'Papanicolaou', 'Colocación de sueros', 'Revisión oftalmológica',
+  'Audiometría', 'Vacunación', 'Chequeo general', 'Extracción de puntos',
+  'Pruebas COVID-19', 'Rayos X',
 ];
 
-/* datos demo */
+/* Datos demo */
 const datosIniciales = [
-  {
-    id: 1,
-    nombre: 'Dr. Juan Pérez',
-    especialidad: 'Cardiología',
-    pacientes: 45,
-    estado: 'Activo',
-    servicios: ['Consulta', 'Telemedicina'],
-  },
-  {
-    id: 2,
-    nombre: 'Dra. María García',
-    especialidad: 'Dermatología',
-    pacientes: 38,
-    estado: 'Activo',
-    servicios: ['Consulta'],
-  },
-  {
-    id: 3,
-    nombre: 'Dr. Carlos López',
-    especialidad: 'Pediatría',
-    pacientes: 52,
-    estado: 'Activo',
-    servicios: ['Consulta', 'Urgencias'],
-  },
-  {
-    id: 4,
-    nombre: 'Dra. Ana Martínez',
-    especialidad: 'Neurología',
-    pacientes: 29,
-    estado: 'Inactivo',
-    servicios: [],
-  },
+  { id: 1, nombre: 'Dr. Juan Pérez', especialidad: 'Cardiología', pacientes: 45, estado: 'Activo', servicios: ['Consulta', 'Telemedicina'], turno: 'Matutino', consultorio: '1A' },
+  { id: 2, nombre: 'Dra. María García', especialidad: 'Dermatología', pacientes: 38, estado: 'Activo', servicios: ['Consulta'], turno: 'Vespertino', consultorio: '2B' },
+  { id: 3, nombre: 'Dr. Carlos López', especialidad: 'Pediatría', pacientes: 52, estado: 'Activo', servicios: ['Consulta', 'Urgencias'], turno: 'Matutino', consultorio: '3C' },
+  { id: 4, nombre: 'Dra. Ana Martínez', especialidad: 'Neurología', pacientes: 29, estado: 'Inactivo', servicios: [], turno: 'Vespertino', consultorio: '4D' },
 ];
 
 export default function DoctoresAdmin() {
-  /* estados*/
   const [doctores, setDoctores] = useState(datosIniciales);
   const [busqueda, setBusqueda] = useState('');
   const [menuAbierto, setMenu] = useState(null);
   const [modalAbierto, setModal] = useState(false);
   const [doctorEditando, setEditando] = useState(null);
+  const menuRef = useRef(null);
 
-  /* helpers */
-  const toggleMenu = (id) => setMenu((p) => (p === id ? null : id));
+  // Cierra menu si se hace clic fuera
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenu(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const toggleMenu = (id) => setMenu((prev) => (prev === id ? null : id));
   const cerrarModal = () => { setModal(false); setEditando(null); setMenu(null); };
 
-  /* -eliminacion */
   const eliminar = (id) => {
     const doctor = doctores.find((d) => d.id === id);
     Swal.fire({
@@ -102,7 +69,6 @@ export default function DoctoresAdmin() {
     });
   };
 
-  /* activar/inactivar*/
   const toggleEstado = (id) => {
     const d = doctores.find((dx) => dx.id === id);
     const nuevo = d.estado === 'Activo' ? 'Inactivo' : 'Activo';
@@ -119,20 +85,59 @@ export default function DoctoresAdmin() {
     });
   };
 
-  /*servicios*/
+  const toggleTurno = (id) => {
+    const d = doctores.find((dx) => dx.id === id);
+    const nuevoTurno = d.turno === 'Matutino' ? 'Vespertino' : 'Matutino';
+    Swal.fire({
+      title: `¿Cambiar turno a ${nuevoTurno}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, cambiar',
+      cancelButtonText: 'Cancelar',
+    }).then((r) => {
+      if (r.isConfirmed) {
+        setDoctores((prev) => prev.map((dx) => (dx.id === id ? { ...dx, turno: nuevoTurno } : dx)));
+      }
+    });
+  };
+
+  const cambiarConsultorio = (id) => {
+    const d = doctores.find((dx) => dx.id === id);
+    const consultorios = [];
+    for (let i = 1; i <= 10; i++) {
+      for (let j = 'A'.charCodeAt(0); j <= 'D'.charCodeAt(0); j++) {
+        consultorios.push(`${i}${String.fromCharCode(j)}`);
+      }
+    }
+
+    Swal.fire({
+      title: 'Seleccionar Consultorio',
+      input: 'select',
+      inputOptions: consultorios.reduce((acc, c) => {
+        acc[c] = c;
+        return acc;
+      }, {}),
+      inputPlaceholder: 'Seleccione un consultorio',
+      showCancelButton: true,
+      inputValue: d.consultorio,
+    }).then((r) => {
+      if (r.isConfirmed) {
+        setDoctores((prev) =>
+          prev.map((dx) => (dx.id === id ? { ...dx, consultorio: r.value } : dx))
+        );
+      }
+    });
+  };
+
   const gestionarServicios = (id) => {
     const doctor = doctores.find((d) => d.id === id);
-
-    /* genera check-boxes HTML */
-    const htmlChecks = catalogoServicios
-      .map(
-        (svc, i) =>
-          `<div style="text-align:left;margin:4px 0">
-             <input type="checkbox" id="svc_${i}" ${doctor.servicios.includes(svc) ? 'checked' : ''}>
-             <label for="svc_${i}" style="margin-left:6px">${svc}</label>
-           </div>`
-      )
-      .join('');
+    const htmlChecks = catalogoServicios.map(
+      (svc, i) =>
+        `<div style="text-align:left;margin:4px 0">
+           <input type="checkbox" id="svc_${i}" ${doctor.servicios.includes(svc) ? 'checked' : ''}>
+           <label for="svc_${i}" style="margin-left:6px">${svc}</label>
+         </div>`
+    ).join('');
 
     Swal.fire({
       title: `Servicios de ${doctor.nombre}`,
@@ -143,10 +148,9 @@ export default function DoctoresAdmin() {
       cancelButtonText: 'Cancelar',
       showCancelButton: true,
       preConfirm: () => {
-        const seleccionados = catalogoServicios.filter(
+        return catalogoServicios.filter(
           (_, i) => document.getElementById(`svc_${i}`).checked
         );
-        return seleccionados;
       },
     }).then((r) => {
       if (r.isConfirmed) {
@@ -157,26 +161,22 @@ export default function DoctoresAdmin() {
     });
   };
 
-  /*alta / edicion*/
   const abrirNuevo = () => { setEditando(null); setModal(true); };
   const abrirEditar = (row) => { setEditando(row); setModal(true); };
 
-  /* guarda el registro*/
   const onSave = (payload, modo) => {
     setDoctores((prev) =>
       modo === 'editar'
         ? prev.map((d) => (d.id === payload.id ? payload : d))
-        : [...prev, { ...payload, id: Date.now(), servicios: [] }]
+        : [...prev, { ...payload, id: Date.now(), servicios: [], turno: 'Matutino', consultorio: '1A' }]
     );
     cerrarModal();
   };
 
-  /* buscadoor  filtro*/
   const filtrados = doctores.filter((d) =>
     `${d.nombre} ${d.especialidad} ${d.estado}`.toLowerCase().includes(busqueda.toLowerCase())
   );
 
-  /* tabla */
   const columns = [
     { header: 'Nombre', accessor: 'nombre' },
     { header: 'Especialidad', accessor: 'especialidad' },
@@ -194,6 +194,18 @@ export default function DoctoresAdmin() {
       ),
     },
     {
+      header: 'Turno',
+      accessor: (d) => (
+        <span className={`turno-tag ${d.turno === 'Matutino' ? 'matutino' : 'vespertino'}`}>
+          {d.turno}
+        </span>
+      ),
+    },
+    {
+      header: 'Consultorio',
+      accessor: (d) => d.consultorio,
+    },
+    {
       header: 'Acciones',
       accessor: (row) => (
         <div className="acciones-wrapper">
@@ -201,12 +213,14 @@ export default function DoctoresAdmin() {
             <FaEllipsisV />
           </button>
           {menuAbierto === row.id && (
-            <div className="menu-acciones">
+            <div className="menu-acciones" ref={menuRef}>
               <button onClick={() => abrirEditar(row)}>Editar</button>
               <button onClick={() => gestionarServicios(row.id)}>Servicios</button>
               <button onClick={() => toggleEstado(row.id)}>
                 {row.estado === 'Activo' ? 'Inactivar' : 'Activar'}
               </button>
+              <button onClick={() => toggleTurno(row.id)}>Cambiar Turno</button>
+              <button onClick={() => cambiarConsultorio(row.id)}>Cambiar Consultorio</button>
               <button className="eliminar" onClick={() => eliminar(row.id)}>Eliminar</button>
             </div>
           )}
@@ -215,7 +229,6 @@ export default function DoctoresAdmin() {
     },
   ];
 
-  /* render */
   return (
     <div className="admin-doctores-container">
       <div className="admin-doctores-header">
