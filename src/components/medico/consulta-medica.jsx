@@ -27,137 +27,157 @@ import { LiaWeightSolid } from "react-icons/lia";
 import { LuRuler } from "react-icons/lu";
 import { IoIosCalendar } from "react-icons/io";
 import { IoWarningOutline } from "react-icons/io5";
-import { FaRegEdit } from "react-icons/fa";
+import { Dialog } from 'primereact/dialog';
 import HeaderMedico from '../../components/medico/MenuMedico';
 import HistorialMedico from '../../components/medico/historial-medico';
+import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
+import RecetaPDF from '../../components/medico/receta-medica';
 import '../../styles/medico/ConsultaMedica.css';
 
 export default function HomeMedico() {
-    const navigate = useNavigate();
-    const [datosGuardados, setDatosGuardados] = useState(false);
-    // const [paciente, setPaciente] = useState(pacientes[0]);
-    const [edad, setEdad] = useState(null);
-    const [peso, setPeso] = useState(null);
-    const [estatura, setEstatura] = useState(null);
-    const [sintomas, setSintomas] = useState('');
-    const [diagnostico, setDiagnostico] = useState('');
-    const [tratamiento, setTratamiento] = useState('');
-    const [recomendaciones, setRecomendaciones] = useState('');
-    const [notas, setNotas] = useState('');
-    const [tipoSangreSeleccionada, setTipoSangreSeleccionada] = useState(null);
-    const [alergias, setAlergias] = useState('');
-    const [errores, setErrores] = useState({alergias: false,});
-    const tipoSangre = [
-        { name: 'A+', code: 'A+' },
-        { name: 'A-', code: 'A-' },
-        { name: 'B+', code: 'B+' },
-        { name: 'B-', code: 'B-' },
-        { name: 'AB+', code: 'AB+' },
-        { name: 'AB-', code: 'AB-' },
-        { name: 'O+', code: 'O+' },
-        { name: 'O-', code: 'O-' },
-    ];
+      const [mostrarPDF, setMostrarPDF] = useState(false);
+  const navigate = useNavigate();
+  const [datosGuardados, setDatosGuardados] = useState(false);
+  const [saturacion, setSaturacion] = useState('');
+  const [edad, setEdad] = useState(null);
+  const [peso, setPeso] = useState(null);
+  const [estatura, setEstatura] = useState(null);
+  const [sintomas, setSintomas] = useState('');
+  const [diagnostico, setDiagnostico] = useState('');
+  const [tratamiento, setTratamiento] = useState('');
+  const [recomendaciones, setRecomendaciones] = useState('');
+  const [notas, setNotas] = useState('');
+  const [tipoSangreSeleccionada, setTipoSangreSeleccionada] = useState(null);
+  const [alergias, setAlergias] = useState('');
+  
+  const tipoSangre = [
+    { name: 'A+', code: 'A+' },
+    { name: 'A-', code: 'A-' },
+    { name: 'B+', code: 'B+' },
+    { name: 'B-', code: 'B-' },
+    { name: 'AB+', code: 'AB+' },
+    { name: 'AB-', code: 'AB-' },
+    { name: 'O+', code: 'O+' },
+    { name: 'O-', code: 'O-' },
+  ];
 
-    const pacientes = [
-      {
-        id: '1',
-        nombres: 'Juan',
-        apellidoP: 'Pérez',
-        apellidoM: 'García',
-        rol: 'Paciente',
-        sexo: 'M',
-        fotoURL: 'https://img.freepik.com/foto-gratis/retrato-chico-casual-posando-estudio_176420-28907.jpg?semt=ais_hybrid&w=740',
-        correo: 'juan.perez@email.com',
-        telefono: '+1 (555) 987-6543',
-        historial: [
-          {
-            medico: 'Dr. Carlos Mendoza',
-            especialidad: 'Medicina General',
-            fecha: '1/1/2024',
-            diagnostico: 'Gripe común',
-            tratamiento: 'Paracetamol, reposo, hidratación',
-            sintomas: 'Fiebre, dolor de garganta, congestión nasal',
-            notas: 'Recuperación completa en 7 días'
-          },
-          {
-            medico: 'Dr. Ana Rodríguez',
-            especialidad: 'Dermatología',
-            fecha: '9/12/2023',
-            diagnostico: 'Dermatitis de contacto',
-            tratamiento: 'Crema con corticoides, evitar alérgenos',
-            sintomas: 'Erupción cutánea en brazos',
-            notas: 'Mejoría notable en 2 semanas'
-          }
-        ]
-      },
-    ]
+  const pacientes = [
+    {
+      id: '1',
+      nombres: 'Juan',
+      apellidoP: 'Pérez',
+      apellidoM: 'García',
+      rol: 'Paciente',
+      sexo: 'M',
+      fotoURL: 'https://img.freepik.com/foto-gratis/retrato-chico-casual-posando-estudio_176420-28907.jpg?semt=ais_hybrid&w=740',
+      correo: 'juan.perez@email.com',
+      telefono: '+1 (555) 987-6543',
+    },
+  ];
 
-    const [paciente, setPaciente] = useState(pacientes[0]);
+  const [paciente, setPaciente] = useState(pacientes[0]);
 
-    const handleChangeAlergias = (value) => {
-      setAlergias(value);
-    };
+  const handleChangeAlergias = (value) => {
+    setAlergias(value);
+  };
 
-    // reguex para validar que la presion ingresada sea valida
-    const [presion, setPresion] = useState('');
-    const [error, setError] = useState(false);
+  // Regex para validar presión arterial
+  const [presion, setPresion] = useState('');
+  const [error, setError] = useState(false);
 
-    const validarPresion = (value) => {
-      const regex = /^\d{2,3}\/\d{2,3}$/;
-      setError(!regex.test(value));
-      setPresion(value);
-    };
+  const validarPresion = (value) => {
+    const regex = /^\d{2,3}\/\d{2,3}$/;
+    setError(!regex.test(value));
+    setPresion(value);
+  };
 
-    const [frecuencia, setFrecuencia] = useState('');
-    const [errorFreq, setErrorFreq] = useState(false);
+  const [frecuencia, setFrecuencia] = useState('');
+  const [errorFreq, setErrorFreq] = useState(false);
 
-    const validarFrecuencia = (value) => {
-      const regex = /^\d{2,3}$/;
-      setErrorFreq(!regex.test(value));
-      setFrecuencia(value);
-    };
+  const validarFrecuencia = (value) => {
+    const regex = /^\d{2,3}$/;
+    setErrorFreq(!regex.test(value));
+    setFrecuencia(value);
+  };
 
-    const [temperatura, setTemperatura] = useState('');
-    const [errorTemp, setErrorTemp] = useState(false);
+  const [temperatura, setTemperatura] = useState('');
+  const [errorTemp, setErrorTemp] = useState(false);
 
-    const validarTemperatura = (value) => {
-      const regex = /^(3[0-9]|4[0-4])(\.\d)?$/;
-      setErrorTemp(!regex.test(value));
-      setTemperatura(value);
-    };
+  const validarTemperatura = (value) => {
+    const regex = /^(3[0-9]|4[0-4])(\.\d)?$/;
+    setErrorTemp(!regex.test(value));
+    setTemperatura(value);
+  };
 
-  // validar los datos de la primera cita
+  // Estado de errores
+  const [errores, setErrores] = useState({
+    alergias: false,
+    edad: false,
+    tipoSangre: false,
+    peso: false,
+    estatura: false,
+  });
+  
+  const [erroresConsulta, setErroresConsulta] = useState({
+    sintomas: false,
+    diagnostico: false,
+    tratamiento: false,
+  });
+
+  // Validar datos básicos
   const validarDatosBasicos = () => {
-  const nuevosErrores = {};
+    const nuevosErrores = {};
 
-  if (edad === null) nuevosErrores.edad = true;
-  if (!tipoSangreSeleccionada) nuevosErrores.tipoSangre = true;
-  if (peso === null) nuevosErrores.peso = true;
-  if (estatura === null) nuevosErrores.estatura = true;
+    if (edad === null) nuevosErrores.edad = true;
+    if (!tipoSangreSeleccionada) nuevosErrores.tipoSangre = true;
+    if (peso === null) nuevosErrores.peso = true;
+    if (estatura === null) nuevosErrores.estatura = true;
 
-  const alergiasVacias = alergias.trim() === '';
-  const regex = /^([A-Za-zÁÉÍÓÚáéíóúñÑ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*)(,\s*[A-Za-zÁÉÍÓÚáéíóúñÑ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*)*$/;
-  const formatoValido = regex.test(alergias.trim());
+    const alergiasVacias = alergias.trim() === '';
+    const regex = /^([A-Za-zÁÉÍÓÚáéíóúñÑ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*)(,\s*[A-Za-zÁÉÍÓÚáéíóúñÑ]+(?:\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*)*$/;
+    const formatoValido = regex.test(alergias.trim());
 
-  if (alergiasVacias || !formatoValido) nuevosErrores.alergias = true;
+    if (alergiasVacias || !formatoValido) nuevosErrores.alergias = true;
 
-  setErrores(nuevosErrores);
+    setErrores(nuevosErrores);
 
-  if (Object.keys(nuevosErrores).length === 0) {
-    // Actualizamos los datos del paciente en el estado
-    setPaciente(prev => ({
-      ...prev,
-      edad,
-      tipoSangre: tipoSangreSeleccionada.name,
-      peso,
-      estatura,
-      alergias
-    }));
+    if (Object.keys(nuevosErrores).length === 0) {
+      setPaciente(prev => ({
+        ...prev,
+        edad,
+        tipoSangre: tipoSangreSeleccionada.name,
+        peso,
+        estatura,
+        alergias,
+      }));
 
-    setDatosGuardados(true); // Oculta el formulario azul
-  }
+      setDatosGuardados(true);
+      return true;
+    }
+    return false;
+  };
 
-};
+  // Validar consulta
+  const validarConsulta = () => {
+    const nuevosErrores = {
+      sintomas: sintomas.trim() === '',
+      diagnostico: diagnostico.trim() === '',
+      tratamiento: tratamiento.trim() === '',
+    };
+
+    setErroresConsulta(nuevosErrores);
+
+    const hayError = Object.values(nuevosErrores).some(error => error);
+    return !hayError;
+  };
+
+  const handleGuardarConsulta = () => {
+    if (validarConsulta()) {
+      setMostrarPDF(true);
+      return true;
+    }
+    return false;
+  };
 
 return (
   <div className="homeConsultaContainer">
@@ -286,7 +306,6 @@ return (
 
                 <div className="datosMedicos">
                   <h5>Datos Médicos</h5>
-                 <button><FaRegEdit /> Editar</button> 
                   <div className="datos-grid">
                     <div className="dato">
                       <span className="icono rojo"><MdOutlineBloodtype /></span>
@@ -372,7 +391,9 @@ return (
 
                   <div className="campo-signo">
                     <p>Saturación O2</p>
-                    <InputText placeholder="98%" />
+                    <InputText placeholder="98%" 
+                    value={saturacion}
+                    onChange={(e) => setSaturacion(e.target.value)}/>
                   </div>
 
                 </div>
@@ -390,7 +411,9 @@ return (
                     value={sintomas}
                     onChange={(e) => setSintomas(e.target.value)}
                     rows={5}
+                    className={erroresConsulta.sintomas ? 'p-invalid' : ''}
                   />
+                  {erroresConsulta.sintomas && <small className="p-error">Este campo es obligatorio</small>}
                 </div>
 
                 <div className="campoConsulta">
@@ -401,7 +424,9 @@ return (
                     value={diagnostico}
                     onChange={(e) => setDiagnostico(e.target.value)}
                     rows={5}
+                    className={erroresConsulta.diagnostico ? 'p-invalid' : ''}
                   />
+                  {erroresConsulta.diagnostico && <small className="p-error">Este campo es obligatorio</small>}
                 </div>
 
                 <div className="campoConsulta">
@@ -412,7 +437,9 @@ return (
                     value={tratamiento}
                     onChange={(e) => setTratamiento(e.target.value)}
                     rows={5}
+                    className={erroresConsulta.tratamiento ? 'p-invalid' : ''}
                   />
+                  {erroresConsulta.tratamiento && <small className="p-error">Este campo es obligatorio</small>}
                 </div>
 
                 <div className="campoConsulta">
@@ -437,9 +464,40 @@ return (
                   />
                 </div>
 
-                <button className="btnGuardarConsulta">
+                <button className="btnGuardarConsulta" 
+                    onClick={() => {
+                    if (handleGuardarConsulta()) {
+                      setMostrarPDF(true);
+                    }
+                  }}>
                   <GrDocumentText /> Guardar consulta
                 </button>
+                <Dialog
+                  header="Vista previa de receta"
+                  visible={mostrarPDF}
+                  onHide={() => setMostrarPDF(false)}
+                  style={{ width: '90vw' }}
+                  modal
+                  maximizable
+                >
+                  <div style={{ height: '80vh' }}>
+                    <PDFViewer width="100%" height="100%">
+                      <RecetaPDF
+                        paciente={paciente}
+                        presion={presion}
+                        frecuencia={frecuencia}
+                        temperatura={temperatura}
+                        saturacion={saturacion}
+                        diagnostico={diagnostico}
+                        sintomas={sintomas}
+                        tratamiento={tratamiento}
+                        recomendaciones={recomendaciones}
+                        notas={notas}
+                      />
+                    </PDFViewer>
+                  </div>
+                </Dialog>
+
               </div>
 
             <HistorialMedico />
