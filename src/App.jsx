@@ -41,6 +41,7 @@ import DoctoresAdmin from './components/admin/doctores-admin';
 import EspecialidadesAdmin from './components/admin/especialidades-admin';
 import PacientesAdmin from './components/admin/pacientes-admin';
 import ServiciosAdmin from './components/admin/servicios-admin';
+import HistorialMedico from './components/medico/historial-medico';
 
 addLocale('es', {
   firstDayOfWeek: 1,
@@ -94,6 +95,7 @@ function App() {
           <Route path="servicios" element={<ServiciosAdmin />} />
           <Route path="pacientes" element={<PacientesAdmin />} />
           <Route path="citas" element={<CitasAdmin />} />
+          <Route path="historial/:pacienteId" element={<HistorialMedico />} />
         </Route>
 
       </Routes>

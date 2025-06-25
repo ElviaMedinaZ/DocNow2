@@ -1,10 +1,10 @@
-/**
+/*
  * Descripción: Componente de administración para gestionar pacientes.
  * Fecha: 23 Junio de 2025
  * Programador: Elvia Medina
  */
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import '../../styles/admin/admin-base.css';
@@ -12,42 +12,10 @@ import RegistroPaciente from '../paciente/registro-paciente';
 import GenericTable from './tabla-generica';
 
 const datosIniciales = [
-  {
-    id: 1,
-    nombre: 'José Ramírez',
-    edad: 34,
-    sexo: 'M',
-    telefono: '+1234567890',
-    ultimaVisita: '2024-01-15',
-    estado: 'Activo',
-  },
-  {
-    id: 2,
-    nombre: 'Laura Torres',
-    edad: 28,
-    sexo: 'F',
-    telefono: '+1234567891',
-    ultimaVisita: '2024-01-14',
-    estado: 'Activo',
-  },
-  {
-    id: 3,
-    nombre: 'Carlos Aguilar',
-    edad: 45,
-    sexo: 'M',
-    telefono: '+1234567892',
-    ultimaVisita: '2024-01-13',
-    estado: 'Inactivo',
-  },
-  {
-    id: 4,
-    nombre: 'Marta Reyes',
-    edad: 52,
-    sexo: 'F',
-    telefono: '+1234567893',
-    ultimaVisita: '2024-01-12',
-    estado: 'Activo',
-  },
+  { id: 1, nombre: 'José Ramírez', edad: 34, sexo: 'M', telefono: '+1234567890', ultimaVisita: '2024-01-15', estado: 'Activo' },
+  { id: 2, nombre: 'Laura Torres', edad: 28, sexo: 'F', telefono: '+1234567891', ultimaVisita: '2024-01-14', estado: 'Activo' },
+  { id: 3, nombre: 'Carlos Aguilar', edad: 45, sexo: 'M', telefono: '+1234567892', ultimaVisita: '2024-01-13', estado: 'Inactivo' },
+  { id: 4, nombre: 'Marta Reyes', edad: 52, sexo: 'F', telefono: '+1234567893', ultimaVisita: '2024-01-12', estado: 'Activo' },
 ];
 
 export default function PacientesAdmin() {
@@ -56,6 +24,17 @@ export default function PacientesAdmin() {
   const [menuAbierto, setMenu] = useState(null);
   const [modalAbierto, setModal] = useState(false);
   const [pacEdit, setEdit] = useState(null);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenu(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const toggleMenu = (id) => setMenu((prev) => (prev === id ? null : id));
   const cerrarModal = () => { setModal(false); setEdit(null); setMenu(null); };
@@ -140,10 +119,13 @@ export default function PacientesAdmin() {
             <FaEllipsisV />
           </button>
           {menuAbierto === row.id && (
-            <div className="menu-acciones">
+            <div className="menu-acciones" ref={menuRef}>
               <button onClick={() => console.log(`Ver historial de ${row.nombre}`)}>Ver historial</button>
               <button onClick={() => abrirEditar(row)}>Editar</button>
               <button onClick={() => console.log(`Agendar cita para ${row.nombre}`)}>Agendar cita</button>
+              <button onClick={() => toggleEstado(row.id)}>
+                {row.estado === 'Activo' ? 'Inactivar' : 'Activar'}
+              </button>
               <button className="eliminar" onClick={() => eliminar(row.id)}>Eliminar</button>
             </div>
           )}

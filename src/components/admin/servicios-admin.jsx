@@ -1,10 +1,10 @@
-/**
+/*
  * Descripción: Módulo para gestionar los servicios médicos ofrecidos.
  * Fecha: 23 Junio de 2025
  * Programador: Elvia Medina
  */
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import '../../styles/admin/admin-base.css';
@@ -29,6 +29,17 @@ export default function ServiciosAdmin() {
   const [menuAbierto, setMenu] = useState(null);
   const [nuevo, setNuevo] = useState(null);
   const [enEdicion, setEnEdicion] = useState(null);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenu(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const toggleMenu = (id) => setMenu((prev) => (prev === id ? null : id));
   const cancelarNuevo = () => setNuevo(null);
@@ -68,7 +79,11 @@ export default function ServiciosAdmin() {
     }
 
     setServicios((prev) =>
-      prev.map((s) => (s.id === enEdicion.id ? { ...enEdicion, precio: parseFloat(enEdicion.precio) } : s))
+      prev.map((s) =>
+        s.id === enEdicion.id
+          ? { ...enEdicion, precio: parseFloat(enEdicion.precio) }
+          : s
+      )
     );
     setEnEdicion(null);
   };
@@ -182,11 +197,15 @@ export default function ServiciosAdmin() {
           </div>
         ) : (
           <div className="acciones-wrapper">
-            <button className="btn-acciones" onClick={() => toggleMenu(row.id)}><FaEllipsisV /></button>
+            <button className="btn-acciones" onClick={() => toggleMenu(row.id)}>
+              <FaEllipsisV />
+            </button>
             {menuAbierto === row.id && (
-              <div className="menu-acciones">
+              <div className="menu-acciones" ref={menuRef}>
                 <button onClick={() => editarFila(row)}>Editar</button>
-                <button onClick={() => toggleEstado(row.id)}>{row.estado === 'Activo' ? 'Inactivar' : 'Activar'}</button>
+                <button onClick={() => toggleEstado(row.id)}>
+                  {row.estado === 'Activo' ? 'Inactivar' : 'Activar'}
+                </button>
                 <button className="eliminar" onClick={() => eliminar(row.id)}>Eliminar</button>
               </div>
             )}
