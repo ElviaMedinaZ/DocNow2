@@ -1,3 +1,9 @@
+/**
+ * Descripción: Estilos de la consulta medica
+ * Fecha: 14-Jun-2025
+ * Programador: Irais Reyes
+ */
+
 .contenido-pagina {
   padding: 2rem 4rem;
 }
@@ -270,8 +276,8 @@
   padding: 4px 10px;
   border-radius: 20px;
   font-size: 14px;
-  max-width: 120px; /* limita ancho para que no se salga */
-  white-space: normal; /* permite que el texto dentro del tag se quiebre */
+  max-width: 120px; 
+  white-space: normal;
 }
 
 .contactoPaciente {
@@ -361,3 +367,86 @@
   transition: background-color 0.3s ease;
 }
 
+@media (max-width: 768px) {
+  .contenido-pagina {
+    padding: 1rem;
+  }
+
+  .consulta-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .consulta-header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .alergias-group {
+    grid-column: span 1;
+  }
+
+  .boton-guardar-container {
+    position: static;
+    margin-top: 1.5rem;
+  }
+
+  .contenedorPacienteSignos {
+    flex-direction: column;
+  }
+
+  .perfilMedicoPaciente,
+  .signosVitalesPaciente,
+  .perfilCompletoPaciente,
+  .tarjetaDetallesConsulta {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .datos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .signos-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .imgPacientePerfil {
+    width: 80px;
+    height: 80px;
+    margin-left: 0;
+  }
+
+  .fotoPaciente {
+    width: 80px;
+    height: 80px;
+  }
+
+  .volver-btn {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .btnGuardarConsulta,
+  .boton-guardar {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .alergias-tags {
+    gap: 4px;
+  }
+
+  .tag-alergia {
+    max-width: 100%;
+    font-size: 12px;
+  }
+}

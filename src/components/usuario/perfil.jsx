@@ -21,43 +21,106 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const telRegex = /^\d{10}$/;
 const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
+const catalogoServicios = [
+  'Consulta', 'Toma de presión', 'Inyecciones', 'Ultrasonido', 'Electrocardiograma',
+  'Curaciones', 'Papanicolaou', 'Colocación de sueros', 'Revisión oftalmológica',
+  'Audiometría', 'Vacunación', 'Chequeo general', 'Extracción de puntos',
+  'Pruebas COVID-19', 'Rayos X',
+];
+
 export default function PerfilWeb() {
+  // Rol del usuario, puede ser 'usuario' o 'medico'
+  const [rol] = useState('medico'); // Cambia a 'usuario' para probar otro perfil
+
   const [modoEdicion, setModoEdicion] = useState(false);
   const [foto, setFoto] = useState(null);
 
+  const [serviciosSeleccionados, setServiciosSeleccionados] = useState(['Rayos X']);
+
+  // Ventana emergente para seleccionar servicios
+  const abrirModalServicios = async () => {
+  const htmlChecks = catalogoServicios.map((svc, i) =>
+    `<div style="text-align:left;margin:6px 0">
+       <input type="checkbox" id="svc_${i}" ${serviciosSeleccionados.includes(svc) ? 'checked' : ''}>
+       <label for="svc_${i}" style="margin-left:6px">${svc}</label>
+     </div>`
+  ).join('');
+
+  const { isConfirmed } = await MySwal.fire({
+    title: 'Selecciona los servicios',
+    html: htmlChecks,
+    confirmButtonText: 'Guardar',
+    cancelButtonText: 'Cancelar',
+    showCancelButton: true,
+    preConfirm: () => {
+      const nuevos = [];
+      catalogoServicios.forEach((svc, i) => {
+        const checkbox = document.getElementById(`svc_${i}`);
+        if (checkbox && checkbox.checked) nuevos.push(svc);
+      });
+      return nuevos;
+    },
+    confirmButtonColor: '#0A3B74',
+    cancelButtonColor: '#d33',
+  });
+
+  if (isConfirmed) {
+    const nuevosServicios = [];
+    catalogoServicios.forEach((svc, i) => {
+      const checkbox = document.getElementById(`svc_${i}`);
+      if (checkbox?.checked) nuevosServicios.push(svc);
+    });
+    setServiciosSeleccionados(nuevosServicios);
+  }
+};
+
+
   // Datos del perfil (nombre fijo, no editable)
-  const nombre = 'María López';
-  const [correo, setCorreo] = useState('maria.lopez@gmail.com');
+  const nombre = rol === 'medico' ? 'Dra María Gonzalez' : 'María López';
+  const [correo, setCorreo] = useState(
+    rol === 'medico' ? 'maria.gonzalez@hospital.com' : 'maria.lopez@gmail.com'
+  );
   const [telefono, setTelefono] = useState('5551234567');
   const [password, setPassword] = useState('Contraseña$123');
 
+  // Campos adicionales para médico
+  const [descripcion, setDescripcion] = useState('10 años de experiencia.');
+
   // Datos originales para restaurar al cancelar
   const [originalData, setOriginalData] = useState({
-    correo: 'maria.lopez@gmail.com',
-    telefono: '5551234567',
-    password: 'Contraseña$123',
+    correo,
+    telefono,
+    password,
+    descripcion,
   });
 
   const [errores, setErrores] = useState({});
 
+  // Maneja el cambio de la imagen de perfil
   const handleFotoChange = (e) => {
     const archivo = e.target.files[0];
     if (archivo) setFoto(URL.createObjectURL(archivo));
   };
 
+  // Activa la edición y guarda los datos actuales
   const activarEdicion = () => {
-    setOriginalData({ correo, telefono, password });
+    setOriginalData({ correo, telefono, password, descripcion });
     setModoEdicion(true);
   };
 
+  // Cancela los cambios y restaura los datos originales
   const cancelarCambios = () => {
     setCorreo(originalData.correo);
     setTelefono(originalData.telefono);
     setPassword(originalData.password);
+    if (rol === 'medico') {
+      setDescripcion(originalData.descripcion);
+    }
     setErrores({});
     setModoEdicion(false);
   };
 
+  // Valida los campos del formulario
   const validarCampos = () => {
     const nuevosErrores = {};
     const nuevosMensajes = {};
@@ -77,10 +140,23 @@ export default function PerfilWeb() {
       nuevosMensajes.password = 'Mínimo 8 caracteres, una mayúscula, un número y un símbolo';
     }
 
+    if (rol === 'medico' && serviciosSeleccionados.length === 0) {
+      nuevosErrores.servicios = true;
+      nuevosMensajes.servicios = 'Debes seleccionar al menos un servicio';
+    }
+
+    if (rol === 'medico') {
+      if (!descripcion.trim()) {
+        nuevosErrores.descripcion = true;
+        nuevosMensajes.descripcion = 'La descripción es obligatoria';
+      }
+    }
+
     setErrores(nuevosErrores);
     return nuevosMensajes;
   };
 
+  // Guarda los cambios realizados
   const guardarCambios = async () => {
     const mensajes = validarCampos();
 
@@ -108,9 +184,7 @@ export default function PerfilWeb() {
 
     if (!confirm.isConfirmed) return;
 
-
     setModoEdicion(false);
-    setPassword('');
     setErrores({});
 
     await MySwal.fire({
@@ -121,6 +195,7 @@ export default function PerfilWeb() {
     });
   };
 
+  // Cierra la sesión del usuario
   const handleCerrarSesion = () => {
     MySwal.fire({
       title: '¿Cerrar sesión?',
@@ -191,6 +266,40 @@ export default function PerfilWeb() {
             disabled={!modoEdicion}
             className={`${styles.inputPerfil} ${errores.telefono ? 'p-invalid' : ''}`}
           />
+
+          {/* Campos exclusivos para médicos */}
+          {rol === 'medico' && (
+            <>
+              <label className={styles.laberPerfil}>Servicio</label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '8px' }}>
+                {serviciosSeleccionados.length > 0 ? (
+                  serviciosSeleccionados.map((svc, i) => (
+                    <span key={i} style={{
+                      background: '#0A3B74',
+                      color: 'white',
+                      padding: '4px 10px',
+                      borderRadius: '16px',
+                      fontSize: '0.85rem'
+                    }}>{svc}</span>
+                  ))
+                ) : (
+                  <span style={{ fontStyle: 'italic', color: '#999' }}>Sin servicios seleccionados</span>
+                )}
+              </div>
+
+              {modoEdicion && (
+                <Button label="Editar servicios" icon="pi pi-pencil" className={styles.btnEditarCambios} onClick={abrirModalServicios} />
+              )}
+
+              <label className={styles.laberPerfil}>Descripción</label>
+              <InputText
+                value={descripcion}
+                onChange={(e) => setDescripcion(e.target.value)}
+                disabled={!modoEdicion}
+                className={`${styles.inputPerfil} ${errores.descripcion ? 'p-invalid' : ''}`}
+              />
+            </>
+          )}
         </div>
 
         <div className={styles.BotonesPerfilUsuario}>
