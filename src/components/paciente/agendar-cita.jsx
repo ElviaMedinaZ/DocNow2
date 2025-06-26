@@ -30,6 +30,17 @@ const availableTimes = [
   "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM"
 ];
 
+const convertirHoraAFecha = (horaStr, fechaBase) => {
+  const [horaMinuto, meridiano] = horaStr.split(" ");
+  let [horas, minutos] = horaMinuto.split(":").map(Number);
+  if (meridiano === "PM" && horas !== 12) horas += 12;
+  if (meridiano === "AM" && horas === 12) horas = 0;
+
+  const fecha = new Date(fechaBase);
+  fecha.setHours(horas, minutos, 0, 0);
+  return fecha;
+};
+
 export default function AgendarCita({ onClose }) {
   const [step, setStep] = useState(1);
   const [date, setDate] = useState(null);
@@ -139,10 +150,19 @@ export default function AgendarCita({ onClose }) {
     setStep(step + 1);
   };
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const renderStep1 = () => {
-    const today = new Date();
-    const maxDate = new Date();
-    maxDate.setFullYear(today.getFullYear() + 2);
+    const ahora = new Date();
+    const esHoy = date && date.toDateString() === ahora.toDateString();
+
+    const horariosFiltrados = esHoy
+      ? availableTimes.filter((hora) => {
+          const horaCompleta = convertirHoraAFecha(hora, date);
+          return horaCompleta > ahora;
+        })
+      : availableTimes;
 
     return (
       <div className="ap-container">
@@ -155,8 +175,9 @@ export default function AgendarCita({ onClose }) {
               onChange={(e) => setDate(e.value)}
               inline
               showIcon
-              minDate={today}
-              maxDate={maxDate}
+              // minDate={today}
+                minDate={today}
+              // maxDate={maxDate}
             />
           </div>
 
@@ -184,7 +205,7 @@ export default function AgendarCita({ onClose }) {
             <h3>Horarios Disponibles</h3>
             <p>{date.toLocaleDateString("es-MX", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
             <div className="ap-horarios-grid">
-              {availableTimes.map((time) => (
+              {horariosFiltrados.map((time) => (
                 <button
                   key={time}
                   className={`ap-hora-btn ${selectedTime === time ? "ap-hora-seleccionada" : ""}`}

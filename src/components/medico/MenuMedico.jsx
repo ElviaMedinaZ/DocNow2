@@ -79,20 +79,17 @@ export default function HeaderMedico() {
       <Link to="/perfil" onClick={() => op.current.hide()} className={styles.kebabLinkMedico}>
         <i /><FiUser /> Perfil
       </Link>
-        <a href="#configuracion" className={styles.kebabLinkMedico}>
-          <i className="pi pi-cog" /> Configuración
-        </a>
         <a
-  href="#logout"
-  onClick={async (e) => {
-    e.preventDefault();
-    op.current.hide();
-    await cerrarSesion();
-  }}
-  className={`${styles.kebabLinkMedico} ${styles.logoutLinkMedico}`}
->
-  <i className="pi pi-sign-out" /> Cerrar sesión
-</a>
+          href="#logout"
+          onClick={async (e) => {
+            e.preventDefault();
+            op.current.hide();
+            await cerrarSesion();
+          }}
+          className={`${styles.kebabLinkMedico} ${styles.logoutLinkMedico}`}
+        >
+          <i className="pi pi-sign-out" /> Cerrar sesión
+        </a>
       </OverlayPanel>
     </header>
   );
