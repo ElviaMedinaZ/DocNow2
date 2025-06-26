@@ -16,7 +16,8 @@ import {
   actualizarDoctor,
   obtenerServiciosDesdeFirestore,
   actualizarServiciosDoctor,
-  obtenerDoctorPorId
+  obtenerDoctorPorId,
+  eliminarDoctor
 } from '../../utils/firebaseDoctores';
 
 
@@ -32,47 +33,52 @@ export default function DoctoresAdmin() {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenu(null);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+          if (menuRef.current && !menuRef.current.contains(e.target)) {
+            setMenu(null);
+          }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+      }, []);
 
-  useEffect(() => {
-    const cargar = async () => {
-      const [doctoresFirestore, servicios] = await Promise.all([
-        cargarDoctoresDesdeFirestore(),
-        obtenerServiciosDesdeFirestore()
-      ]);
-      setDoctores(doctoresFirestore);
-      setCatalogoServicios(servicios);
-    };
-    cargar();
-  }, []);
+      useEffect(() => {
+        const cargar = async () => {
+          const [doctoresFirestore, servicios] = await Promise.all([
+            cargarDoctoresDesdeFirestore(),
+            obtenerServiciosDesdeFirestore()
+          ]);
+          setDoctores(doctoresFirestore);
+          setCatalogoServicios(servicios);
+        };
+        cargar();
+      }, []);
 
-  const toggleMenu = (id) => setMenu((prev) => (prev === id ? null : id));
-  const cerrarModal = () => { setModal(false); setEditando(null); setMenu(null); };
+      const toggleMenu = (id) => setMenu((prev) => (prev === id ? null : id));
+      const cerrarModal = () => { setModal(false); setEditando(null); setMenu(null); };
 
-  const eliminar = (id) => {
-    const doctor = doctores.find((d) => d.id === id);
-    Swal.fire({
-      title: '¿Eliminar doctor?',
-      text: `Se eliminará a ${doctor?.nombre}.`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#b52020',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((r) => {
+      const eliminar = async (id) => {
+      const doctor = doctores.find((d) => d.id === id);
+      const r = await Swal.fire({
+        title: '¿Eliminar doctor?',
+        text: `Se eliminará a ${doctor?.nombre}.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#b52020',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+      });
+
       if (r.isConfirmed) {
-        setDoctores((prev) => prev.filter((d) => d.id !== id));
-        Swal.fire({ title: 'Eliminado', icon: 'success', timer: 1500, showConfirmButton: false });
+        try {
+          await eliminarDoctor(id); // eliminación en Firestore
+          setDoctores((prev) => prev.filter((d) => d.id !== id)); // actualización del estado
+          Swal.fire({ title: 'Eliminado', icon: 'success', timer: 1500, showConfirmButton: false });
+        } catch {
+          Swal.fire('Error', 'No se pudo eliminar al doctor.', 'error');
+        }
       }
-    });
-  };
+    };
 
   const toggleEstado = async (id) => {
     const d = doctores.find((dx) => dx.id === id);

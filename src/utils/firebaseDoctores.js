@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, updateDoc,getDoc} from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc,getDoc,deleteDoc} from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
 /**
@@ -102,3 +102,8 @@ export const obtenerDoctorPorId = async (id) => {
     return null;
   }
 };
+
+export async function eliminarDoctor(id) {
+  const ref = doc(db, 'usuarios', id);
+  await deleteDoc(ref);
+}
