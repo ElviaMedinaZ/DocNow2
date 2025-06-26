@@ -120,7 +120,7 @@ export default function AdminLayout() {
         <div className={styles.accountSection}>
           <small className={styles.navSection}>Mi Cuenta</small>
           <button className={styles.accountBtn}>
-            <FaUserCircle /> {nombreAdmin || 'Perfil'}
+            <FaUserCircle /> Admin{nombreAdmin ? `: ${nombreAdmin}` : ''}
           </button>
 
          <button
