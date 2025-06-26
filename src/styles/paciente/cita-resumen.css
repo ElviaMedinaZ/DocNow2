@@ -97,3 +97,49 @@
 .cr-btn-confirm:hover {
   background: var(--color-principal-hover);
 }
+
+@media (max-width: 600px) {
+  .cr-container {
+    padding: 1.5rem 1rem;
+    margin: 1rem;
+  }
+
+  .cr-title {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .cr-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .cr-subsubtitle {
+    font-size: 1rem;
+  }
+
+  .cr-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .cr-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .cr-alert {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  .cr-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cr-btn-outline,
+  .cr-btn-confirm {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+}

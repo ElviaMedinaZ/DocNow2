@@ -1,0 +1,190 @@
+/*
+ * Descripción: Estilos de la vista del pago de la cita
+ * Fecha: 24 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+.pago-cita-container {
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 10px;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--texto-principal);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.pago-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.pago-form {
+  flex: 1;
+  color: var(--azul-fuerte-buscador);
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pago-form input {
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  color:black;
+  background-color: white !important;
+  font-size: 1rem;
+  transition: border 0.2s ease;
+}
+
+.pago-form input:focus {
+  border-color: var(--azul-fuerte);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 62, 126, 0.1);
+}
+
+.pago-form button {
+  margin-top: 1rem;
+  padding: 0.9rem;
+  background-color: var(--color-primary);
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.ap-form-grid input, .ap-form-grid textarea {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 15px;
+    background-color: #fff;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ap-form-grid input, .ap-form-grid textarea :hover{
+    padding: 12px;
+    border: 1px solid var(--azul-fuerte);
+}
+
+.ap-form-grid input, .ap-form-grid textarea{
+    border: 1px solid var(--azul-fuerte);
+}
+
+
+.pago-form button:hover {
+  background-color: var(--color-principal-hover); 
+}
+
+.pago-resumen {
+  flex: 1;
+  min-width: 260px;
+  background-color: var(--azul-claro);
+  border-left: 5px solid var(--azul-fuerte);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.pago-resumen h4 {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: var(--azul-fuerte);
+}
+
+.pago-resumen p {
+  margin: 0.6rem 0;
+  font-size: 1rem;
+}
+
+.pago-resumen p span {
+  font-weight: bold;
+  color: var(--azul-fuerte);
+}
+
+.confirmacion-container button {
+    background-color: var(--azul-fuerte-buscador);
+}
+
+input:-webkit-autofill {
+  background-color: white !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: #000 !important;  /* Forzar texto negro */
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.input-error {
+  border: 2px solid red !important;
+  background-color: #ffe5e5 !important;
+}
+
+.pago-form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.btn-volver {
+  background-color: #ccc;
+  color: #333;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-volver:hover {
+  background-color: #bbb;
+}
+.input-error {
+  border: 2px solid red !important;
+  background-color: #ffe6e6;
+}
+
+@media (max-width: 600px) {
+  .pago-cita-container {
+    padding: 1rem;
+  }
+
+  .pago-grid {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .pago-form,
+  .pago-resumen {
+    min-width: 100%;
+    padding: 1rem;
+  }
+
+  .pago-form input {
+    font-size: 0.95rem;
+    padding: 0.6rem;
+  }
+
+  .pago-resumen {
+    border-left: none;
+    border-top: 4px solid var(--azul-fuerte);
+  }
+
+  .pago-resumen p {
+    font-size: 0.95rem;
+  }
+
+  .pago-form-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .btn-volver,
+  .pago-form button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+}
