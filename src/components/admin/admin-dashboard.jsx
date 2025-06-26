@@ -13,39 +13,72 @@ import {
 } from 'react-icons/fa';
 
 import styles from '../../styles/admin/admin-dashboard.module.css';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
+
 
 export default function AdminDashboard() {
-  /* Tarjetas */
-  const stats = [
-    {
-      id: 1,
-      label: 'Total Pacientes',
-      value: '1,247',
-      subtitle: '+12% desde el mes pasado',
-      icon: <FaUserInjured />,
-    },
-    {
-      id: 2,
-      label: 'Total Doctores',
-      value: '45',
-      subtitle: '+2 nuevos este mes',
-      icon: <FaUserMd />,
-    },
-    {
-      id: 3,
-      label: 'Citas Totales',
-      value: '892',
-      subtitle: '+8% desde el mes pasado',
-      icon: <FaCalendarCheck />,
-    },
-    {
-      id: 4,
-      label: 'Especialidades',
-      value: '12',
-      subtitle: 'Activas',
-      icon: <FaStethoscope />,
-    },
-  ];
+  
+  const [stats, setStats] = useState([]);
+
+  useEffect(() => {
+    const cargarEstadisticas = async () => {
+      try {
+        // Total Pacientes
+        const pacientesSnap = await getDocs(query(collection(db, 'usuarios'), where('rol', '==', 'Paciente')));
+        const totalPacientes = pacientesSnap.size;
+
+        // Total Doctores
+        const doctoresSnap = await getDocs(query(collection(db, 'usuarios'), where('rol', '==', 'Doctor')));
+        const totalDoctores = doctoresSnap.size;
+
+        // Total Citas
+        const citasSnap = await getDocs(collection(db, 'citas'));
+        const totalCitas = citasSnap.size;
+
+        // Total Especialidades
+        const especialidadesSnap = await getDocs(collection(db, 'Especialidades'));
+        const totalEspecialidades = especialidadesSnap.size;
+
+        setStats([
+          {
+            id: 1,
+            label: 'Total Pacientes',
+            value: totalPacientes,
+            subtitle: '',
+            icon: <FaUserInjured />,
+          },
+          {
+            id: 2,
+            label: 'Total Doctores',
+            value: totalDoctores,
+            subtitle: '',
+            icon: <FaUserMd />,
+          },
+          {
+            id: 3,
+            label: 'Citas Totales',
+            value: totalCitas,
+            subtitle: '',
+            icon: <FaCalendarCheck />,
+          },
+          {
+            id: 4,
+            label: 'Especialidades',
+            value: totalEspecialidades,
+            subtitle: '',
+            icon: <FaStethoscope />,
+          },
+        ]);
+      } catch (error) {
+        console.error('Error al obtener estadísticas:', error);
+      }
+    };
+
+    cargarEstadisticas();
+  }, []);
+
+
 
   /* Datos demo */
   const [citasMensuales, setCitasMensuales] = useState([
