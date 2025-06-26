@@ -27,6 +27,7 @@ import { MdOutlineLocalPhone } from "react-icons/md";
 import { LiaWeightSolid } from "react-icons/lia";
 import { LuRuler } from "react-icons/lu";
 import { IoIosCalendar } from "react-icons/io";
+import Swal from 'sweetalert2';
 import { IoWarningOutline } from "react-icons/io5";
 import { Dialog } from 'primereact/dialog';
 
@@ -175,12 +176,23 @@ export default function HomeMedico() {
   };
 
   const handleGuardarConsulta = () => {
+    if (!datosGuardados) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos incompletos',
+        text: 'Primero debes guardar los datos básicos del paciente.',
+      });
+      return false;
+    }
+
     if (validarConsulta()) {
       setMostrarPDF(true);
       return true;
     }
+
     return false;
   };
+
 
 return (
   <div className="homeConsultaContainer">
@@ -391,19 +403,6 @@ return (
                         )}
                       </div>
                     </div>
-
-                    {/* <div className="boton-guardar-container">
-                      <button
-                        className="boton-guardar"
-                        onClick={() => {
-                          if (validarDatosBasicos()) {
-                            setMostrarModalEdicion(false);
-                          }
-                        }}
-                      >
-                        <FiSave /> Guardar Cambios
-                      </button>
-                    </div> */}
                     <div className="botones-dialogo">
                       <button
                         className="btn-cancelarEdicion"
