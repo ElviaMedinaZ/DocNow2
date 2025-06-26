@@ -1,4 +1,4 @@
-/**
+/*
  * Descripción:Se agrega la pantalla de login
  * Fecha:11 Junio de 2025
  * Programador: Elvia Medina
@@ -128,6 +128,7 @@ export default function Login() {
           <InputText
             placeholder="Correo electrónico"
             type="email"
+            maxLength={40}
             value={datos.correoElectronico}
             onChange={e => manejarCambio('correoElectronico', e.target.value)}
             className={`loginInput ${errores.correoElectronico ? 'p-invalid' : ''}`}
@@ -141,12 +142,13 @@ export default function Login() {
             value={datos.contrasena}
             onChange={e => manejarCambio('contrasena', e.target.value)}
             toggleMask
+            maxLength={30}
             feedback={false}
             className="loginInput"
             inputClassName={errores.contrasena ? 'p-invalid' : ''}
           />
           <div className="forgot-wrapper">
-            <Link to="/RecuperarContrasena" className="forgot-link">
+            <Link to="/recuperar-contrasena" className="forgot-link">
               ¿Olvidaste tu contraseña?
             </Link>
           </div>

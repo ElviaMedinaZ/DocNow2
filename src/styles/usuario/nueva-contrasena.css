@@ -1,0 +1,90 @@
+/*
+ * Descripción: Estilos de la vista nueva contrasena
+ * Fecha: 25 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+.nueva-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  padding: 1rem;
+}
+
+.nueva-card {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.nueva-icono {
+  font-size: 3rem;
+  color: #0A3B74;
+  margin-bottom: 1rem;
+}
+
+.nueva-titulo {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #0A3B74;
+}
+
+.nueva-input-group {
+  margin-bottom: 1.2rem;
+}
+
+.nueva-input .p-inputtext {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.nueva-boton {
+  width: 100%;
+  background-color: #0A3B74;
+  border: none;
+  padding: 0.75rem;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 6px;
+}
+
+.nueva-imagen {
+  width: 250px;
+  height: 250px;
+  margin: 1rem 0;
+  object-fit: contain;
+}
+
+@media (max-width: 480px) {
+  .nueva-card {
+    padding: 2rem 1.5rem;
+    max-width: 90%;
+  }
+
+  .nueva-titulo {
+    font-size: 1.3rem;
+  }
+
+  .nueva-imagen {
+    width: 150px;
+    height: 150px;
+    margin: 0.5rem 0 1rem;
+  }
+
+  .nueva-input .p-inputtext {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+
+  .nueva-boton {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+}
