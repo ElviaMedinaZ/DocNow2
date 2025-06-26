@@ -212,6 +212,78 @@
    overflow-wrap: break-word;
 }
 
+.datosMedicos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.boton-guardarEdicion {
+  background-color: #00347a;
+  color: white;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  margin-top: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-editar {
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  margin-top: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-editar:hover {
+  background-color: #afafaf;
+}
+
+.botones-dialogo {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 1.5rem;
+}
+
+.btn-cancelarEdicion {
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  margin-top: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancelarEdicion:hover {
+  background-color: #5a6268;
+}
+
+.botones-dialogo {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap; /* Por si hay poco espacio en móviles */
+}
+
+.botones-dialogo button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .fotoPaciente {
   width: 100px;
   height: 100px;

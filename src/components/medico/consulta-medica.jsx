@@ -13,9 +13,10 @@ import { FloatLabel } from 'primereact/floatlabel';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from "primereact/inputtext";
 import { FiSave } from "react-icons/fi";
+import { BsXLg } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { BsHeartPulse } from "react-icons/bs";
-import { MdHistory } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
 import { GoArrowLeft } from "react-icons/go";
 import { FiUser } from "react-icons/fi";
 import { LuStethoscope } from "react-icons/lu";
@@ -28,6 +29,7 @@ import { LuRuler } from "react-icons/lu";
 import { IoIosCalendar } from "react-icons/io";
 import { IoWarningOutline } from "react-icons/io5";
 import { Dialog } from 'primereact/dialog';
+
 import HeaderMedico from '../../components/medico/MenuMedico';
 import HistorialMedico from '../../components/medico/historial-medico';
 import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
@@ -49,6 +51,7 @@ export default function HomeMedico() {
   const [notas, setNotas] = useState('');
   const [tipoSangreSeleccionada, setTipoSangreSeleccionada] = useState(null);
   const [alergias, setAlergias] = useState('');
+  const [mostrarModalEdicion, setMostrarModalEdicion] = useState(false);
   
   const tipoSangre = [
     { name: 'A+', code: 'A+' },
@@ -305,7 +308,123 @@ return (
                 </div>
 
                 <div className="datosMedicos">
-                  <h5>Datos Médicos</h5>
+                  <div className="datosMedicos-header">
+                    <h5>Datos Médicos</h5>
+                    <button className="btn-editar" onClick={() => setMostrarModalEdicion(true)}>
+                      <FaRegEdit /> Editar
+                    </button>
+                  </div>
+                  <Dialog
+                    header="Actualizar Datos del Paciente"
+                    visible={mostrarModalEdicion}
+                    style={{ width: '40vw' }}
+                    modal
+                    className="modal-editar-paciente"
+                    onHide={() => setMostrarModalEdicion(false)}
+                  >
+                    <div className="form-grid">
+                      {/* Edad */}
+                      <div className="form-group">
+                        <p>Edad</p>
+                        <FloatLabel>
+                          <InputNumber
+                            id="edad"
+                            value={edad}
+                            onValueChange={(e) => setEdad(e.value)}
+                            className={errores.edad ? 'p-invalid' : ''}
+                          />
+                        </FloatLabel>
+                      </div>
+
+                      {/* Tipo de Sangre */}
+                      <div className="form-group">
+                        <p>Tipo de sangre</p>
+                        <Dropdown
+                          value={tipoSangreSeleccionada}
+                          onChange={(e) => setTipoSangreSeleccionada(e.value)}
+                          options={tipoSangre}
+                          optionLabel="name"
+                          placeholder="Seleccionar"
+                          className={`w-full md:w-14rem ${errores.tipoSangre ? 'p-invalid' : ''}`}
+                        />
+                      </div>
+
+                      {/* Peso */}
+                      <div className="form-group">
+                        <p>Peso</p>
+                        <FloatLabel>
+                          <InputNumber
+                            id="peso"
+                            value={peso}
+                            onValueChange={(e) => setPeso(e.value)}
+                            className={errores.peso ? 'p-invalid' : ''}
+                          />
+                        </FloatLabel>
+                      </div>
+
+                      {/* Estatura */}
+                      <div className="form-group">
+                        <p>Estatura</p>
+                        <FloatLabel>
+                          <InputNumber
+                            id="estatura"
+                            value={estatura}
+                            onValueChange={(e) => setEstatura(e.value)}
+                            className={errores.estatura ? 'p-invalid' : ''}
+                          />
+                        </FloatLabel>
+                      </div>
+
+                      {/* Alergias */}
+                      <div className="form-group alergias-group">
+                        <p>Alergias</p>
+                        <InputText
+                          value={alergias}
+                          onChange={(e) => handleChangeAlergias(e.target.value)}
+                          placeholder="Ej: Penicilina, Mariscos (separar por comas)"
+                          className={errores.alergias ? 'p-invalid' : ''}
+                        />
+                        {errores.alergias && (
+                          <small className="mensaje-error">
+                            Ingresa al menos una alergia, separadas por comas. Solo texto permitido.
+                          </small>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* <div className="boton-guardar-container">
+                      <button
+                        className="boton-guardar"
+                        onClick={() => {
+                          if (validarDatosBasicos()) {
+                            setMostrarModalEdicion(false);
+                          }
+                        }}
+                      >
+                        <FiSave /> Guardar Cambios
+                      </button>
+                    </div> */}
+                    <div className="botones-dialogo">
+                      <button
+                        className="btn-cancelarEdicion"
+                        onClick={() => setMostrarModalEdicion(false)}
+                      >
+                       <BsXLg /> Cancelar
+                      </button>
+
+                      <button
+                        className="boton-guardarEdicion"
+                        onClick={() => {
+                          if (validarDatosBasicos()) {
+                            setMostrarModalEdicion(false);
+                          }
+                        }}
+                      >
+                        <FiSave /> Guardar Cambios
+                      </button>
+                    </div>
+
+                  </Dialog>
                   <div className="datos-grid">
                     <div className="dato">
                       <span className="icono rojo"><MdOutlineBloodtype /></span>
