@@ -201,17 +201,24 @@ export default function AgendarCita({ onClose }) {
       {step === 4 && (
         <PagoCita
           info={{ ...formData, total: (parseFloat(formData.precio) * 1.1).toFixed(2) }}
-          onConfirm={() => setStep(5)}
+          onConfirm={(datosPago) => {
+            setFormData((prev) => ({
+              ...prev,
+              tarjeta: datosPago.tarjeta,
+            }));
+            setStep(5);
+          }}
           onBack={() => setStep(3)}
         />
       )}
+
       {step === 5 && (
         <ConfirmacionCita
-          info={{ ...formData, total: (parseFloat(formData.precio) * 1.1).toFixed(2), tarjeta: "1213" }}
+          info={{ ...formData, total: (parseFloat(formData.precio) * 1.1).toFixed(2) }}
           onFinalizar={() => {
             Swal.fire({
               title: "¡Cita registrada con éxito!",
-              text: "Recibirá una confirmación por email o SMS.",
+              text: "Recibirá una confirmación por email",
               icon: "success",
               confirmButtonText: "OK"
             }).then(() => {

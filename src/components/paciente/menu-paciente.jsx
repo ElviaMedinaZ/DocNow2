@@ -89,7 +89,6 @@ export default function HeaderPaciente() {
         <i className="pi pi-user" /> Perfil
        </Link>
 
-        <a href="#configuracion"><i className="pi pi-cog" /> Configuración</a>
         <a href="#logout" className="btn-logout" onClick={async (e) => {
           e.preventDefault();
           op.current.hide();

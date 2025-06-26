@@ -69,15 +69,11 @@ export default function AdminLayout() {
         <div className={styles.accountSection}>
           <small className={styles.navSection}>Mi Cuenta</small>
           <button className={styles.accountBtn}>
-            <FaUserCircle /> Perfil
+            <FaUserCircle /> Administrador
           </button>
           <button className={`${styles.accountBtn} ${styles.logoutBtn}`}>
             <FaSignOutAlt /> Cerrar Sesión
           </button>
-          <div className={styles.userFooter}>
-            <div className={styles.avatarDot}></div>
-            <span>Admin Usuario</span>
-          </div>
         </div>
       </aside>
 

@@ -28,7 +28,7 @@ export default function PagoCita({ info, onConfirm, onBack }) {
     let newValue = value;
 
     if (name === "tarjeta") {
-      newValue = value.replace(/\D/g, "").slice(0, 15);
+      newValue = value.replace(/\D/g, "").slice(0, 16);
     }
 
     if (name === "vencimiento") {
@@ -62,9 +62,9 @@ export default function PagoCita({ info, onConfirm, onBack }) {
     const nuevosErrores = {};
     const { tarjeta, vencimiento, cvv, nombreTitular, direccion, ciudad, codigoPostal } = formulario;
 
-    if (!/^\d{15}$/.test(tarjeta)) {
+    if (!/^\d{16}$/.test(tarjeta)) {
       nuevosErrores.tarjeta = true;
-      return Swal.fire("Número de tarjeta inválido", "Debe contener exactamente 15 dígitos numéricos.", "error");
+      return Swal.fire("Número de tarjeta inválido", "Debe contener exactamente 16 dígitos numéricos.", "error");
     }
 
     if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(vencimiento)) {
@@ -95,7 +95,7 @@ export default function PagoCita({ info, onConfirm, onBack }) {
 
     if (!/^[a-zA-Z0-9\s.,#-]{5,}$/.test(direccion.trim())) {
       nuevosErrores.direccion = true;
-      return Swal.fire("Dirección inválida", "Debe tener al menos 5 caracteres válidos.", "error");
+      return Swal.fire("Dirección inválida", "Ingrese al menos una calle de su domicilio", "error");
     }
 
     if (!ciudad.trim()) {
@@ -140,7 +140,7 @@ export default function PagoCita({ info, onConfirm, onBack }) {
             placeholder="Número de Tarjeta"
             onChange={handleChange}
             value={formulario.tarjeta}
-            maxLength={15}
+            maxLength={16}
             className={errores.tarjeta ? "input-error" : ""}
             onKeyDown={handleKeyDown}
           />
