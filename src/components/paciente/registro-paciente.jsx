@@ -1,4 +1,4 @@
-/**
+/*
  * Descripción: Implementación de la vista de Registro para el paciente
  * Fecha: 11 Junio de 2025
  * Programador: Elvia Medina
@@ -22,13 +22,13 @@ import placeholder from '../../assets/avatar_placeholder.png';
 import logo from '../../assets/logo.png';
 import '../../styles/usuario/Registro.css';
 
-/* ---------- configuración ---------- */
+/* configuracion */
 const MySwal = withReactContent(Swal);
 const TODAY = new Date();
 const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
 
-/* ---------- utilidades de imagen ---------- */
+/*  utilidades de imagen  */
 const fileToBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -52,7 +52,7 @@ const subirAImgbb = async (base64) => {
   }
 };
 
-/* ---------- utilidades CURP (reglas RENAPO) ---------- */
+/* utilidades CURP (reglas RENAPO) */
 const PARTICLES = [
   'DA','DAS','DE','DEL','DI','DIE','DD','EL','LA','LAS','LE','LES','LO','LOS',
   'MAC','MC','VAN','VON','Y'
@@ -100,7 +100,7 @@ const buildCurpPrefix = (nombres, apP, apM = '') => {
   return sanitizeOffensive(`${l1}${l2}${l3}${l4}`);
 };
 
-/* ---------- componente ---------- */
+/* componente */
 export default function RegistroWeb() {
   const navigate = useNavigate();
 
@@ -131,7 +131,7 @@ export default function RegistroWeb() {
     { label: 'Viudo/a', value: 'Viudo' },
   ];
 
-  /* ---------- handlers ---------- */
+  /* handlers */
   const handleChange = (campo, valor) => {
     setFormData((prev) => ({ ...prev, [campo]: valor }));
     if (errores[campo]) {
@@ -147,12 +147,12 @@ export default function RegistroWeb() {
 
   const calcularEdad = (fecha) => (fecha ? Math.floor((TODAY - fecha) / 31557600000) : 0);
 
-  /* ---------- validación y envío ---------- */
+  /* validación y envío */
   const validarYEnviar = async () => {
     const nuevosErrores = {};
     const nuevosMensajes = {};
 
-    /* ——— campos requeridos ——— */
+    /* campos requeridos */
     Object.entries(formData).forEach(([campo, valor]) => {
       if (!valor) {
         nuevosErrores[campo] = true;
@@ -165,7 +165,7 @@ export default function RegistroWeb() {
       nuevosMensajes.fotoPerfil = 'La foto es obligatoria';
     }
 
-    /* ——— validaciones específicas ——— */
+    /* validaciones específicas */
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const telRegex = /^\d{10}$/;
     const curpRegex = /^[A-Z]{4}\d{6}[HM][A-Z]{5}\d{2}$/i;
@@ -206,7 +206,7 @@ export default function RegistroWeb() {
       }
     }
 
-    /* ——— validación de coherencia CURP ——— */
+    /* validación de coherencia CURP */
     if (!nuevosErrores.curp && formData.curp) {
       const curpUpper = formData.curp.trim().toUpperCase();
       const prefijoEsperado = buildCurpPrefix(
@@ -254,7 +254,7 @@ export default function RegistroWeb() {
       }
     }
 
-    /* ——— duplicidad de CURP en Firestore ——— */
+    /* duplicidad de CURP en Firestore */
     if (!nuevosErrores.curp) {
       const q = query(collection(db, 'usuarios'), where('curp', '==', formData.curp.trim().toUpperCase()));
       const querySnapshot = await getDocs(q);
@@ -264,7 +264,7 @@ export default function RegistroWeb() {
       }
     }
 
-    /* ——— salida de validaciones ——— */
+    /* salida de validaciones */
     setErrores(nuevosErrores);
     setMensajes(nuevosMensajes);
 
@@ -278,7 +278,7 @@ export default function RegistroWeb() {
       return;
     }
 
-    /* ——— registro en Firebase ——— */
+    /* registro en Firebase */
     setCargando(true);
     try {
       const file = document.querySelector('input[type="file"]')?.files[0];
@@ -353,21 +353,24 @@ export default function RegistroWeb() {
         <h2 className="Titulo">Registro</h2>
         <p className="Subtitulo">Llena los campos tal como aparecen en tus documentos oficiales.</p>
 
-        {/* --- foto de perfil --- */}
+        {/* foto de perfil */}
         <div className="FotoPreview">
-          <img
-            src={fotoPerfil || placeholder}
-            alt="Avatar"
-            className={`PreviewImg ${errores.fotoPerfil ? 'PInvalid' : ''}`}
-          />
-          <label className="FileLabel">
-            Cambiar foto
-            <input type="file" accept="image/*" onChange={handleFotoChange} hidden />
-          </label>
-          {mensajes.fotoPerfil && <p className="ErrorMsg">{mensajes.fotoPerfil}</p>}
-        </div>
+                  <div className={`FotoWrapper ${errores.fotoPerfil ? 'PInvalid' : ''}`}>
+                    <img
+                      src={fotoPerfil || placeholder}
+                      alt="Avatar"
+                      className="PreviewImg"
+                    />
+                  </div>
+                  <label className="FileLabel">
+                    Cambiar foto
+                    <input type="file" accept="image/*" onChange={handleFotoChange} hidden />
+                  </label>
+                  {mensajes.fotoPerfil && <p className="ErrorMsg">{mensajes.fotoPerfil}</p>}
+                </div>
+        
 
-        {/* --- formulario --- */}
+        {/* formulario */}
         <div className="PFluid">
           <InputText
             placeholder="Nombre(s)"

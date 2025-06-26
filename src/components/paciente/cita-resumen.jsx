@@ -3,21 +3,9 @@
  * Fecha: 24 Junio de 2025
  * Programador: Elvia Medina
  */
-
-import Swal from "sweetalert2";
 import "../../styles/paciente/cita-resumen.css";
 
-export default function CitaResumen({ info, volver }) {
-  const confirmarCita = () => {
-    Swal.fire({
-      icon: "success",
-      title: "¡Cita registrada con éxito!",
-      text: "Recibirá una confirmación por email o SMS.",
-      confirmButtonText: "Aceptar",
-      confirmButtonColor: "#22c55e",
-    });
-  };
-
+export default function CitaResumen({ info, volver, continuar }) {
   return (
     <div className="cr-container">
       <h2 className="cr-title">🩺 Detalles de la Cita</h2>
@@ -30,13 +18,13 @@ export default function CitaResumen({ info, volver }) {
             <p><strong>Especialidad:</strong> Cardiología</p>
             <p><strong>Servicio:</strong> {info.consulta}</p>
             <p><strong>Duración:</strong> {info.duracion}</p>
-            <p><strong>Costo:</strong> <span className="cr-price">{info.precio}</span></p>
+            <p><strong>Costo:</strong> <span className="cr-price">${info.precio}</span></p>
           </div>
           <div>
             <h4 className="cr-subsubtitle">Fecha y Hora</h4>
             <p><strong>Fecha:</strong> {info.fecha}</p>
             <p><strong>Hora:</strong> {info.hora}</p>
-            <p><strong>Ubicación:</strong> Consultorio 205</p>
+            <p><strong>Ubicación:</strong> {info.consultorio}</p>
           </div>
         </div>
       </div>
@@ -68,7 +56,7 @@ export default function CitaResumen({ info, volver }) {
 
       <div className="cr-actions">
         <button onClick={volver} className="cr-btn-outline">⟵ Editar Información</button>
-        <button onClick={confirmarCita} className="cr-btn-confirm">✓ Confirmar Cita</button>
+        <button onClick={continuar} className="cr-btn-confirm">✓ Confirmar Cita</button>
       </div>
     </div>
   );

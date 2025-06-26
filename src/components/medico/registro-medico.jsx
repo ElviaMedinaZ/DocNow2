@@ -1,10 +1,9 @@
-/**
+/*
  * Descripción: Creacion de registro medico
  * Fecha: 21 Junio de 2025
  * Programador: Elvia Medina
  */
 
-/* ---------- PrimeReact ---------- */
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
@@ -86,7 +85,7 @@ const ESPECIALIDADES = [
 export default function RegistroWeb() {
   const navigate = useNavigate();
 
-  /* ---------- estado ---------- */
+  /* estado*/
   const [formData, setFormData] = useState({
     nombres            : '',
     apellidoP          : '',
@@ -116,7 +115,7 @@ export default function RegistroWeb() {
     { label: 'Viudo/a',     value: 'Viudo'     },
   ];
 
-  /* ---------- handlers ---------- */
+  /* handlers  */
   const handleChange = (campo, valor) => {
     setFormData(prev => ({ ...prev, [campo]: valor }));
     if (errores[campo]) {
@@ -133,12 +132,12 @@ export default function RegistroWeb() {
   const calcularEdad = fecha =>
     fecha ? Math.floor((TODAY - fecha) / 31557600000) : 0;
 
-  /* ---------- validación y envío ---------- */
+  /* validación y envío */
   const validarYEnviar = async () => {
     const nuevosErrores  = {};
     const nuevosMensajes = {};
 
-    /* — campos requeridos — */
+    /* campos requeridos */
     Object.entries(formData).forEach(([k, v]) => {
       if (!v) {
         nuevosErrores[k]  = true;
@@ -150,7 +149,7 @@ export default function RegistroWeb() {
       nuevosMensajes.fotoPerfil = 'La foto es obligatoria';
     }
 
-    /* — validaciones específicas — */
+    /*validaciones específicas */
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const telRegex   = /^\d{10}$/;
 
@@ -195,7 +194,7 @@ export default function RegistroWeb() {
       }
     }
 
-    /* — salida de validaciones — */
+    /* salida de validaciones */
     setErrores(nuevosErrores);
     setMensajes(nuevosMensajes);
 
@@ -209,7 +208,7 @@ export default function RegistroWeb() {
       return;
     }
 
-    /* — registro en Firebase — */
+    /* registro en Firebase */
     setCargando(true);
     try {
       const imgFile = document.querySelector('input[type="file"]')?.files[0];
@@ -252,7 +251,7 @@ export default function RegistroWeb() {
     }
   };
 
-  /* ---------- render ---------- */
+  /*render */
   return (
     <div className="RegistroContainer">
       {cargando && (
@@ -268,13 +267,15 @@ export default function RegistroWeb() {
           Llena los campos tal como aparecen en tus documentos oficiales.
         </p>
 
-        {/* ---------- foto ---------- */}
+        {/*  foto  */}
         <div className="FotoPreview">
-          <img
-            src={fotoPerfil || placeholder}
-            alt="Avatar"
-            className={`PreviewImg ${errores.fotoPerfil ? 'PInvalid' : ''}`}
-          />
+          <div className={`FotoWrapper ${errores.fotoPerfil ? 'PInvalid' : ''}`}>
+            <img
+              src={fotoPerfil || placeholder}
+              alt="Avatar"
+              className="PreviewImg"
+            />
+          </div>
           <label className="FileLabel">
             Cambiar foto
             <input type="file" accept="image/*" onChange={handleFotoChange} hidden />
@@ -282,7 +283,7 @@ export default function RegistroWeb() {
           {mensajes.fotoPerfil && <p className="ErrorMsg">{mensajes.fotoPerfil}</p>}
         </div>
 
-        {/* ---------- formulario ---------- */}
+        {/* formulario */}
         <div className="PFluid">
 
           <InputText
@@ -306,7 +307,7 @@ export default function RegistroWeb() {
             onChange={(e) => handleChange('apellidoM', e.target.value)}
           />
 
-          {/* ---- NUEVOS CAMPOS ---- */}
+          {/* NUEVOS CAMPOS */}
           <Dropdown
             value={formData.especialidad}
             options={ESPECIALIDADES}
@@ -328,8 +329,7 @@ export default function RegistroWeb() {
             value={formData.cedulaEspecialidad}
             onChange={(e) => handleChange('cedulaEspecialidad', e.target.value)}
           />
-          {/* ----------------------- */}
-
+          
           <Dropdown
             value={formData.sexo}
             options={[

@@ -1,0 +1,84 @@
+/*
+ * Descripción: Estilos de la vista modal de confirmacion de cita
+ * Fecha: 24 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+.confirmacion-container {
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.confirmacion-container h2 {
+  color: #28a745;
+  margin-bottom: 0.5rem;
+}
+
+.recibo {
+  background-color: #f4f4f4;
+  border-left: 4px solid #007bff;
+  padding: 1rem;
+  margin: 1.5rem auto;
+  text-align: left;
+  max-width: 500px;
+  border-radius: 6px;
+}
+
+.recibo p {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+}
+
+.pasos-siguientes {
+  text-align: left;
+  max-width: 500px;
+  margin: 0 auto 1.5rem auto;
+}
+
+.pasos-siguientes ul {
+  list-style: disc;
+  padding-left: 1.2rem;
+}
+
+.confirmacion-container button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.confirmacion-container button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+  .confirmacion-container {
+    padding: 1rem;
+  }
+
+  .recibo {
+    padding: 0.8rem;
+    margin: 1rem auto;
+    font-size: 0.9rem;
+  }
+
+  .pasos-siguientes {
+    padding: 0 0.5rem;
+  }
+
+  .pasos-siguientes ul {
+    padding-left: 1rem;
+  }
+
+  .confirmacion-container button {
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 1rem;
+  }
+}
