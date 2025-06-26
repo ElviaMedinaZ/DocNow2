@@ -1,5 +1,5 @@
 /*
- * Descripción: Componente de administración de doctores. 
+ * Descripción: Componente de administración de doctores.
  * Fecha: 22 Junio de 2025
  * Programador: Elvia Medina
  */
@@ -11,94 +11,105 @@ import '../../styles/admin/admin-base.css';
 import '../../styles/admin/doctores-admin.css';
 import RegistroWeb from '../medico/registro-medico';
 import GenericTable from './tabla-generica';
+import {
+  cargarDoctoresDesdeFirestore,
+  actualizarDoctor,
+  obtenerServiciosDesdeFirestore,
+  actualizarServiciosDoctor,
+  obtenerDoctorPorId,
+  eliminarDoctor
+} from '../../utils/firebaseDoctores';
 
-/* Servicios disponibles */
-const catalogoServicios = [
-  'Consulta', 'Toma de presión', 'Inyecciones', 'Ultrasonido', 'Electrocardiograma',
-  'Curaciones', 'Papanicolaou', 'Colocación de sueros', 'Revisión oftalmológica',
-  'Audiometría', 'Vacunación', 'Chequeo general', 'Extracción de puntos',
-  'Pruebas COVID-19', 'Rayos X',
-];
-
-/* Datos demo */
-const datosIniciales = [
-  { id: 1, nombre: 'Dr. Juan Pérez', especialidad: 'Cardiología', pacientes: 45, estado: 'Activo', servicios: ['Consulta', 'Telemedicina'], turno: 'Matutino', consultorio: '1A' },
-  { id: 2, nombre: 'Dra. María García', especialidad: 'Dermatología', pacientes: 38, estado: 'Activo', servicios: ['Consulta'], turno: 'Vespertino', consultorio: '2B' },
-  { id: 3, nombre: 'Dr. Carlos López', especialidad: 'Pediatría', pacientes: 52, estado: 'Activo', servicios: ['Consulta', 'Urgencias'], turno: 'Matutino', consultorio: '3C' },
-  { id: 4, nombre: 'Dra. Ana Martínez', especialidad: 'Neurología', pacientes: 29, estado: 'Inactivo', servicios: [], turno: 'Vespertino', consultorio: '4D' },
-];
 
 export default function DoctoresAdmin() {
-  const [doctores, setDoctores] = useState(datosIniciales);
+  const [doctores, setDoctores] = useState([]);
+  const [catalogoServicios, setCatalogoServicios] = useState([]);
   const [busqueda, setBusqueda] = useState('');
   const [menuAbierto, setMenu] = useState(null);
   const [modalAbierto, setModal] = useState(false);
   const [doctorEditando, setEditando] = useState(null);
+  
   const menuRef = useRef(null);
 
-  // Cierra menu si se hace clic fuera
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenu(null);
+          if (menuRef.current && !menuRef.current.contains(e.target)) {
+            setMenu(null);
+          }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+      }, []);
+
+      useEffect(() => {
+        const cargar = async () => {
+          const [doctoresFirestore, servicios] = await Promise.all([
+            cargarDoctoresDesdeFirestore(),
+            obtenerServiciosDesdeFirestore()
+          ]);
+          setDoctores(doctoresFirestore);
+          setCatalogoServicios(servicios);
+        };
+        cargar();
+      }, []);
+
+      const toggleMenu = (id) => setMenu((prev) => (prev === id ? null : id));
+      const cerrarModal = () => { setModal(false); setEditando(null); setMenu(null); };
+
+      const eliminar = async (id) => {
+      const doctor = doctores.find((d) => d.id === id);
+      const r = await Swal.fire({
+        title: '¿Eliminar doctor?',
+        text: `Se eliminará a ${doctor?.nombre}.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#b52020',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+      });
+
+      if (r.isConfirmed) {
+        try {
+          await eliminarDoctor(id); // eliminación en Firestore
+          setDoctores((prev) => prev.filter((d) => d.id !== id)); // actualización del estado
+          Swal.fire({ title: 'Eliminado', icon: 'success', timer: 1500, showConfirmButton: false });
+        } catch {
+          Swal.fire('Error', 'No se pudo eliminar al doctor.', 'error');
+        }
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
-  const toggleMenu = (id) => setMenu((prev) => (prev === id ? null : id));
-  const cerrarModal = () => { setModal(false); setEditando(null); setMenu(null); };
-
-  const eliminar = (id) => {
-    const doctor = doctores.find((d) => d.id === id);
-    Swal.fire({
-      title: '¿Eliminar doctor?',
-      text: `Se eliminará a ${doctor?.nombre}.`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#b52020',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((r) => {
-      if (r.isConfirmed) {
-        setDoctores((prev) => prev.filter((d) => d.id !== id));
-        Swal.fire({ title: 'Eliminado', icon: 'success', timer: 1500, showConfirmButton: false });
-      }
-    });
-  };
-
-  const toggleEstado = (id) => {
+  const toggleEstado = async (id) => {
     const d = doctores.find((dx) => dx.id === id);
     const nuevo = d.estado === 'Activo' ? 'Inactivo' : 'Activo';
-    Swal.fire({
+    const r = await Swal.fire({
       title: `¿Cambiar estado a ${nuevo}?`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Sí, cambiar',
       cancelButtonText: 'Cancelar',
-    }).then((r) => {
-      if (r.isConfirmed) {
-        setDoctores((prev) => prev.map((dx) => (dx.id === id ? { ...dx, estado: nuevo } : dx)));
-      }
     });
+    if (r.isConfirmed) {
+      await actualizarDoctor(id, { estado: nuevo });
+      setDoctores((prev) => prev.map((dx) => (dx.id === id ? { ...dx, estado: nuevo } : dx)));
+    }
   };
 
-  const toggleTurno = (id) => {
+  const toggleTurno = async (id) => {
     const d = doctores.find((dx) => dx.id === id);
     const nuevoTurno = d.turno === 'Matutino' ? 'Vespertino' : 'Matutino';
-    Swal.fire({
+    const r = await Swal.fire({
       title: `¿Cambiar turno a ${nuevoTurno}?`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Sí, cambiar',
       cancelButtonText: 'Cancelar',
-    }).then((r) => {
-      if (r.isConfirmed) {
-        setDoctores((prev) => prev.map((dx) => (dx.id === id ? { ...dx, turno: nuevoTurno } : dx)));
-      }
     });
+    if (r.isConfirmed) {
+      await actualizarDoctor(id, { turnoHora: nuevoTurno });
+      setDoctores((prev) => prev.map((dx) => (dx.id === id ? { ...dx, turno: nuevoTurno } : dx)));
+    }
   };
 
   const cambiarConsultorio = (id) => {
@@ -109,22 +120,17 @@ export default function DoctoresAdmin() {
         consultorios.push(`${i}${String.fromCharCode(j)}`);
       }
     }
-
     Swal.fire({
       title: 'Seleccionar Consultorio',
       input: 'select',
-      inputOptions: consultorios.reduce((acc, c) => {
-        acc[c] = c;
-        return acc;
-      }, {}),
+      inputOptions: consultorios.reduce((acc, c) => { acc[c] = c; return acc; }, {}),
       inputPlaceholder: 'Seleccione un consultorio',
       showCancelButton: true,
       inputValue: d.consultorio,
-    }).then((r) => {
+    }).then(async (r) => {
       if (r.isConfirmed) {
-        setDoctores((prev) =>
-          prev.map((dx) => (dx.id === id ? { ...dx, consultorio: r.value } : dx))
-        );
+        await actualizarDoctor(id, { consultorio: r.value });
+        setDoctores((prev) => prev.map((dx) => (dx.id === id ? { ...dx, consultorio: r.value } : dx)));
       }
     });
   };
@@ -138,7 +144,6 @@ export default function DoctoresAdmin() {
            <label for="svc_${i}" style="margin-left:6px">${svc}</label>
          </div>`
     ).join('');
-
     Swal.fire({
       title: `Servicios de ${doctor.nombre}`,
       html: htmlChecks,
@@ -148,28 +153,42 @@ export default function DoctoresAdmin() {
       cancelButtonText: 'Cancelar',
       showCancelButton: true,
       preConfirm: () => {
-        return catalogoServicios.filter(
-          (_, i) => document.getElementById(`svc_${i}`).checked
-        );
+        return catalogoServicios.filter((_, i) => document.getElementById(`svc_${i}`).checked);
       },
-    }).then((r) => {
+    }).then(async (r) => {
       if (r.isConfirmed) {
-        setDoctores((prev) =>
-          prev.map((d) => (d.id === id ? { ...d, servicios: r.value } : d))
-        );
+        await actualizarServiciosDoctor(id, r.value);
+        setDoctores((prev) => prev.map((d) => (d.id === id ? { ...d, servicios: r.value } : d)));
       }
     });
   };
 
-  const abrirNuevo = () => { setEditando(null); setModal(true); };
-  const abrirEditar = (row) => { setEditando(row); setModal(true); };
+ 
+  const abrirEditar = async (row) => {
+  const datosActualizados = await obtenerDoctorPorId(row.id);
+  if (datosActualizados) {
+    setEditando(datosActualizados);
+    setModal(true);
+  } else {
+    Swal.fire('Error', 'No se pudo cargar la información del doctor.', 'error');
+  }
+};
 
-  const onSave = (payload, modo) => {
-    setDoctores((prev) =>
-      modo === 'editar'
-        ? prev.map((d) => (d.id === payload.id ? payload : d))
-        : [...prev, { ...payload, id: Date.now(), servicios: [], turno: 'Matutino', consultorio: '1A' }]
-    );
+  const abrirNuevo = () => {
+  setEditando(null);
+  setModal(true);
+};
+
+
+  const onSave = async (payload, modo) => {
+    if (modo === 'editar') {
+      await actualizarDoctor(payload.id, payload);
+      setDoctores((prev) => prev.map((d) => (d.id === payload.id ? payload : d)));
+    } else {
+      const nuevo = { ...payload, id: Date.now(), servicios: [], turno: 'Matutino', consultorio: '1A' };
+      await actualizarDoctor(nuevo.id, nuevo);
+      setDoctores((prev) => [...prev, nuevo]);
+    }
     cerrarModal();
   };
 
@@ -259,15 +278,21 @@ export default function DoctoresAdmin() {
         <div className="modal-overlay" onClick={cerrarModal}>
           <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
             <button className="cerrar-modal" onClick={cerrarModal}>×</button>
-            <RegistroWeb
-              modo={doctorEditando ? 'editar' : 'crear'}
-              datosIniciales={doctorEditando}
-              onSave={onSave}
-              onClose={cerrarModal}
-            />
+            {typeof RegistroWeb === 'function' ? (
+              <RegistroWeb
+                modo={doctorEditando ? 'editar' : 'crear'}
+                datosIniciales={doctorEditando}
+                onSave={onSave}
+                onClose={cerrarModal}
+              />
+            ) : (
+              <div>Error: Componente RegistroWeb no cargado</div>
+            )}
           </div>
         </div>
       )}
+
     </div>
   );
 }
+

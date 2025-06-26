@@ -73,6 +73,9 @@ function App() {
         {/* --- Usuario --- */}
         <Route path="/" element={<PantallaLanding />} />
         <Route path="/login" element={<PantallaLogin />} />
+
+        {/*Paciemnte*/}
+        <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
         <Route path="/perfil" element={<PantallaPerfil />} />
         <Route path="/recuperar-contrasena" element={<PantallaRecuperarContrasena />} />
         <Route path="/nueva-contrasena" element={<PantallaNuevaContrasena />} />
