@@ -160,7 +160,10 @@ export default function HomeMedico() {
     const siguienteGrupo = () => {
       setIndiceCita((prev) => (prev + 1) % totalGrupos);
     };
-
+    
+    // Definir el dia actual sin hora
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); 
 
  return (
     <div className="homeDoctorContainer">
@@ -225,6 +228,7 @@ export default function HomeMedico() {
                 inline
                 showWeek
                 dateTemplate={customDateTemplate}
+                minDate={today}
               />
             </div>
 
