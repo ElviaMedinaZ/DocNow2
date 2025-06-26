@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc,getDoc} from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
 /**
@@ -75,5 +75,30 @@ export const actualizarServiciosDoctor = async (doctorId, nuevosServicios) => {
     });
   } catch (error) {
     console.error('Error actualizando servicios del doctor:', error);
+  }
+};
+
+export const obtenerDoctorPorId = async (id) => {
+  try {
+    const ref = doc(db, 'usuarios', id);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) return null;
+
+    const data = snap.data();
+
+    return {
+      id,
+      nombre: data.nombres || '',
+      especialidad: data.especialidad || '',
+      estado: data.estado || 'Activo',
+      servicios: (data.Servicios || '').split(',').map(s => s.trim()).filter(Boolean),
+      turno: data.turnoHora || 'Matutino',
+      consultorio: data.consultorio?.toString() || '1A',
+      pacientes: 0, // puedes calcular si quieres
+      ...data
+    };
+  } catch (e) {
+    console.error('Error al obtener doctor por ID:', e);
+    return null;
   }
 };

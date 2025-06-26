@@ -15,8 +15,10 @@ import {
   cargarDoctoresDesdeFirestore,
   actualizarDoctor,
   obtenerServiciosDesdeFirestore,
-  actualizarServiciosDoctor
+  actualizarServiciosDoctor,
+  obtenerDoctorPorId
 } from '../../utils/firebaseDoctores';
+
 
 export default function DoctoresAdmin() {
   const [doctores, setDoctores] = useState([]);
@@ -25,6 +27,7 @@ export default function DoctoresAdmin() {
   const [menuAbierto, setMenu] = useState(null);
   const [modalAbierto, setModal] = useState(false);
   const [doctorEditando, setEditando] = useState(null);
+  
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -154,8 +157,22 @@ export default function DoctoresAdmin() {
     });
   };
 
-  const abrirNuevo = () => { setEditando(null); setModal(true); };
-  const abrirEditar = (row) => { setEditando(row); setModal(true); };
+ 
+  const abrirEditar = async (row) => {
+  const datosActualizados = await obtenerDoctorPorId(row.id);
+  if (datosActualizados) {
+    setEditando(datosActualizados);
+    setModal(true);
+  } else {
+    Swal.fire('Error', 'No se pudo cargar la información del doctor.', 'error');
+  }
+};
+
+  const abrirNuevo = () => {
+  setEditando(null);
+  setModal(true);
+};
+
 
   const onSave = async (payload, modo) => {
     if (modo === 'editar') {
@@ -255,15 +272,20 @@ export default function DoctoresAdmin() {
         <div className="modal-overlay" onClick={cerrarModal}>
           <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
             <button className="cerrar-modal" onClick={cerrarModal}>×</button>
-            <RegistroWeb
-              modo={doctorEditando ? 'editar' : 'crear'}
-              datosIniciales={doctorEditando}
-              onSave={onSave}
-              onClose={cerrarModal}
-            />
+            {typeof RegistroWeb === 'function' ? (
+              <RegistroWeb
+                modo={doctorEditando ? 'editar' : 'crear'}
+                datosIniciales={doctorEditando}
+                onSave={onSave}
+                onClose={cerrarModal}
+              />
+            ) : (
+              <div>Error: Componente RegistroWeb no cargado</div>
+            )}
           </div>
         </div>
       )}
+
     </div>
   );
 }
