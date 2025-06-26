@@ -8,6 +8,8 @@ import { useEffect, useRef, useState } from 'react';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import '../../styles/admin/admin-base.css';
+import HistorialMedico from '../medico/historial-medico';
+import AgendarCita from '../paciente/agendar-cita';
 import RegistroPaciente from '../paciente/registro-paciente';
 import GenericTable from './tabla-generica';
 import { cargarPacientesDesdeFirestore } from '../../utils/firebasePaciente';
@@ -21,7 +23,11 @@ export default function PacientesAdmin() {
   const [busqueda, setBusqueda] = useState('');
   const [menuAbierto, setMenu] = useState(null);
   const [modalAbierto, setModal] = useState(false);
+  const [modalCita, setModalCita] = useState(false);
+  const [modalHistorial, setModalHistorial] = useState(false);
   const [pacEdit, setEdit] = useState(null);
+  const [pacienteCita, setPacienteCita] = useState(null);
+  const [pacienteHistorial, setPacienteHistorial] = useState(null);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -35,6 +41,10 @@ export default function PacientesAdmin() {
 
   const toggleMenu = (id) => setMenu((prev) => (prev === id ? null : id));
   const cerrarModal = () => { setModal(false); setEdit(null); setMenu(null); };
+  const cerrarModalCita = () => { setModalCita(false); setPacienteCita(null); setMenu(null); };
+  const cerrarModalHistorial = () => { setModalHistorial(false); setPacienteHistorial(null); setMenu(null); };
+  const abrirCita = (row) => { setPacienteCita(row); setModalCita(true); setMenu(null); };
+  const abrirHistorial = (row) => { setPacienteHistorial(row); setModalHistorial(true); setMenu(null); };
 
   const eliminar = async (id) => {
   const reg = pacs.find((p) => p.id === id);
@@ -173,9 +183,9 @@ export default function PacientesAdmin() {
           </button>
           {menuAbierto === row.id && (
             <div className="menu-acciones" ref={menuRef}>
-              <button onClick={() => console.log(`Ver historial de ${row.nombre}`)}>Ver historial</button>
+              <button onClick={() => abrirHistorial(row)}>Ver historial</button>
               <button onClick={() => abrirEditar(row)}>Editar</button>
-              <button onClick={() => console.log(`Agendar cita para ${row.nombre}`)}>Agendar cita</button>
+              <button onClick={() => abrirCita(row)}>Agendar cita</button>
               <button onClick={() => toggleEstado(row.id)}>
                 {row.estado === 'Activo' ? 'Inactivar' : 'Activar'}
               </button>
@@ -213,6 +223,7 @@ export default function PacientesAdmin() {
         footer={`Mostrando ${filtrados.length} de ${pacs.length} pacientes`}
       />
 
+      {/* Modal de registro */}
       {modalAbierto && (
         <div className="modal-overlay" onClick={cerrarModal}>
           <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
@@ -223,6 +234,26 @@ export default function PacientesAdmin() {
               onSave={onSave}
               onClose={cerrarModal}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Modal de agendar cita */}
+      {modalCita && (
+        <div className="modal-overlay" onClick={cerrarModalCita}>
+          <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
+            <button className="cerrar-modal" onClick={cerrarModalCita}>×</button>
+            <AgendarCita paciente={pacienteCita} onClose={cerrarModalCita} />
+          </div>
+        </div>
+      )}
+
+      {/* Modal de historial médico */}
+      {modalHistorial && (
+        <div className="modal-overlay" onClick={cerrarModalHistorial}>
+          <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
+            <button className="cerrar-modal" onClick={cerrarModalHistorial}>×</button>
+            <HistorialMedico paciente={pacienteHistorial} onClose={cerrarModalHistorial} />
           </div>
         </div>
       )}

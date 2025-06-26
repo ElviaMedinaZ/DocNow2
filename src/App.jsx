@@ -1,4 +1,4 @@
-/**
+/*
  * Descripción: Se agrega el App y se establece tiempo local.
  * Fecha: 11 Junio de 2025
  * Programador: Elvia Medina
@@ -14,8 +14,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // Usuario
 import PantallaLanding from './components/usuario/landing';
 import PantallaLogin from './components/usuario/login';
+import PantallaNuevaContrasena from './components/usuario/nueva-contrasena';
 import PantallaPerfil from './components/usuario/perfil';
-
+import PantallaRecuperarContrasena from './components/usuario/recuperar-contrasena';
+import PantallaVerificarCodigo from './components/usuario/verificar-codigo';
 
 // Paciente
 import Psicologo from './components/paciente/acudir-psicologo';
@@ -34,6 +36,7 @@ import PantallaPerfilMedico from './components/medico/perfil-medico';
 import PantallaPerfilMedicoPaciente from './components/medico/perfil-medico-paciente';
 import PantallaRecetaMedica from './components/medico/receta-medica';
 import PantallaRegistroMedico from './components/medico/registro-medico';
+
 
 // Administrador
 import PantallaDashboardAdmin from './components/admin/admin-dashboard';
@@ -74,6 +77,9 @@ function App() {
         {/*Paciemnte*/}
         <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
         <Route path="/perfil" element={<PantallaPerfil />} />
+        <Route path="/recuperar-contrasena" element={<PantallaRecuperarContrasena />} />
+        <Route path="/nueva-contrasena" element={<PantallaNuevaContrasena />} />
+        <Route path="/verificar-codigo" element={<PantallaVerificarCodigo />} />
 
         {/* --- Paciente --- */}
         <Route path="/home-paciente" element={<PantallaHomePaciente />} />
@@ -92,7 +98,7 @@ function App() {
         <Route path="/consulta-medica" element={<PantallaConsultaMedica />} />
         <Route path='/historial-medico' element={<PantallaHistorialMedico/>}/>
         <Route path='/receta-medica' element={<PantallaRecetaMedica/>}/>
-         <Route path="/perfil-medico" element={<PantallaPerfilMedico/>} />
+        <Route path="/perfil-medico" element={<PantallaPerfilMedico/>} />
         
         {/*Admin*/}
 

@@ -1,0 +1,74 @@
+
+.nueva-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  padding: 1rem;
+}
+
+.nueva-card {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.nueva-titulo {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #0A3B74;
+}
+
+.nueva-card p {
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.nueva-input-group {
+  margin-bottom: 1rem;
+}
+
+.nueva-input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #4b5563;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nueva-input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.nueva-input:focus {
+  border-color: #0A3B74;
+  box-shadow: 0 0 0 1px rgba(10, 59, 116, 0.2);
+}
+
+.nueva-boton {
+  width: 100%;
+  background-color: #0A3B74;
+  color: #fff;
+  border: none;
+  padding: 0.75rem;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nueva-boton:hover {
+  background-color: #084077;
+}

@@ -1,0 +1,53 @@
+/*
+ * Descripción: Estilos de la vista recuperar contrasena
+ * Fecha: 25 Junio de 2025
+ * Programador: Elvia Medina
+ */
+/* Estilos corregidos */
+.recuperar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f1f3f6;
+  padding: 1rem;
+}
+
+.recuperar-card {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.recuperar-titulo {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: #0A3B74;
+}
+
+.recuperar-card p {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+.recuperar-input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+.recuperar-boton {
+  background-color: #0A3B74;
+  border: none;
+  margin-top: 1.2rem;
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  color: white;
+}

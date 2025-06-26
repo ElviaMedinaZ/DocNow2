@@ -129,7 +129,6 @@ export default function AdminLayout() {
           >
             <FaSignOutAlt /> Cerrar Sesión
           </button>
-
         </div>
       </aside>
 

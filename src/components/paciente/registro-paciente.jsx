@@ -468,29 +468,54 @@ useEffect(() => {
 
         {/* formulario */}
         <div className="PFluid">
-          <InputText
-            placeholder="Nombre(s)"
-            className={errores.nombres ? 'PInvalid' : ''}
-            value={formData.nombres}
-            onChange={(e) => handleChange('nombres', e.target.value)}
-          />
+         <InputText
+        placeholder="Nombre(s)"
+        className={errores.nombres ? 'PInvalid' : ''}
+        maxLength={40}
+        value={formData.nombres}
+        onChange={(e) =>
+          handleChange('nombres', e.target.value.replace(/[0-9]/g, ''))
+        }
+        onKeyPress={(e) => {
+          if (/\d/.test(e.key)) {
+            e.preventDefault(); // bloquea teclas numéricas
+          }
+        }}
+      />
 
           <InputText
             placeholder="Apellido paterno"
             className={errores.apellidoP ? 'PInvalid' : ''}
+            maxLength={40}
             value={formData.apellidoP}
-            onChange={(e) => handleChange('apellidoP', e.target.value)}
+            onChange={(e) =>
+              handleChange('apellidoP', e.target.value.replace(/[0-9]/g, ''))
+            }
+            onKeyPress={(e) => {
+              if (/\d/.test(e.key)) {
+                e.preventDefault(); // Bloquea entrada de números
+              }
+            }}
           />
 
           <InputText
             placeholder="Apellido materno"
+            maxLength={40}
             className={errores.apellidoM ? 'PInvalid' : ''}
             value={formData.apellidoM}
-            onChange={(e) => handleChange('apellidoM', e.target.value)}
+            onChange={(e) =>
+              handleChange('apellidoM', e.target.value.replace(/[^a-zA-ZÁÉÍÓÚáéíóúÑñ\s]/g, ''))
+            }
+            onKeyPress={(e) => {
+              if (!/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]$/.test(e.key)) {
+                e.preventDefault(); // Bloquea números y caracteres especiales
+              }
+            }}
           />
 
           <InputText
             placeholder="CURP"
+            maxLength={18}
             className={errores.curp ? 'PInvalid' : ''}
             value={formData.curp}
             onChange={(e) => handleChange('curp', e.target.value)}
@@ -525,6 +550,7 @@ useEffect(() => {
             placeholder="Correo electrónico"
             className={errores.correoElectronico ? 'PInvalid' : ''}
             value={formData.correoElectronico}
+            maxLength={40}
             onChange={(e) => handleChange('correoElectronico', e.target.value)}
             readOnly={modo === 'editar'}
           />
@@ -534,7 +560,13 @@ useEffect(() => {
             placeholder="Teléfono"
             className={errores.telefono ? 'PInvalid' : ''}
             value={formData.telefono}
-            onChange={(e) => handleChange('telefono', e.target.value)}
+            maxLength={10}
+            onChange={(e) => handleChange('telefono', e.target.value.replace(/\D/g, ''))}
+            onKeyPress={(e) => {
+              if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
           />
 
           {modo !== 'editar' ? (
