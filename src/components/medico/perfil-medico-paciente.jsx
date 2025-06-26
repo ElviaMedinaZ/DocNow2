@@ -14,8 +14,8 @@ import { useState } from 'react';
 import '../../styles/paciente/perfil-medico-paciente.css';
 import HeaderPaciente from '../paciente/menu-paciente';
 
-import '../../styles/admin/admin-base.css'; // Para estilos de modal
-import '../../styles/admin/doctores-admin.css'; // Para reusar modal
+import '../../styles/admin/admin-base.css';
+import '../../styles/admin/doctores-admin.css';
 import '../../styles/paciente/perfil-medico-paciente.css';
 
 import AgendarCita from '../../components/paciente/agendar-cita';
@@ -159,7 +159,7 @@ export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
         <div className="modal-overlay" onClick={() => setModalCita(false)}>
           <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
             <button className="cerrar-modal" onClick={() => setModalCita(false)}>×</button>
-            <AgendarCita />
+            <AgendarCita onClose={() => setModalCita(false)} />
           </div>
         </div>
       )}

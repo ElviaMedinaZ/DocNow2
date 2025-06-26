@@ -1,4 +1,4 @@
-/**
+/*
  * Descripción: Estilos de Registro
  * Fecha: 11 Junio de 2025
  * Programador: Elvia Medina
@@ -77,11 +77,17 @@ html, body, #root {
   border-radius: 50%;
   border: 2px solid var(--color-borde-imagen);
   margin-bottom: 1rem;
+  transition: border-color 0.3s;
+}
+
+.PreviewImg.PInvalid {
+  border-color: #d93025 !important;
 }
 
 .FileLabel {
   background-color: var(--color-principal);
-  padding: 01rem 1rem;
+  color: #f0f2f5;
+  padding: 0.75rem 1rem;
   border-radius: 6px;
   font-size: 1rem;
   cursor: pointer;
@@ -104,31 +110,47 @@ html, body, #root {
   font-size: 1rem;
 }
 
-.FileLabel{
-  color: #f0f2f5;
-}
-
+/* --- Borde rojo personalizado --- */
 .PInvalid {
-  border: 1px solid red !important;
+  border: 2px solid #d93025 !important;
+  border-radius: 6px;
+  box-shadow: none !important;
 }
 
-.PInvalid input {
-  border: 1px solid red !important;
-  border-radius: 4px;
+/* Evita bordes dobles en elementos internos */
+.PInvalid .p-inputtext,
+.PInvalid .p-dropdown-label,
+.PInvalid .p-calendar .p-inputtext,
+.PInvalid .p-password-input {
+  border: none !important;
+  box-shadow: none !important;
 }
 
+/* Evita doble borde en los wrappers */
+.PInvalid .p-dropdown,
+.PInvalid .p-calendar,
+.PInvalid .p-password {
+  box-shadow: none !important;
+}
+
+.FotoWrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid var(--color-borde-imagen);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.PInvalid.FotoWrapper {
+  border-color: #d93025 !important;
+}
+
+
+
+/* Botones */
 .p-button {
   background-color: var(--color-principal);
-}
-
-.p-password {
-  display: block;
-  width: 100% !important;
-}
-
-/* Oculta los radios */
-.SexoInput {
-  display: none;
 }
 
 .BtnSiguiente {
@@ -146,7 +168,17 @@ html, body, #root {
   background-color: var(--color-principal-hover);
 }
 
-/* movil */
+.p-password {
+  display: block;
+  width: 100% !important;
+}
+
+/* Oculta los radios */
+.SexoInput {
+  display: none;
+}
+
+/* Responsivo */
 @media (max-width: 768px) {
   .RegistroForm {
     padding: 2rem 1.5rem;
@@ -176,5 +208,3 @@ html, body, #root {
     padding: 0.65rem;
   }
 }
-
-

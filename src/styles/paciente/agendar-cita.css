@@ -3,6 +3,8 @@
  * Fecha: 24 Junio de 2025
  * Programador: Elvia Medina
  */
+
+
 :root {
   --primary-color: #001f4e;
   --accent-color: #0088cc;
@@ -245,4 +247,101 @@ body {
 
 .ap-form-actions button:first-child:hover {
   background-color: #bbb;
+}
+
+.ap-form-grid input, .ap-form-grid textarea{
+  color: black;
+}
+/* Estilo para inputs con error */
+.input-error {
+  border: 2px solid #d93025 !important;
+  outline: none !important;
+}
+
+/* Quitar fondo rojo */
+.ap-form-grid input.input-error,
+.ap-form-grid textarea.input-error {
+  background-color: transparent !important;
+}
+
+.ap-form-grid textarea:focus,
+.ap-form-grid input:focus {
+  border: 2px solid #003366;
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .ap-container {
+    padding: 20px 16px;
+    margin: 20px 10px;
+  }
+
+  .ap-title {
+    font-size: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .ap-grid {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ap-calendar-section,
+  .ap-consultas-section {
+    min-width: 100%;
+  }
+
+  .ap-card {
+    padding: 12px;
+  }
+
+  .ap-card-title {
+    font-size: 16px;
+  }
+
+  .ap-card-description {
+    font-size: 13px;
+  }
+
+  .ap-price {
+    font-size: 13px;
+  }
+
+  .ap-horarios-grid {
+    justify-content: start;
+    gap: 8px;
+  }
+
+  .ap-hora-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .ap-btn-continuar {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  .ap-form-paciente {
+    padding: 20px 16px;
+  }
+
+  .ap-form-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .ap-form-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ap-form-actions button {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+  }
 }

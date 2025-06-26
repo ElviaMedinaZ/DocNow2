@@ -1,0 +1,16 @@
+/*
+ * Descripción: Estilos de los errores de la vista agendar cita.
+ * Fecha: 24 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+.input-error {
+  border: 2px solid #d93025 !important;
+  outline: none !important;
+
+}
+
+.ap-form-grid input.input-error,
+.ap-form-grid textarea.input-error {
+  background-color: #fff6f6;
+}

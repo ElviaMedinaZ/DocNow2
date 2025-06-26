@@ -29,9 +29,10 @@ import UltrasonidoPrenatal from "./components/paciente/ultrasonido-prenatal";
 // Médico
 import PantallaConsultaMedica from './components/medico/consulta-medica';
 import PantallaHistorialMedico from './components/medico/historial-medico';
-import PantallaRecetaMedica from './components/medico/receta-medica';
 import PantallaHomeMedico from './components/medico/home-medico';
-import PantallaPerfilMedico from './components/medico/perfil-medico-paciente';
+import PantallaPerfilMedico from './components/medico/perfil-medico';
+import PantallaPerfilMedicoPaciente from './components/medico/perfil-medico-paciente';
+import PantallaRecetaMedica from './components/medico/receta-medica';
 import PantallaRegistroMedico from './components/medico/registro-medico';
 
 // Administrador
@@ -85,12 +86,13 @@ function App() {
 
         {/* --- Médico --- */}
         <Route path="/home-medico" element={<PantallaHomeMedico />} />
-        <Route path="/perfil-medico-paciente" element={<PantallaPerfilMedico />} />
+        <Route path="/perfil-medico-paciente" element={<PantallaPerfilMedicoPaciente />} />
         <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
         <Route path="/registro-medico/:id" element={<PantallaRegistroMedico />} />
         <Route path="/consulta-medica" element={<PantallaConsultaMedica />} />
         <Route path='/historial-medico' element={<PantallaHistorialMedico/>}/>
         <Route path='/receta-medica' element={<PantallaRecetaMedica/>}/>
+         <Route path="/perfil-medico" element={<PantallaPerfilMedico/>} />
         
         {/*Admin*/}
 
