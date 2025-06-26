@@ -17,6 +17,43 @@
   display: none; /* Oculto por defecto */
 }
 
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0a3b74;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.userName {
+  font-weight: 600;
+  color: #0a3b74;
+}
+
+.userEspecialidad {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+
 .kebabMenu{
   display: none;
 }
@@ -73,6 +110,14 @@
   background: var(--color-primary-light);
 }
 
+.logoutLinkMedico {
+  color: #d32f2f !important;
+}
+
+.logoutLinkMedico:hover {
+  background-color: #ffe5e5;
+}
+
 @media (max-width: 768px) {
   .kebabMenuMedico {
     display: inline-flex;
@@ -84,6 +129,10 @@
   }
 
   .loginBtnMedico {
-    display: none; /* Ocultamos el botón de cerrar sesión para móvil */
+    display: none;
+  }
+
+   .userMenu {
+    display: none; 
   }
 }
