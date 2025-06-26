@@ -1,0 +1,248 @@
+/*
+ * Descripción: Estilos de la vista agendar cita.
+ * Fecha: 24 Junio de 2025
+ * Programador: Elvia Medina
+ */
+:root {
+  --primary-color: #001f4e;
+  --accent-color: #0088cc;
+  --background-color: #f4f6fa;
+  --card-color: #ffffff;
+  --selected-color: #e6f0ff;
+  --border-color: #ddd;
+  --text-color: #1c1c1c;
+  --green-color: #2ecc71;
+}
+
+body {
+  background-color: var(--background-color);
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text-color);
+}
+
+.ap-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: var(--card-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.ap-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ap-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.ap-calendar-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.ap-consultas-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.ap-subtitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.ap-card {
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: border 0.2s ease, background 0.2s ease;
+}
+
+.ap-card:hover {
+  border-color: var(--accent-color);
+}
+
+.ap-card-selected {
+  background-color: var(--selected-color);
+  border: 2px solid var(--accent-color);
+}
+
+.ap-card-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.ap-card-description {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.ap-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ap-duration {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ap-price {
+  background-color: var(--azul-fuerte-buscador);
+  color: white;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.ap-horarios {
+  margin-top: 30px;
+}
+
+.ap-horarios-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ap-hora-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--color-borde-imagen);
+  color: var(--gris-oscuro);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.ap-hora-btn:hover {
+  background-color: #003366;
+  color: white;
+}
+
+.ap-hora-seleccionada {
+  background-color: var(--azul-fuerte) !important;
+  color: #fff;
+}
+
+.ap-btn-continuar {
+  margin-top: 20px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+}
+
+.ap-btn-continuar:hover {
+  background-color: #003366;
+}
+
+/* leyenda de calendario */
+.ap-legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #555;
+}
+
+.ap-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ap-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ap-dot-blue {
+  background-color: var(--accent-color);
+}
+
+.ap-dot-light {
+  background-color: #bbb;
+}
+
+.ap-dot-gray {
+  background-color: #e0e0e0;
+}
+
+/* Paso 2 */
+.ap-form-paciente {
+  background-color: var(--card-color);
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 1000px;
+  margin: 30px auto;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.ap-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.ap-form-grid input,
+.ap-form-grid textarea {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ap-form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.ap-form-actions button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  border: none;
+}
+
+.ap-form-actions button:first-child {
+  background-color: #ddd;
+  color: #333;
+}
+
+.ap-form-actions button:first-child:hover {
+  background-color: #bbb;
+}

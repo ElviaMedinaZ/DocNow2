@@ -1,0 +1,141 @@
+
+ /*
+ * Descripción: Estilos base y utilitarios para las vistas administrativas (Admin).
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+/* Contenedor general */
+[class^="admin-"][class$="-container"] {
+  padding: 2rem;
+  background: #f7f9fc;
+  color: #0a3b74;
+  min-height: 100vh;
+}
+
+/* Encabezado de seccion */
+[class^="admin-"][class$="-header"] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* boton agregar */
+.btn-agregar {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  background: #0a3b74;
+  color: #fff;
+  border: none;
+  padding: .6rem 1.2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.btn-agregar:hover {
+  background: #08315f;
+}
+
+/* buscadores */
+[class^="buscador-"],
+[class^="busqueda-"] {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #dce3f0;
+  border-radius: 8px;
+  padding: .55rem .9rem;
+  max-width: 420px;
+  margin-bottom: 1.5rem;
+}
+
+[class^="buscador-"] svg,
+[class^="busqueda-"] svg {
+  margin-right: .6rem;
+  color: #999;
+}
+
+[class^="buscador-"] input,
+[class^="busqueda-"] input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  color: #333;
+}
+
+/*Estado (activo e inactivo)*/
+.estado-tag.activo {
+  color: green;
+  font-weight: bold;
+}
+
+.estado-tag.inactivo {
+  color: red;
+  font-weight: bold;
+}
+
+/* inputs dentro de la tabla */
+.tabla-input,
+.tabla-select {
+  width: 100%;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.95rem;
+  border: 1px solid #ccd5e0;
+  border-radius: 6px;
+  background: #fff;
+  color: #333;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.tabla-input:focus,
+.tabla-select:focus {
+  outline: none;
+  border-color: #0a3b74;
+  box-shadow: 0 0 0 1px #0a3b7433;
+}
+
+/* Botones de acción (Guardar / Cancelar)*/
+.fila-botones {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.btn-guardar {
+  background-color: #0a3b74;
+  color: #fff;
+  padding: 0.45rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-guardar:hover {
+  background-color: #08315f;
+}
+
+.btn-cancelar {
+  background-color: #f5f5f5;
+  color: #b52020;
+  border: 1px solid #b52020;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #ffeaea;
+}

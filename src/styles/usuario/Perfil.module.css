@@ -1,140 +1,216 @@
 /**
- * Descripción: Estilos de Perfil
- * Fecha: 12 Junio de 2025
- * Programador: Irais Reyes
+ * Descripción: Estilos del perfil del paciente
+ * Fecha: 11 Junio de 2025
+ * Programador: Irais Reyes y Elvia Medina
  */
 
-:root{
-  --azul-fuerte-perfil: #0A3B74;
-  --color-label-perfil: #1C1F1E;
-  --color-bordes-perfil: #9D9D9D;
-  --color-blanco-perfil: #F5F5F5;
-  --color-rojo-perfil: #740A0A;
-  --fuente: "Almarai" , sans-serif;
+:root {
+  --azul-fuerte: #0A3B74;
+  --azul-claro: #E3F2FD;
+  --gris-oscuro: #1C1F1E;
+  --gris-claro: #F5F5F5;
+  --rojo: #D32F2F;
+  --fuente: 'Almarai', sans-serif;
 }
 
 .PerfilUsuarioContainer {
   display: flex;
   justify-content: center;
   padding: 2rem;
-  background: #f4f4f4;
+  background: linear-gradient(135deg, #f0f4ff, #ffffff);
+  min-height: 100vh;
+  font-family: var(--fuente);
 }
 
 .PerfiUsuarioForm {
+  width: 100%;
+  max-width: 500px;
   background: white;
   padding: 2rem;
-  border-radius: 1rem;
-  width: 100%;
-  max-width: 540px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.PFluidPerfil > * {
-  margin-bottom: 1rem;
-  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .FotoIconoPreview {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   margin-bottom: 1rem;
 }
 
 .PreviewDeWrapper {
   position: relative;
-  display: inline-block;
-  width: 180px;
-  height: 180px;
+  width: 140px;
+  height: 140px;
 }
 
 .imagenPerfilPreview {
   width: 100%;
   height: 100%;
+  border-radius: 50%;
   object-fit: cover;
-  border-radius: 50%; 
+  border: 3px solid var(--c-muted);
 }
 
 .oscurecida {
-  filter: brightness(0.4); 
+  filter: brightness(0.4);
 }
 
 .OverlayDeTexto {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
-  font-weight: bold;
-  font-size: 18px;
+  text-align: center;
+  padding: 6px;
   cursor: pointer;
-  padding: 10px 20px;
-  border-radius: 10px;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
 }
 
-.nombreDeUsuario{
-  color: #1C1F1E;
+.nombreDeUsuario {
+  color: var(--azul-fuerte);
   text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.PFluidPerfil {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .laberPerfil {
-  color: var(--color-label-perfil);
-  font-family: var(--fuente);
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 0.25rem;
+  display: block;
 }
 
 .inputPerfil {
-  color: var(--color-label-perfil);
-  border-color: var(--color-bordes-perfil);
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  padding: 0.6rem;
+  font-size: 1rem;
+  width: 100%;
 }
 
-.passwordPerfil .pi {
-  color: var(--azul-fuerte-perfil);
-  border-color: var(--color-bordes-perfil);
+.passwordPerfil {
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
 }
 
 .BotonesPerfilUsuario {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
   flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
-.Cargando {
-  padding: 2rem;
-  text-align: center;
-  font-size: 1.2rem;
-}
+/* ——— Botones ——— */
 
 .btnGuardarCambios {
-  background-color: var(--azul-fuerte-perfil);
-  width: 100%;
-  font-size: x-large;
-  border-radius: 18;
+  background-color: var(--azul-fuerte);
+  border: none;
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  color: white;
+  border-radius: 0.75rem;
+  transition: background-color 0.3s ease;
 }
 
-.btnEditarCambios {
-  background-color: var(--azul-fuerte-perfil);
-  width: 100%;
-  font-size: x-large;
-  border-radius: 18;
-}
-
-.btnCerrarPerfil {
-  background-color: var(--color-blanco-perfil);
-  width: 100%;
-  font-size: x-large;
-  border-inline: 2;
-  border-color: var(--color-rojo-perfil);
-  color: var(--color-rojo-perfil);
-  border-radius: 18;
+.btnGuardarCambios:hover {
+  background-color: #08325f;
 }
 
 .btnCancelarEdicion {
-    background-color: var(--color-blanco-perfil);
-  width: 100%;
-  font-size: x-large;
-  border-inline: 2;
-  border-color: var(--azul-fuerte-perfil);
-  color: var(--azul-fuerte-perfil);
-  border-radius: 18;
+  background-color: white !important;
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  color: var(--rojo);
+  border-radius: 0.75rem;
+  border: 2px solid var(--rojo);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btnCancelarEdicion:hover {
+  background-color: var(--rojo) !important;
+  color: white;
+}
+
+.btnEditarCambios {
+  background-color: var(--azul-fuerte);
+  border: none;
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  color: white;
+  border-radius: 0.75rem;
+  transition: background-color 0.3s ease;
+}
+
+.btnEditarCambios:hover {
+  background-color: #08325f;
+}
+
+.btnCerrarPerfil {
+  background-color: var(--rojo) !important;
+  border: none;
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  color: white;
+  border-radius: 0.75rem;
+  transition: background-color 0.3s ease;
+}
+
+.btnCerrarPerfil:hover {
+  background-color: #b71c1c !important;
+}
+
+
+@media (max-width: 600px) {
+  .PerfilUsuarioContainer {
+    padding: 1rem;
+  }
+
+  .PerfiUsuarioForm {
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+
+  .nombreDeUsuario {
+    font-size: 1.25rem;
+  }
+
+  .inputPerfil,
+  .passwordPerfil {
+    font-size: 0.95rem;
+    padding: 0.5rem;
+  }
+
+  .btnGuardarCambios,
+  .btnCancelarEdicion,
+  .btnEditarCambios,
+  .btnCerrarPerfil {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+
+  .BotonesPerfilUsuario {
+    gap: 0.75rem;
+  }
+
+  .PreviewDeWrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .OverlayDeTexto {
+    padding: 4px;
+    font-size: 0.85rem;
+  }
 }

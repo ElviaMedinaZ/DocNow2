@@ -4,21 +4,23 @@
  * Programador: Elvia Medina
  */
 
+import 'primeicons/primeicons.css';
 import { Button } from 'primereact/button';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import logo from '../../assets/logo.png';
-import '../../styles/paciente/home-paciente.css';
 import '../../styles/paciente/menu-paciente.css';
+
 
 const MySwal = withReactContent(Swal);
 
 export default function HeaderPaciente() {
   const op = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const cerrarSesion = async () => {
     const { isConfirmed } = await MySwal.fire({
@@ -35,39 +37,67 @@ export default function HeaderPaciente() {
     if (isConfirmed) navigate('/login');
   };
 
+  const handleLogoClick = (e) => {
+    if (location.pathname === '/home-paciente') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <>
-      <header className="home-header">
-        <div className="home-logo-container">
-          <img src={logo} alt="DocNow" className="home-logo-icon" />
-          <span className="home-logo-text">DocNow</span>
+    <header className="home-header">
+      {/* Logo */}
+      <Link to="/home-paciente" className="home-logo-container" onClick={handleLogoClick}>
+        <img src={logo} alt="DocNow" className="home-logo-icon" />
+        <span className="home-logo-text">DocNow</span>
+      </Link>
+
+      {/* Navegación visible solo en desktop */}
+      <nav className="home-nav">
+        <a href="#servicios">Servicios</a>
+        <a href="#medicos">Especialistas</a>
+        <a href="#citas">Mis Citas</a>
+      </nav>
+
+      {/* Acciones: Notificación + Menú */}
+      <div className="desktop-actions">
+        <div className="notification-icon">
+          <i className="pi pi-bell"></i>
+          <span className="notification-dot"></span>
         </div>
 
-        {/*navegacion de web*/}
-        <nav className="home-nav">
-          <a href="#servicios">Servicios</a>
-          <a href="#medicos">Especialistas</a>
-          <a href="#citas">Mis Citas</a>
-        </nav>
+        <div className="user-menu" onClick={(e) => op.current.toggle(e)}>
+          <div className="user-avatar"></div>
+          <span className="user-name">María González</span>
+        </div>
 
-        <Button  icon="pi pi-ellipsis-v" className="p-button-text kebab-menu" onClick={(e) => op.current.toggle(e)} aria-label="Abrir menú" />
+        {/* Botón móvil tipo kebab */}
+        <Button icon="pi pi-ellipsis-v" className="p-button-text kebab-menu" onClick={(e) => op.current.toggle(e)} aria-label="Abrir menú" />
+      </div>
 
-        {/*botón cerrar sesión (escritorio*/}
-        <button className="home-login-btn" onClick={cerrarSesion}> Cerrar sesión </button>
-      </header>
+      {/* Menú desplegable */}
+      <OverlayPanel ref={op} className="user-dropdown" dismissable>
+        {/* Solo en móvil */}
+        <div className="mobile-only">
+          <a href="#servicios"><i className="pi pi-briefcase" /> Servicios</a>
+          <a href="#medicos"><i className="pi pi-users" /> Especialistas</a>
+          <a href="#citas"><i className="pi pi-calendar" /> Mis Citas</a>
+          <hr />
+        </div>
 
-      {/* menu para movil*/}
-      <OverlayPanel ref={op} className="kebab-panel" dismissable>
-        <a href="#servicios" onClick={() => op.current.hide()}> Servicios</a>
-        <a href="#medicos" onClick={() => op.current.hide()}>Especialistas</a>
-        <a href="#citas" onClick={() => op.current.hide()}> Mis Citas </a>
+       <Link to="/perfil" onClick={() => op.current.hide()}>
+        <i className="pi pi-user" /> Perfil
+       </Link>
+
+        <a href="#configuracion"><i className="pi pi-cog" /> Configuración</a>
         <a href="#logout" className="btn-logout" onClick={async (e) => {
-            e.preventDefault();
-            op.current.hide();
-            await cerrarSesion();
-          }}>Cerrar sesión
+          e.preventDefault();
+          op.current.hide();
+          await cerrarSesion();
+        }}>
+          <i className="pi pi-sign-out" /> Cerrar sesión
         </a>
       </OverlayPanel>
-    </>
+    </header>
   );
 }

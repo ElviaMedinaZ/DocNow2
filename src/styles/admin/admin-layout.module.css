@@ -1,0 +1,261 @@
+
+ /*
+ * Descripción: Estilos base para el menu del admin.
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+:root {
+  --sidebar-w: 240px;
+
+  --bg-body: #f4f6fa;
+  --bg-white: #ffffff;
+  --bg-hover: #f5f9ff;
+
+  --c-main: #0a3b74;
+  --c-muted: #5f6f94;
+
+  --border: #e5eaf4;
+  --shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  --ease: 0.3s ease;
+}
+
+/*Layout base */
+.adminWrapper {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-body);
+  color: var(--c-main);
+  overflow-x: hidden;
+}
+
+/*Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background: var(--bg-white);
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.branding {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logoImage {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.open {
+  transform: translateX(0);
+}
+.closed {
+  transform: translateX(-100%);
+}
+
+.sidebarHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+}
+.sidebarBrand {
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+.closeBtn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--c-main);
+  cursor: pointer;
+}
+
+.branding {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.logoCircle {
+  background: var(--c-main);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.subtitle {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* Navegación */
+.sidebarNav {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+}
+.sidebarNav a {
+  padding: 0.85rem 1.4rem;
+  font-weight: 600;
+  color: var(--c-main);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.94rem;
+  transition: background var(--ease);
+}
+.sidebarNav a:hover,
+.sidebarNav a.active {
+  background: var(--bg-hover);
+}
+
+/* Sección cuenta al final */
+.accountSection {
+  padding: 1rem 0;
+  border-top: 1px solid var(--border);
+}
+.accountBtn {
+  background: none;
+  border: none;
+  color: var(--c-main);
+  font-size: 0.93rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1.4rem;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+.accountBtn:hover {
+  background: var(--bg-hover);
+}
+.logoutBtn {
+  color: #d13b3b;
+}
+.userFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+.avatarDot {
+  width: 8px;
+  height: 8px;
+  background: #aaa;
+  border-radius: 50%;
+}
+.navSection {
+  font-size: 0.75rem;
+  color: #999;
+  padding: 0 1.4rem;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+
+/* main/top bar */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: var(--sidebar-w);
+  transition: margin var(--ease);
+}
+.sidebar.closed ~ .main {
+  margin-left: 0;
+}
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-white);
+  box-shadow: var(--shadow);
+  padding: 1rem 1.4rem;
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-w);
+  right: 0;
+  height: 64px;
+  z-index: 999;
+  transition: left var(--ease);
+}
+.hamburger {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--c-main);
+  cursor: pointer;
+}
+
+.searchBox {
+  position: relative;
+  flex: 1;
+  max-width: 450px;
+}
+.searchBox input {
+  width: 100%;
+  padding: 0.65rem 1rem 0.65rem 2.3rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-hover);
+  font-size: 0.95rem;
+}
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: 0.85rem;
+  transform: translateY(-50%);
+  opacity: 0.55;
+}
+
+.mainContent {
+  padding: 1.5rem;
+  margin-top: 64px; 
+}
+
+.mainFull {
+  margin-left: 0 !important;
+}
+
+.mainFull .topbar {
+  left: 0 !important;
+}
+
+
+/* movil */
+@media (max-width: 768px) {
+  .main {
+    margin-left: 0;
+  }
+  
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(1px);
+  z-index: 900;
+}
+
+  .closeBtn {
+    display: block;
+  }
+}

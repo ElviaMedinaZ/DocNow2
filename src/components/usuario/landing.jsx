@@ -4,10 +4,9 @@
  * Programador: Irais Reyes
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-// import menu from '../../assets/Iconos_Landing/MenuHamburguesa.png';
 import logoBlanco from '../../assets/Iconos_Landing/logo_blanco.png';
 import personaUno from '../../assets/Iconos_Landing/persona_1.jpeg';
 import personaDos from '../../assets/Iconos_Landing/persona_2.jpeg';
@@ -19,31 +18,31 @@ import ultrasonido from '../../assets/Iconos_Landing/Ultrasound.png';
 import consulta from '../../assets/Iconos_Landing/Out Patient Department.png';
 import doctorSeccion2 from '../../assets/Iconos_Landing/doctorLanding.png';
 import { FaStar } from "react-icons/fa";
+import { CiMenuKebab } from "react-icons/ci"
 import { FiMoreVertical } from "react-icons/fi";
+import { OverlayPanel } from 'primereact/overlaypanel';
 import styles from '../../styles/usuario/Landing.module.css';
 
 export default function PerfilWeb() {
-  const navigate = useNavigate();          // <-- hook de navegación
-
-  const [menuAbierto, setMenuAbierto] = useState(false);
+  const navigate = useNavigate();          
+  const [menuAbierto] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const op = useRef(null);  
 
-  // abre el menu cuando la pantalla se adapta a movil
-  const toggleMenu = () => {
-    setMenuAbierto(!menuAbierto);
-  };
-
-  // se ajusta cuando la pantalla se adapta a movil
   useEffect(() => {
-  const checkScreenSize = () => {
-    setIsMobile(window.innerWidth <= 768);
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  // Función para abrir/cerrar el OverlayPanel
+  const toggleMenu = (event) => {
+    op.current.toggle(event);
   };
 
-  checkScreenSize();
-  window.addEventListener("resize", checkScreenSize);
-
-  return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
 
   // arreglo de servicios
   const servicios = [
@@ -119,25 +118,35 @@ export default function PerfilWeb() {
           <h1 className={styles.tituloPrincipal}>DocNow</h1>
         </div>
 
-         <div onClick={toggleMenu}>
-          {/* <img src={menu} alt="iconoMenu" className={styles.menuIcon}/> */}
-          <FiMoreVertical className={styles.menuIcon}/>
-        </div>
-        
+        {isMobile ? (
+          <>
+            <div onClick={toggleMenu} style={{ cursor: 'pointer' }}>
+              <CiMenuKebab className={styles.menuIcon} />
+              {/* <p>ICONO MENU</p> */}
+            </div>
 
-        <div className={styles.rightSection}>
-          <nav className={styles.contenedorMenu}>
-            <a className={styles.menuHeader}>Inicio</a>
-            <a className={styles.menuHeader} href='#servicios'>Servicios</a>
-            <a className={styles.menuHeader} href='#opiniones'>Opiniones</a>
-            <a className={styles.menuHeader} href='#contacto'>Contacto</a>
-          </nav>
-
-          {/** redirigir al login*/}
-          <button className={styles.btnInicio} onClick={() => navigate('/login')}> Iniciar sesión</button>
-        </div>
-        
+            <OverlayPanel ref={op} showCloseIcon className={styles.menuHamburguesa}>
+              <a className={styles.menuHeader} onClick={() => { op.current.hide(); navigate('/'); }}>Inicio</a> <br/>
+              <a className={styles.menuHeader} href="#servicios" onClick={() => op.current.hide()}>Servicios</a> <br/>
+              <a className={styles.menuHeader} href="#opiniones" onClick={() => op.current.hide()}>Opiniones</a> <br/>
+              <a className={styles.menuHeader} href="#contacto" onClick={() => op.current.hide()}>Contacto</a> <br/>
+              <a className={`${styles.menuHeader} ${styles.inicioMovil}`} onClick={() => { op.current.hide(); navigate('/login'); }}>Iniciar sesión</a>
+            </OverlayPanel>
+          </>
+        ) : (
+          // tu menú para escritorio queda igual
+          <div className={styles.rightSection}>
+            <nav className={styles.contenedorMenu}>
+              <a className={styles.menuHeader}>Inicio</a>
+              <a className={styles.menuHeader} href="#servicios">Servicios</a>
+              <a className={styles.menuHeader} href="#opiniones">Opiniones</a>
+              <a className={styles.menuHeader} href="#contacto">Contacto</a>
+            </nav>
+            <button className={styles.btnInicio} onClick={() => navigate('/login')}>Iniciar sesión</button>
+          </div>
+        )}
       </header>
+
 
       {menuAbierto && (
         <div className={styles.menuHamburguesa}>

@@ -1,27 +1,31 @@
 /**
- * Descripción: Implementación de la vista de Registro para el médico
- * Fecha: 11 Junio de 2025
+ * Descripción: Creacion de registro medico
+ * Fecha: 21 Junio de 2025
  * Programador: Elvia Medina
  */
 
+/* ---------- PrimeReact ---------- */
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
+
+/* React*/
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
+/* firebase */
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-
-import placeholder from '../../assets/avatar_placeholder.png';
-import logo from '../../assets/logo.png';
 import { auth, db } from '../../lib/firebase';
 
+/*style */
+import placeholder from '../../assets/avatar_placeholder.png';
+import logo from '../../assets/logo.png';
 import '../../styles/usuario/Registro.css';
-import '../../styles/usuario/Spinner.css';
 
 import { useEffect } from 'react';
 import { obtenerEspecialidades } from '../../utils/firebaseEspecialidades'; // ruta correcta
@@ -32,8 +36,34 @@ const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 const cedulaRegex = /^\d{8}$/;
 const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
 
+/* imagen */
+const fileToBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload  = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+  });
+
+const subirAImgbb = async (base64) => {
+  const body = new FormData();
+  body.append('key', imgbbApiKey);
+  body.append('image', base64);
+
+  try {
+    const res  = await fetch('https://api.imgbb.com/1/upload', { method: 'POST', body });
+    const data = await res.json();
+    return data.success ? data.data.url : null;
+  } catch (err) {
+    console.error('Error subiendo imagen:', err);
+    return null;
+  }
+};
+
 export default function RegistroWeb() {
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  /* ---------- estado ---------- */
   const [formData, setFormData] = useState({
     nombres: '',
     apellidoP: '',
@@ -94,116 +124,110 @@ export default function RegistroWeb() {
 
 
   const opcionesEstadoCivil = [
-    { label: 'Soltero/a', value: 'Soltero' },
-    { label: 'Casado/a', value: 'Casado' },
-    { label: 'Divorciado/a', value: 'Divorciado' },
-    { label: 'Viudo/a', value: 'Viudo' },
+    { label: 'Soltero/a',   value: 'Soltero'   },
+    { label: 'Casado/a',    value: 'Casado'    },
+    { label: 'Divorciado/a',value: 'Divorciado'},
+    { label: 'Viudo/a',     value: 'Viudo'     },
   ];
 
+  /* ---------- handlers ---------- */
   const handleChange = (campo, valor) => {
-    setFormData({ ...formData, [campo]: valor });
+    setFormData(prev => ({ ...prev, [campo]: valor }));
     if (errores[campo]) {
-      setErrores({ ...errores, [campo]: false });
-      setMensajes({ ...mensajes, [campo]: '' });
+      setErrores(prev  => ({ ...prev,  [campo]: false }));
+      setMensajes(prev => ({ ...prev, [campo]: ''   }));
     }
   };
 
-  const handleFotoChange = (e) => {
-    const archivo = e.target.files[0];
-    if (archivo) {
-      setFotoPerfil(URL.createObjectURL(archivo));
-    }
+  const handleFotoChange = e => {
+    const file = e.target.files[0];
+    if (file) setFotoPerfil(URL.createObjectURL(file));
   };
 
-  const calcularEdad = (fecha) => {
-    if (!fecha) return 0;
-    const diff = HOY.getTime() - fecha.getTime();
-    return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-  };
+  const calcularEdad = fecha =>
+    fecha ? Math.floor((TODAY - fecha) / 31557600000) : 0;
 
+  /* ---------- validación y envío ---------- */
   const validarYEnviar = async () => {
-    const nuevosErrores = {};
+    const nuevosErrores  = {};
     const nuevosMensajes = {};
 
-    Object.entries(formData).forEach(([campo, valor]) => {
-      if (!valor) {
-        nuevosErrores[campo] = true;
-        nuevosMensajes[campo] = 'Este campo es obligatorio';
+    /* — campos requeridos — */
+    Object.entries(formData).forEach(([k, v]) => {
+      if (!v) {
+        nuevosErrores[k]  = true;
+        nuevosMensajes[k] = 'Este campo es obligatorio';
       }
     });
-
-    //Fotografia
     if (!fotoPerfil) {
-      nuevosErrores.fotoPerfil = true;
+      nuevosErrores.fotoPerfil  = true;
       nuevosMensajes.fotoPerfil = 'La foto es obligatoria';
     }
 
-    //Email
+    /* — validaciones específicas — */
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const telRegex   = /^\d{10}$/;
+
     if (formData.correoElectronico && !emailRegex.test(formData.correoElectronico)) {
-      nuevosErrores.correoElectronico = true;
+      nuevosErrores.correoElectronico  = true;
       nuevosMensajes.correoElectronico = 'Correo electrónico inválido';
     }
 
-    //Telefono
-    const telRegex = /^[0-9]{10,}$/;
     if (formData.telefono && !telRegex.test(formData.telefono)) {
-      nuevosErrores.telefono = true;
-      nuevosMensajes.telefono = 'Solo números, mínimo 10 dígitos';
+      nuevosErrores.telefono  = true;
+      nuevosMensajes.telefono = 'Solo números, 10 dígitos';
     }
 
-    //Cedula
     if (formData.cedulaProfesional && !cedulaRegex.test(formData.cedulaProfesional)) {
-      nuevosErrores.cedulaProfesional = true;
-      nuevosMensajes.cedulaProfesional = 'La cédula debe contener 8 dígitos numéricos';
+      nuevosErrores.cedulaProfesional  = true;
+      nuevosMensajes.cedulaProfesional = 'Debe tener 8 dígitos numéricos';
     }
 
-    //Contraseña
+    if (formData.cedulaEspecialidad && !cedulaRegex.test(formData.cedulaEspecialidad)) {
+      nuevosErrores.cedulaEspecialidad  = true;
+      nuevosMensajes.cedulaEspecialidad = 'Debe tener 8 dígitos numéricos';
+    }
+
     if (formData.contrasena && !passRegex.test(formData.contrasena)) {
-      nuevosErrores.contrasena = true;
-      nuevosMensajes.contrasena = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial';
+      nuevosErrores.contrasena  = true;
+      nuevosMensajes.contrasena = 'Mínimo 8 caracteres, una mayúscula, un número y un símbolo';
     }
 
     if (formData.contrasena !== formData.confirmar) {
-      nuevosErrores.confirmar = true;
+      nuevosErrores.confirmar  = true;
       nuevosMensajes.confirmar = 'Las contraseñas no coinciden';
     }
 
-    //Fecha de nacimiento
     if (formData.fechaNacimiento) {
       const edad = calcularEdad(formData.fechaNacimiento);
-      if (formData.fechaNacimiento > HOY) {
-        nuevosErrores.fechaNacimiento = true;
+      if (formData.fechaNacimiento > TODAY) {
+        nuevosErrores.fechaNacimiento  = true;
         nuevosMensajes.fechaNacimiento = 'La fecha no puede ser futura';
       } else if (edad > 130) {
-        nuevosErrores.fechaNacimiento = true;
-        nuevosMensajes.fechaNacimiento = 'Favor de ingresar una fecha válida';
-      } else if (edad < 18) {
-        nuevosErrores.fechaNacimiento = true;
-        nuevosMensajes.fechaNacimiento = 'Debe ser mayor de edad';
+        nuevosErrores.fechaNacimiento  = true;
+        nuevosMensajes.fechaNacimiento = 'Fecha de nacimiento inválida';
       }
     }
 
+    /* — salida de validaciones — */
     setErrores(nuevosErrores);
     setMensajes(nuevosMensajes);
 
-    const primeraClaveError = Object.keys(nuevosMensajes)[0];
-    if (primeraClaveError) {
-      MySwal.fire({
+    if (Object.keys(nuevosMensajes).length) {
+      await MySwal.fire({
         icon: 'error',
         title: 'Error',
-        text: nuevosMensajes[primeraClaveError],
+        text: nuevosMensajes[Object.keys(nuevosMensajes)[0]],
         confirmButtonColor: '#0A3B74',
       });
       return;
     }
 
+    /* — registro en Firebase — */
+    setCargando(true);
     try {
-      setLoading(true); // ← Loading activo
-
-      const fileInput = document.querySelector('input[type="file"]');
-      const file = fileInput?.files[0];
-      const base64 = await fileToBase64(file);
+      const imgFile = document.querySelector('input[type="file"]')?.files[0];
+      const base64  = await fileToBase64(imgFile);
       const fotoURL = await subirAImgbb(base64);
       if (!fotoURL) throw new Error('No se pudo subir la imagen');
 
@@ -216,57 +240,63 @@ export default function RegistroWeb() {
 
       await setDoc(doc(db, 'usuarios', uid), {
         ...formData,
-        fotoPerfil: fotoURL,
-        fechaNacimiento: formData.fechaNacimiento?.toISOString() || null,
-        creadoEn: new Date().toISOString(),
+        fotoPerfil      : fotoURL,
+        fechaNacimiento : formData.fechaNacimiento?.toISOString() || null,
+        creadoEn        : new Date().toISOString(),
       });
 
       await MySwal.fire({
-        icon: 'success',
+        icon : 'success',
         title: '¡Registro exitoso!',
-        text: 'Tu cuenta fue creada correctamente.',
+        text : 'Tu cuenta fue creada correctamente.',
         confirmButtonColor: '#0A3B74',
       });
-    } catch (e) {
-      console.error('Error en el registro:', e);
-      MySwal.fire({
-        icon: 'error',
+
+      navigate('/login', { replace: true });
+    } catch (err) {
+      console.error(err);
+      await MySwal.fire({
+        icon : 'error',
         title: 'Error',
-        text: e.message,
+        text : err.message || 'Ocurrió un error.',
         confirmButtonColor: '#0A3B74',
       });
     } finally {
-      setLoading(false); // loading inactivo
+      setCargando(false);
     }
   };
 
+  /* ---------- render ---------- */
   return (
     <div className="RegistroContainer">
-      {/* loading de carga */}
-      {loading && (
-        <div className="SpinnerOverlay">
-          <div className="lds-spinner">
-            {[...Array(12)].map((_, i) => (
-              <div key={i}></div>
-            ))}
-          </div>
+      {cargando && (
+        <div className="loader-overlay">
+          <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
         </div>
       )}
 
       <div className="RegistroForm">
         <img src={logo} alt="Logo" className="Logo" />
         <h2 className="Titulo">Registro</h2>
-        <p className="Subtitulo">Llena los campos tal como aparecen en tus documentos oficiales.</p>
+        <p className="Subtitulo">
+          Llena los campos tal como aparecen en tus documentos oficiales.
+        </p>
 
-        {/* Foto */}
+        {/* ---------- foto ---------- */}
         <div className="FotoPreview">
-          <img src={fotoPerfil || placeholder} alt="Avatar" className={`PreviewImg ${errores.fotoPerfil ? 'PInvalid' : ''}`} />
+          <img
+            src={fotoPerfil || placeholder}
+            alt="Avatar"
+            className={`PreviewImg ${errores.fotoPerfil ? 'PInvalid' : ''}`}
+          />
           <label className="FileLabel">
             Cambiar foto
             <input type="file" accept="image/*" onChange={handleFotoChange} hidden />
           </label>
+          {mensajes.fotoPerfil && <p className="ErrorMsg">{mensajes.fotoPerfil}</p>}
         </div>
 
+        {/* ---------- formulario ---------- */}
         <div className="PFluid">
           <InputText placeholder="Nombre(s)" className={errores.nombres ? 'PInvalid' : ''} value={formData.nombres} onChange={(e) => handleChange('nombres', e.target.value)} />
           <InputText placeholder="Apellido paterno" className={errores.apellidoP ? 'PInvalid' : ''} value={formData.apellidoP} onChange={(e) => handleChange('apellidoP', e.target.value)} />

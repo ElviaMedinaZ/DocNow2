@@ -1,0 +1,175 @@
+/*
+ * Descripción: Estilos del componente de tabla generica.
+ * Fecha: 22 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+/* Tabla contenedora*/
+.tabla-wrapper {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 3px 12px rgba(0,0,0,.04);
+  overflow-x: auto;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: var(--sidebar-w);
+  transition: margin var(--ease);
+  min-height: 100vh;
+  overflow: visible !important;
+}
+
+/* contenido principal debajo del topbar */
+.mainContent {
+  padding: 1.5rem;
+  margin-top: 64px;
+  overflow: visible !important;
+}
+
+
+/* Estructura de la tabla*/
+.tabla-generica {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tabla-generica th,
+.tabla-generica td {
+  padding: .85rem 1rem;
+  border-bottom: 1px solid #e9edf5;
+}
+.tabla-generica th {
+  background: #f5f9ff;
+  font-weight: 600;
+  font-size: .95rem;
+  color: #0a3b74;
+}
+.tabla-generica td {
+  font-size: .94rem;
+  color: #333;
+}
+
+/* tag estado*/
+.estado-tag {
+  padding: .3rem .7rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: .85rem;
+}
+.estado-tag.activo { 
+  background: #e0fbe6; 
+  color: #1e9c44; 
+}
+.estado-tag.inactivo { 
+  background: #fce8e6; 
+  color: #d13b3b;
+}
+
+/* Botón tres puntos*/
+.btn-acciones {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: .3rem;
+  border-radius: 4px;
+  transition: background .2s ease;
+}
+.btn-acciones:hover {
+  background: #e6eefc;
+  color: #0a3b74;
+}
+
+/* Menú de acciones*/
+.acciones-wrapper { position: relative; display: inline-block; }
+.menu-acciones {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e0e6f1;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  min-width: 120px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+}
+.menu-acciones button {
+  padding: .6rem 1rem;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: .9rem;
+  color: #000;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.menu-acciones button:hover { 
+  background: #f3f6fa; 
+}
+.menu-acciones .eliminar{ 
+  color: #d13b3b; 
+}
+
+/*Footer tabla */
+.tabla-footer {
+  margin-top: .9rem;
+  font-size: .85rem;
+  color: #666;
+  text-align: left;
+}
+
+.estado-tag {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  border-radius: 10px;
+  font-size: 0.85em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.estado-tag.confirmada {
+  background-color: var(--pm-primary);
+  color: #fff;
+}
+
+.estado-tag.pendiente {
+  background-color: #eef2f8;
+  color: #6c6c6c;
+}
+
+.estado-tag.cancelada {
+  background-color: #fddede;
+  color: #d93025;
+}
+
+.menu-acciones select {
+  appearance: none;
+  background-color: #f9fafc;
+  border: 1px solid #d0d7e2;
+  border-radius: 6px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: all 0.2s ease;
+}
+
+.menu-acciones select:focus {
+  outline: none;
+  border-color: #4183f0;
+  background-color: #fff;
+}
+
+/* Tabla movil*/
+@media (max-width: 768px) {
+  .tabla-generica th,
+  .tabla-generica td { font-size: .85rem; }
+}

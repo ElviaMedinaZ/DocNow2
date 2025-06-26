@@ -1,0 +1,328 @@
+/*
+ * Descripción: Estilos de la vista Acudir al psicologo
+ * Fecha: 24 Junio de 2025
+ * Programador: Elvia Medina
+ */
+
+.psicologo-main {
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  background-color: #f9fbfd;
+}
+
+.header-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* HERO */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  padding: 4rem 3rem;
+  border-radius: 2rem;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e0f2f1, #f3f7ff);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  background: url('/images/backgrounds/decoracion-psico.png') no-repeat center/contain;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.hero-text {
+  flex: 1 1 50%;
+  z-index: 1;
+}
+
+.hero-text h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.hero-text span {
+  display: block;
+  color: #009688;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.hero-text p {
+  font-size: 1.15rem;
+  color: #546e7a;
+  margin-top: 1.5rem;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.hero-image {
+  flex: 1 1 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.hero-image img:hover {
+  transform: scale(1.03);
+}
+
+
+/* ALERTA */
+.alerta {
+  background-color: #e3f2fd;
+  padding: 1rem;
+  border-left: 6px solid #1976d2;
+  margin: 2rem 0;
+  font-weight: 500;
+}
+
+/* BENEFICIOS */
+.beneficios {
+  margin: 2rem 0;
+}
+
+.beneficio-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.beneficio-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.beneficio-icon {
+  font-size: 2rem;
+  color: #0076d6;
+  margin-bottom: 0.5rem;
+}
+
+/* FRECUENCIA */
+.frecuencia {
+  margin: 3rem 0;
+}
+
+.edad-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.edad-card {
+  flex: 1;
+  min-width: 250px;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border-left: 6px solid #0076d6;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+
+.edad-num {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0076d6;
+}
+
+/* MITOS */
+.mitos {
+  margin: 3rem 0;
+}
+
+.mito-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.mito-card {
+  text-align: center;
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+}
+
+.mito-card img {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1rem;
+}
+
+/* TIPOS DE TERAPIA */
+.tipos-terapia {
+  margin: 3rem 0;
+}
+
+.tipos-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.tipo-card {
+  background-color: #e8f5e9;
+  padding: 1.5rem;
+  border-left: 5px solid #43a047;
+  border-radius: 0.5rem;
+}
+
+/* TESTIMONIOS */
+.testimonios {
+  margin: 3rem 0;
+}
+
+.testimonios-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+blockquote {
+  background-color: #f1f8e9;
+  padding: 1rem 1.5rem;
+  border-left: 5px solid #689f38;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+blockquote footer {
+  margin-top: 0.5rem;
+  text-align: right;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* CTA */
+.cta {
+  margin: 4rem 0 0;
+  padding: 3rem 2rem;
+  border-radius: 2rem;
+  background: linear-gradient(135deg, #bbdefb, #e1f5fe);
+  color: #0d47a1;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.cta::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  background: url('/images/backgrounds/fondo-cta.png') no-repeat center/contain;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-content h2 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1b1f3b;
+}
+
+.cta-content p {
+  font-size: 1.15rem;
+  color: #37474f;
+  margin-bottom: 2rem;
+}
+
+/*movil */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+
+  .hero-image img {
+    max-width: 280px;
+  }
+
+  .beneficio-card,
+  .edad-card,
+  .mito-card,
+  .tipo-card,
+  blockquote {
+    padding: 1rem;
+  }
+
+  .cta-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .cta-content p {
+    font-size: 1rem;
+  }
+
+  .psicologo-main {
+    padding: 1rem;
+  }
+
+  .beneficio-grid,
+  .mito-grid,
+  .tipos-grid,
+  .testimonios-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .edad-grid {
+    flex-direction: column;
+  }
+
+  .cta {
+    padding: 2rem 1rem;
+  }
+}
