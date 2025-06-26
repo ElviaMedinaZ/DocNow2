@@ -4,90 +4,101 @@
  * Programador: Elvia Medina
  */
 
-import { Button } from 'primereact/button';
-import { Password } from 'primereact/password';
+
+import { confirmPasswordReset, getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import '../../styles/usuario/nueva-contrasena.css';
+import withReactContent from 'sweetalert2-react-content';
+import '../../styles/usuario/nueva-contrasena.css'; // (si lo tienes)
+
+const MySwal = withReactContent(Swal);
 
 export default function NuevaContrasena() {
+  const [searchParams] = useSearchParams();
   const [nuevaContrasena, setNuevaContrasena] = useState('');
-  const [confirmar, setConfirmar] = useState('');
+  const [confirmarContrasena, setConfirmarContrasena] = useState('');
+  const [oobCode, setOobCode] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const correo = localStorage.getItem('correoRecuperacion');
-    if (!correo) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Acceso inválido',
-        text: 'Primero debes verificar tu código.',
-        confirmButtonColor: '#0A3B74',
-      }).then(() => navigate('/recuperar-contrasena'));
-    }
-  }, [navigate]);
-
-  const manejarCambio = async () => {
-    if (nuevaContrasena !== confirmar) {
-      await Swal.fire({
+    const code = searchParams.get('oobCode');
+    if (code) {
+      setOobCode(code);
+    } else {
+      MySwal.fire({
         icon: 'error',
-        title: 'Error',
-        text: 'Las contraseñas no coinciden.',
-        confirmButtonColor: '#0A3B74'
+        title: 'Código inválido',
+        text: 'El enlace de recuperación no es válido o ha expirado.',
+        confirmButtonColor: '#0A3B74',
+      }).then(() => navigate('/login'));
+    }
+  }, []);
+
+  const manejarCambioContrasena = async () => {
+    if (!nuevaContrasena || nuevaContrasena.length < 6) {
+      await MySwal.fire({
+        icon: 'warning',
+        title: 'Contraseña inválida',
+        text: 'Debe tener al menos 6 caracteres.',
+        confirmButtonColor: '#0A3B74',
       });
       return;
     }
 
-    await Swal.fire({
-      icon: 'success',
-      title: 'Contraseña actualizada',
-      text: 'Tu contraseña ha sido restablecida.',
-      confirmButtonColor: '#0A3B74'
-    });
+    if (nuevaContrasena !== confirmarContrasena) {
+      await MySwal.fire({
+        icon: 'warning',
+        title: 'Las contraseñas no coinciden',
+        confirmButtonColor: '#0A3B74',
+      });
+      return;
+    }
 
-    localStorage.removeItem('correoRecuperacion');
+    try {
+      const auth = getAuth();
+      await confirmPasswordReset(auth, oobCode, nuevaContrasena);
 
-    navigate('/login');
+      await MySwal.fire({
+        icon: 'success',
+        title: 'Contraseña actualizada',
+        text: 'Tu contraseña ha sido restablecida correctamente.',
+        confirmButtonColor: '#0A3B74',
+      });
+
+      navigate('/login');
+    } catch (error) {
+      console.error('Error al confirmar contraseña:', error);
+      await MySwal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo cambiar la contraseña. Intenta con un nuevo enlace.',
+        confirmButtonColor: '#0A3B74',
+      });
+    }
   };
 
   return (
-    <div className="nueva-container">
-      <div className="nueva-card">
-        <h2 className="nueva-titulo">Nueva contraseña</h2>
-           <img
-          src="https://sso-men.test.espinlabs.com.ar/frontend/images/recuperar-new.png"
-          alt="Candado"
-          className="nueva-imagen"
+    <div className="recuperar-container">
+      <div className="recuperar-card p-fluid">
+        <h2 className="recuperar-titulo">Nueva contraseña</h2>
+        <p>Ingresa tu nueva contraseña para restablecer el acceso.</p>
+
+        <input
+          type="password"
+          placeholder="Nueva contraseña"
+          value={nuevaContrasena}
+          onChange={(e) => setNuevaContrasena(e.target.value)}
         />
 
-        <div className="nueva-input-group">
-          <Password
-            placeholder="Nueva contraseña"
-            value={nuevaContrasena}
-            onChange={(e) => setNuevaContrasena(e.target.value)}
-            toggleMask
-            feedback={false}
-            className="nueva-input"
-          />
-        </div>
-
-        <div className="nueva-input-group">
-          <Password
-            placeholder="Confirmar contraseña"
-            value={confirmar}
-            onChange={(e) => setConfirmar(e.target.value)}
-            toggleMask
-            feedback={false}
-            className="nueva-input"
-          />
-        </div>
-
-        <Button
-          label="Guardar"
-          onClick={manejarCambio}
-          className="nueva-boton"
+        <input
+          type="password"
+          placeholder="Confirmar contraseña"
+          value={confirmarContrasena}
+          onChange={(e) => setConfirmarContrasena(e.target.value)}
         />
+
+        <button onClick={manejarCambioContrasena}>Guardar contraseña</button>
       </div>
     </div>
   );

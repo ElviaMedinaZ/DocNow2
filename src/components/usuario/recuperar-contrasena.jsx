@@ -1,9 +1,10 @@
 /*
- * Descripción: Implementacion de la vista recuperar contrasena
+ * Descripción: Implementación de recuperación de contraseña con Firebase Auth
  * Fecha: 11 Junio de 2025
  * Programador: Elvia Medina
  */
-import emailjs from '@emailjs/browser';
+
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -15,16 +16,12 @@ import { db } from '../../lib/firebase';
 import '../../styles/usuario/recuperar-contrasena.css';
 
 const MySwal = withReactContent(Swal);
-
-const SERVICE_ID = 'service_65rd83l';
-const TEMPLATE_ID = 'template_wuod5gm';
-const PUBLIC_KEY = '8J117Gf1Z6t3c785m';
 const correoReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function RecuperarContrasena() {
+  const navigate = useNavigate();
   const [correo, setCorreo] = useState('');
   const [error, setError] = useState(false);
-  const navigate = useNavigate();
 
   const manejarEnvio = async () => {
     setError(false);
@@ -41,9 +38,9 @@ export default function RecuperarContrasena() {
     }
 
     try {
-      // Verificar si el correo está registrado en Firestore
+      // Verificar si el correo existe en Firestore (opcional)
       const usuariosRef = collection(db, 'usuarios');
-      const q = query(usuariosRef, where('email', '==', correo));
+      const q = query(usuariosRef, where('correoElectronico', '==', correo));
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
@@ -56,32 +53,30 @@ export default function RecuperarContrasena() {
         return;
       }
 
-      // Generar código
-      const codigo = Math.floor(100000 + Math.random() * 900000);
-      localStorage.setItem('codigoRecuperacion', codigo.toString());
-      localStorage.setItem('correoRecuperacion', correo);
-
-      const templateParams = {
-        email: correo,
-        passcode: codigo,
+      // Configurar el enlace personalizado
+      const auth = getAuth();
+      const actionCodeSettings = {
+        url: 'https://doc-now2.vercel.app/nueva-contrasena',
+        handleCodeInApp: true,
       };
 
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+      await sendPasswordResetEmail(auth, correo, actionCodeSettings);
 
       await MySwal.fire({
         icon: 'success',
-        title: 'Código enviado',
-        text: `Revisa tu correo para continuar con el proceso.`,
+        title: 'Correo enviado',
+        text: 'Te hemos enviado un enlace para restablecer tu contraseña.',
         confirmButtonColor: '#0A3B74',
       });
 
-      navigate('/verificar-codigo');
-    } catch (err) {
-      console.error('Error al enviar código:', err);
+      setCorreo('');
+      navigate('/login');
+    } catch (error) {
+      console.error('Error al enviar el correo de recuperación:', error);
       await MySwal.fire({
         icon: 'error',
-        title: 'Error al enviar',
-        text: 'No se pudo enviar el código. Intenta más tarde.',
+        title: 'Error',
+        text: 'No se pudo enviar el correo. Intenta más tarde.',
         confirmButtonColor: '#0A3B74',
       });
     }
@@ -91,7 +86,7 @@ export default function RecuperarContrasena() {
     <div className="recuperar-container">
       <div className="recuperar-card p-fluid">
         <h2 className="recuperar-titulo">Recuperar contraseña</h2>
-        <p>Ingresa tu correo y te enviaremos un código de verificación.</p>
+        <p>Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.</p>
 
         <InputText
           placeholder="Correo electrónico"
@@ -102,7 +97,7 @@ export default function RecuperarContrasena() {
         />
 
         <Button
-          label="Enviar código"
+          label="Enviar enlace"
           onClick={manejarEnvio}
           className="recuperar-boton"
         />
