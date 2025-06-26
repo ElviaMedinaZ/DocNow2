@@ -1,5 +1,5 @@
 /*
- * Descripción: Vista nueva contrasena
+ * Descripción: Vista nueva contraseña
  * Fecha: 25 Junio de 2025
  * Programador: Elvia Medina
  */

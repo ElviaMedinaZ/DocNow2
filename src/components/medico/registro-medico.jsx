@@ -285,26 +285,49 @@ export default function RegistroWeb() {
 
         {/* formulario */}
         <div className="PFluid">
-
           <InputText
-            placeholder="Nombre(s)"
-            className={errores.nombres ? 'PInvalid' : ''}
-            value={formData.nombres}
-            onChange={(e) => handleChange('nombres', e.target.value)}
-          />
+          placeholder="Nombre(s)"
+          className={errores.nombres ? 'PInvalid' : ''}
+          maxLength={40}
+          value={formData.nombres}
+          onChange={(e) =>
+            handleChange('nombres', e.target.value.replace(/[0-9]/g, ''))
+          }
+          onKeyPress={(e) => {
+            if (/\d/.test(e.key)) {
+              e.preventDefault(); // bloquea teclas numéricas
+            }
+          }}
+        />
 
           <InputText
             placeholder="Apellido paterno"
             className={errores.apellidoP ? 'PInvalid' : ''}
+            maxLength={40}
             value={formData.apellidoP}
-            onChange={(e) => handleChange('apellidoP', e.target.value)}
+            onChange={(e) =>
+              handleChange('apellidoP', e.target.value.replace(/[0-9]/g, ''))
+            }
+            onKeyPress={(e) => {
+              if (/\d/.test(e.key)) {
+                e.preventDefault(); // Bloquea entrada de números
+              }
+            }}
           />
 
           <InputText
             placeholder="Apellido materno"
+            maxLength={40}
             className={errores.apellidoM ? 'PInvalid' : ''}
             value={formData.apellidoM}
-            onChange={(e) => handleChange('apellidoM', e.target.value)}
+            onChange={(e) =>
+              handleChange('apellidoM', e.target.value.replace(/[^a-zA-ZÁÉÍÓÚáéíóúÑñ\s]/g, ''))
+            }
+            onKeyPress={(e) => {
+              if (!/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]$/.test(e.key)) {
+                e.preventDefault(); // Bloquea números y caracteres especiales
+              }
+            }}
           />
 
           {/* NUEVOS CAMPOS */}
@@ -320,14 +343,32 @@ export default function RegistroWeb() {
             placeholder="Cédula profesional (8 dígitos)"
             className={errores.cedulaProfesional ? 'PInvalid' : ''}
             value={formData.cedulaProfesional}
-            onChange={(e) => handleChange('cedulaProfesional', e.target.value)}
+            maxLength={8}
+            onChange={(e) => {
+              const soloNumeros = e.target.value.replace(/\D/g, '').slice(0, 8);
+              handleChange('cedulaProfesional', soloNumeros);
+            }}
+            onKeyPress={(e) => {
+              if (!/[0-9]/.test(e.key)) {
+                e.preventDefault(); // Bloquea letras y otros símbolos
+              }
+            }}
           />
 
           <InputText
             placeholder="Cédula de especialidad (8 dígitos)"
             className={errores.cedulaEspecialidad ? 'PInvalid' : ''}
             value={formData.cedulaEspecialidad}
-            onChange={(e) => handleChange('cedulaEspecialidad', e.target.value)}
+            maxLength={8}
+            onChange={(e) => {
+              const soloNumeros = e.target.value.replace(/\D/g, '').slice(0, 8);
+              handleChange('cedulaEspecialidad', soloNumeros);
+            }}
+            onKeyPress={(e) => {
+              if (!/[0-9]/.test(e.key)) {
+                e.preventDefault(); // Bloquea letras y símbolos
+              }
+            }}
           />
           
           <Dropdown
@@ -360,16 +401,23 @@ export default function RegistroWeb() {
 
           <InputText
             placeholder="Correo electrónico"
+            maxLength={40}
             className={errores.correoElectronico ? 'PInvalid' : ''}
             value={formData.correoElectronico}
             onChange={(e) => handleChange('correoElectronico', e.target.value)}
           />
 
-          <InputText
-            placeholder="Teléfono (10 dígitos)"
+           <InputText
+            placeholder="Teléfono"
             className={errores.telefono ? 'PInvalid' : ''}
             value={formData.telefono}
-            onChange={(e) => handleChange('telefono', e.target.value)}
+            maxLength={10}
+            onChange={(e) => handleChange('telefono', e.target.value.replace(/\D/g, ''))}
+            onKeyPress={(e) => {
+              if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
           />
 
           <Password
