@@ -4,34 +4,86 @@
  * Programador: Elvia Medina
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import { collection, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 import '../../styles/admin/admin-base.css';
 import GenericTable from './tabla-generica';
 
-const citasIniciales = [
-  { id: 1, paciente: 'Pedro Rodríguez', doctor: 'Dr. Juan Pérez', fecha: '2024-01-20', hora: '10:00', estado: 'Confirmada' },
-  { id: 2, paciente: 'Laura Sánchez', doctor: 'Dra. María García', fecha: '2024-01-20', hora: '11:30', estado: 'Pendiente' },
-  { id: 3, paciente: 'Miguel Torres', doctor: 'Dr. Carlos López', fecha: '2024-01-21', hora: '09:00', estado: 'Confirmada' },
-  { id: 4, paciente: 'Carmen Ruiz', doctor: 'Dra. Ana Martínez', fecha: '2024-01-21', hora: '14:00', estado: 'Cancelada' },
-];
-
 export default function CitasAdmin() {
-  const [citas, setCitas] = useState(citasIniciales);
+  const [citas, setCitas] = useState([]);
   const [busqueda, setBusqueda] = useState('');
   const [menuAbierto, setMenuAbierto] = useState(null);
+
+  // Obtener citas desde Firebase
+  useEffect(() => {
+    const obtenerCitas = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, 'citas'));
+        const citasData = await Promise.all(snapshot.docs.map(async (docSnap) => {
+          const cita = docSnap.data();
+
+          // Obtener nombre del paciente
+          let pacienteNombre = 'Desconocido';
+          try {
+            const pacienteDoc = await getDoc(doc(db, 'usuarios', cita.pacienteId));
+            if (pacienteDoc.exists()) {
+              const data = pacienteDoc.data();
+              pacienteNombre = `${data.nombres} ${data.apellidoP || ''} ${data.apellidoM || ''}`;
+            }
+          } catch {}
+
+          // Obtener nombre del doctor
+          let doctorNombre = 'Desconocido';
+          try {
+            const doctorDoc = await getDoc(doc(db, 'usuarios', cita.doctorId));
+            if (doctorDoc.exists()) {
+              const data = doctorDoc.data();
+              doctorNombre = `${data.nombres} ${data.apellidoP || ''} ${data.apellidoM || ''}`;
+            }
+          } catch {}
+
+          return {
+            id: docSnap.id,
+            ...cita,
+            paciente: pacienteNombre,
+            doctor: doctorNombre,
+          };
+        }));
+
+        setCitas(citasData);
+      } catch (err) {
+        console.error('Error al obtener citas:', err);
+      }
+    };
+
+    obtenerCitas();
+  }, []);
 
   const toggleMenu = (id) => {
     setMenuAbierto((prev) => (prev === id ? null : id));
   };
 
-  const cambiarEstado = (id, nuevoEstado) => {
+  const cambiarEstado = async (id, nuevoEstado) => {
+  try {
+    // Actualizar localmente en el estado
     setCitas((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, estado: nuevoEstado } : c))
+      prev.map((c) => (c.id === id ? { ...c, estatus: nuevoEstado } : c))
     );
-  };
 
+    // Actualizar en Firebase
+    await updateDoc(doc(db, 'citas', id), {
+      estatus: nuevoEstado,
+    });
+
+    Swal.fire('Estado actualizado', `La cita ahora está "${nuevoEstado}"`, 'success');
+  } catch (error) {
+    console.error('Error al actualizar estado en Firebase:', error);
+    Swal.fire('Error', 'No se pudo actualizar el estado en Firebase.', 'error');
+  }
+};
   const cancelarCita = (id) => {
     Swal.fire({
       title: '¿Cancelar cita?',
@@ -48,7 +100,7 @@ export default function CitasAdmin() {
   };
 
   const citasFiltradas = citas.filter((c) =>
-    `${c.paciente} ${c.doctor} ${c.fecha} ${c.estado}`.toLowerCase().includes(busqueda.toLowerCase())
+    `${c.paciente} ${c.doctor} ${c.fecha} ${c.estatus}`.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   const columns = [
@@ -59,8 +111,8 @@ export default function CitasAdmin() {
     {
       header: 'Estado',
       accessor: (c) => (
-        <span className={`estado-tag ${c.estado.toLowerCase()}`}>
-          {c.estado}
+        <span className={`estado-tag ${c.estatus?.toLowerCase()}`}>
+          {c.estatus}
         </span>
       ),
     },
@@ -80,14 +132,13 @@ export default function CitasAdmin() {
                 {['Confirmada', 'Pendiente'].map((estado) => (
                   <button
                     key={estado}
-                    className={`estado-option ${row.estado === estado ? 'activo' : ''}`}
+                    className={`estado-option ${row.estatus === estado ? 'activo' : ''}`}
                     onClick={() => cambiarEstado(row.id, estado)}
                   >
                     {estado}
                   </button>
                 ))}
               </div>
-
 
               <button className="eliminar" onClick={() => cancelarCita(row.id)}>
                 Cancelar

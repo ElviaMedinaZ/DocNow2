@@ -12,16 +12,14 @@ import HistorialMedico from '../medico/historial-medico';
 import AgendarCita from '../paciente/agendar-cita';
 import RegistroPaciente from '../paciente/registro-paciente';
 import GenericTable from './tabla-generica';
+import { cargarPacientesDesdeFirestore } from '../../utils/firebasePaciente';
+import {updateDoc, doc, getDoc ,deleteDoc } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 
-const datosIniciales = [
-  { id: 1, nombre: 'José Ramírez', edad: 34, sexo: 'M', telefono: '+1234567890', ultimaVisita: '2024-01-15', estado: 'Activo' },
-  { id: 2, nombre: 'Laura Torres', edad: 28, sexo: 'F', telefono: '+1234567891', ultimaVisita: '2024-01-14', estado: 'Activo' },
-  { id: 3, nombre: 'Carlos Aguilar', edad: 45, sexo: 'M', telefono: '+1234567892', ultimaVisita: '2024-01-13', estado: 'Inactivo' },
-  { id: 4, nombre: 'Marta Reyes', edad: 52, sexo: 'F', telefono: '+1234567893', ultimaVisita: '2024-01-12', estado: 'Activo' },
-];
+
 
 export default function PacientesAdmin() {
-  const [pacs, setPacs] = useState(datosIniciales);
+  const [pacs, setPacs] = useState([]);
   const [busqueda, setBusqueda] = useState('');
   const [menuAbierto, setMenu] = useState(null);
   const [modalAbierto, setModal] = useState(false);
@@ -33,30 +31,26 @@ export default function PacientesAdmin() {
   const menuRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenu(null);
-      }
+    const cargar = async () => {
+      const datos = await cargarPacientesDesdeFirestore();
+      setPacs(datos);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    cargar();
   }, []);
+
 
   const toggleMenu = (id) => setMenu((prev) => (prev === id ? null : id));
   const cerrarModal = () => { setModal(false); setEdit(null); setMenu(null); };
   const cerrarModalCita = () => { setModalCita(false); setPacienteCita(null); setMenu(null); };
   const cerrarModalHistorial = () => { setModalHistorial(false); setPacienteHistorial(null); setMenu(null); };
-
-  const abrirNuevo = () => { setEdit(null); setModal(true); };
-  const abrirEditar = (row) => { setEdit(row); setModal(true); };
   const abrirCita = (row) => { setPacienteCita(row); setModalCita(true); setMenu(null); };
   const abrirHistorial = (row) => { setPacienteHistorial(row); setModalHistorial(true); setMenu(null); };
 
-  const eliminar = (id) => {
-    const reg = pacs.find((p) => p.id === id);
+  const eliminar = async (id) => {
+  const reg = pacs.find((p) => p.id === id);
     if (!reg) return;
 
-    Swal.fire({
+    const confirm = await Swal.fire({
       title: '¿Eliminar paciente?',
       text: `Se eliminará a ${reg.nombre}.`,
       icon: 'warning',
@@ -65,34 +59,93 @@ export default function PacientesAdmin() {
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar',
-    }).then((r) => {
-      if (r.isConfirmed) {
+    });
+
+    if (confirm.isConfirmed) {
+      try {
+        await deleteDoc(doc(db, 'usuarios', id));
+
         setPacs((prev) => prev.filter((p) => p.id !== id));
-        Swal.fire({ title: 'Eliminado', icon: 'success', timer: 1500, showConfirmButton: false });
-      }
-    });
-  };
 
-  const toggleEstado = (id) => {
-    const paciente = pacs.find((p) => p.id === id);
-    if (!paciente) {
-      return Swal.fire({ title: 'Paciente no encontrado', icon: 'error' });
+        Swal.fire({
+          title: 'Eliminado',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        console.error('Error al eliminar paciente:', error);
+        Swal.fire('Error', 'No se pudo eliminar el paciente de Firebase.', 'error');
+      }
     }
-
-    const nuevo = paciente.estado === 'Activo' ? 'Inactivo' : 'Activo';
-
-    Swal.fire({
-      title: `¿Cambiar estado a ${nuevo}?`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, cambiar',
-      cancelButtonText: 'Cancelar',
-    }).then((r) => {
-      if (r.isConfirmed) {
-        setPacs((prev) => prev.map((p) => (p.id === id ? { ...p, estado: nuevo } : p)));
-      }
-    });
   };
+
+
+  const toggleEstado = async (id) => {
+  const paciente = pacs.find((p) => p.id === id);
+  if (!paciente) {
+    return Swal.fire({ title: 'Paciente no encontrado', icon: 'error' });
+  }
+
+  const nuevo = paciente.estado === 'Activo' ? 'Inactivo' : 'Activo';
+
+  const confirm = await Swal.fire({
+    title: `¿Cambiar estado a ${nuevo}?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, cambiar',
+    cancelButtonText: 'Cancelar',
+  });
+
+  if (confirm.isConfirmed) {
+    try {
+      await updateDoc(doc(db, 'usuarios', id), { estado: nuevo });
+
+      setPacs((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, estado: nuevo } : p))
+      );
+
+      Swal.fire('Estado actualizado', `El paciente ahora está ${nuevo}.`, 'success');
+    } catch (error) {
+      console.error('Error al actualizar el estado:', error);
+      Swal.fire('Error', 'No se pudo actualizar el estado en Firebase.', 'error');
+    }
+  }
+};
+
+  const abrirNuevo = () => { setEdit(null); setModal(true); };
+  const abrirEditar = async (row) => {
+  try {
+    const docRef = doc(db, 'usuarios', row.id);
+    const snap = await getDoc(docRef);
+
+    if (snap.exists()) {
+      const datos = snap.data();
+
+      setEdit({
+        id: row.id,
+        nombres: datos.nombres || '',
+        apellidoP: datos.apellidoP || '',
+        apellidoM: datos.apellidoM || '',
+        curp: datos.curp || '',
+        sexo: datos.sexo || '',
+        fechaNacimiento: datos.fechaNacimiento || '',
+        estadoCivil: datos.estadoCivil || '',
+        correoElectronico: datos.email || datos.correoElectronico || '',
+        telefono: datos.telefono || '',
+        rol: datos.rol || 'Paciente',
+        fotoPerfil: datos.fotoPerfil || datos.fotoUrl || '',
+      });
+
+      setModal(true);
+    } else {
+      Swal.fire('Error', 'No se encontró el paciente en Firestore.', 'error');
+    }
+  } catch (err) {
+    console.error('Error al cargar paciente:', err);
+    Swal.fire('Error', 'Hubo un problema al cargar los datos.', 'error');
+  }
+};
 
   const onSave = (payload, modo) => {
     setPacs((prev) =>

@@ -10,15 +10,13 @@ import Swal from 'sweetalert2';
 import '../../styles/admin/admin-base.css';
 import GenericTable from './tabla-generica';
 
-const datosIniciales = [
-  { id: 1, nombre: 'Cardiología', descripcion: 'Corazón y grandes vasos', estado: 'Activo' },
-  { id: 2, nombre: 'Dermatología', descripcion: 'Piel, pelo y uñas', estado: 'Activo' },
-  { id: 3, nombre: 'Pediatría', descripcion: 'Salud infantil', estado: 'Activo' },
-  { id: 4, nombre: 'Neurología', descripcion: 'Sistema nervioso', estado: 'Inactivo' },
-];
+import { obtenerEspecialidades, guardarEspecialidadEnFirebase, eliminarEspecialidadDeFirebase } from '../../utils/firebaseEspecialidades';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
+
 
 export default function EspecialidadesAdmin() {
-  const [esp, setEsp] = useState(datosIniciales);
+  const [esp, setEsp] = useState([]);
   const [busqueda, setBusqueda] = useState('');
   const [menuAbierto, setMenu] = useState(null);
   const [nueva, setNueva] = useState(null);
@@ -26,72 +24,128 @@ export default function EspecialidadesAdmin() {
   const menuRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenu(null);
-      }
+    const cargarEspecialidades = async () => {
+      const snap = await obtenerEspecialidades(); // Te devuelve [{ label, value }]
+      const convertidas = snap.map(e => ({
+        id: e.value,
+        nombre: e.label || e.Especialidad || '', // <- Aseguras que se use el nombre correcto
+        descripcion: e.descripcion || 'Sin descripción',
+        estado: e.Estado || 'Activo',
+        fotoUrl: e.FotoUrl || '', // <- aquí sí se usa el campo correcto
+      }));
+      setEsp(convertidas);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+
+    cargarEspecialidades();
   }, []);
 
   const toggleMenu = (id) => setMenu((p) => (p === id ? null : id));
   const cancelarNueva = () => setNueva(null);
   const cancelarEdicion = () => setEnEdicion(null);
 
-  const guardarNueva = () => {
-    if (!nueva.nombre.trim() || !nueva.descripcion.trim()) {
-      return Swal.fire({ title: 'Todos los campos son obligatorios', icon: 'warning' });
-    }
-    const duplicado = esp.some((e) => e.nombre.toLowerCase() === nueva.nombre.trim().toLowerCase());
-    if (duplicado) {
-      return Swal.fire({ title: 'Esa especialidad ya existe', icon: 'error' });
-    }
-    setEsp((prev) => [...prev, { ...nueva, id: Date.now() }]);
-    setNueva(null);
+  const guardarNueva = async () => {
+  if (!nueva.nombre.trim()) {
+    return Swal.fire({ title: 'El nombre es obligatorio', icon: 'warning' });
+  }
+
+  const duplicado = esp.some((e) => e.nombre.toLowerCase() === nueva.nombre.trim().toLowerCase());
+  if (duplicado) {
+    return Swal.fire({ title: 'Esa especialidad ya existe', icon: 'error' });
+  }
+
+  const especialidadFinal = {
+    nombre: nueva.nombre,
+    descripcion: nueva.descripcion || 'Sin descripción',
+    estado: nueva.estado || 'Activo',
+    fotoUrl: nueva.fotoUrl?.trim() || ''
   };
 
-  const guardarEdicion = () => {
-    if (!enEdicion.nombre.trim() || !enEdicion.descripcion.trim()) {
-      return Swal.fire({ title: 'Todos los campos son obligatorios', icon: 'warning' });
-    }
-    const duplicado = esp.some(
-      (e) =>
-        e.nombre.toLowerCase() === enEdicion.nombre.trim().toLowerCase() &&
-        e.id !== enEdicion.id
-    );
-    if (duplicado) {
-      return Swal.fire({ title: 'Esa especialidad ya existe', icon: 'error' });
-    }
-    setEsp((prev) =>
-      prev.map((e) => (e.id === enEdicion.id ? { ...enEdicion } : e))
+
+  try {
+    await guardarEspecialidadEnFirebase(especialidadFinal);
+    setEsp(prev => [...prev, { ...especialidadFinal, id: especialidadFinal.nombre }]);
+    setNueva(null);
+    Swal.fire('Guardado', 'Especialidad creada correctamente.', 'success');
+  } catch (e) {
+    Swal.fire('Error', 'No se pudo guardar en Firebase.', 'error');
+    console.error(e);
+  }
+};
+
+
+  const guardarEdicion = async () => {
+  if (!enEdicion.nombre.trim()) {
+    return Swal.fire({ title: 'El nombre es obligatorio', icon: 'warning' });
+  }
+
+  const especialidadRef = doc(db, 'Especialidades', enEdicion.id);
+  try {
+    await updateDoc(especialidadRef, {
+      Especialidad: enEdicion.nombre,
+      descripcion: enEdicion.descripcion || 'Sin descripción',
+      Estado: enEdicion.estado || 'Activo',
+      FotoUrl: especialidad.fotoUrl?.trim() || ''
+    });
+
+    setEsp(prev =>
+      prev.map(e => e.id === enEdicion.id ? { ...enEdicion } : e)
     );
     setEnEdicion(null);
-  };
+    Swal.fire('Actualizado', 'Especialidad modificada correctamente.', 'success');
+  } catch (e) {
+    Swal.fire('Error', 'No se pudo actualizar en Firebase.', 'error');
+    console.error(e);
+  }
+};
 
-  const eliminar = (id) => {
-    const reg = esp.find((e) => e.id === id);
-    Swal.fire({
-      title: '¿Eliminar especialidad?',
-      text: `Se eliminará "${reg?.nombre}".`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#b52020',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((r) => r.isConfirmed && setEsp((prev) => prev.filter((e) => e.id !== id)));
-  };
+  const eliminar = async (id) => {
+  const reg = esp.find((e) => e.id === id);
+  if (!reg) return;
 
-  const toggleEstado = (id) =>
-    setEsp((prev) =>
-      prev.map((e) =>
-        e.id === id ? { ...e, estado: e.estado === 'Activo' ? 'Inactivo' : 'Activo' } : e
-      )
-    );
+  const confirm = await Swal.fire({
+    title: '¿Eliminar especialidad?',
+    text: `Se eliminará "${reg?.nombre}".`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#b52020',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar',
+  });
+
+  if (confirm.isConfirmed) {
+    try {
+      await eliminarEspecialidadDeFirebase(id);
+      setEsp((prev) => prev.filter((e) => e.id !== id));
+      Swal.fire('Eliminado', 'Especialidad eliminada correctamente.', 'success');
+    } catch (e) {
+      Swal.fire('Error', 'No se pudo eliminar en Firebase.', 'error');
+      console.error(e);
+    }
+  }
+};
+    const toggleEstado = async (id) => {
+      const registro = esp.find((e) => e.id === id);
+      if (!registro) return;
+
+      const nuevoEstado = registro.estado === 'Activo' ? 'Inactivo' : 'Activo';
+
+      try {
+        const ref = doc(db, 'Especialidades', id);
+        await updateDoc(ref, { estado: nuevoEstado });
+
+        setEsp((prev) =>
+          prev.map((e) => (e.id === id ? { ...e, estado: nuevoEstado } : e))
+        );
+      } catch (error) {
+        console.error('Error al cambiar estado:', error);
+        Swal.fire('Error', 'No se pudo cambiar el estado en Firebase.', 'error');
+      }
+    };
+
 
   const abrirNuevaFila = () => {
-    setNueva({ nombre: '', descripcion: '', estado: 'Activo' });
+    setNueva({ Especialidades: '', descripcion: '', Estado: 'Activo', fotoUrl: '' });
     setMenu(null);
   };
 
@@ -174,6 +228,41 @@ export default function EspecialidadesAdmin() {
           </span>
         ),
     },
+    {
+        header: 'Imagen',
+        accessor: (row) =>
+          row.id === 'tmp' ? (
+            <input
+              className="tabla-input"
+              type="text"
+              placeholder="URL de la imagen"
+              value={nueva.fotoUrl}
+              onChange={(e) => setNueva({ ...nueva, fotoUrl: e.target.value })}
+            />
+          ) : enEdicion?.id === row.id ? (
+            <input
+              className="tabla-input"
+              type="text"
+              placeholder="URL de la imagen"
+              value={enEdicion.fotoUrl}
+              onChange={(e) => setEnEdicion({ ...enEdicion, fotoUrl: e.target.value })}
+            />
+          ) : row.fotoUrl ? (
+            <img
+              src={row.fotoUrl}
+              alt={row.nombre}
+              style={{
+                width: '40px',
+                height: '40px',
+                objectFit: 'cover',
+                borderRadius: '50%',
+                border: '1px solid #ccc',
+              }}
+            />
+          ) : (
+            <span>Sin imagen</span>
+          ),
+      },
     {
       header: 'Acciones',
       accessor: (row) =>

@@ -90,15 +90,20 @@ export default function Login() {
         showConfirmButton: false
       });
 
+    
+
       switch (rol) {
         case 'Paciente':
+          localStorage.setItem('uid', uid);
           navigate('/home-paciente');
           break;
         case 'Doctor':
+          localStorage.setItem('uid', uid);
           navigate('/home-medico');
           break;
         case 'Admin':
-          navigate('/home-admin');
+          localStorage.setItem('uid', uid);
+          navigate('/dashboard-admin');
           break;
         default:
           navigate('/'); 

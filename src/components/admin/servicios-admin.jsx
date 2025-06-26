@@ -9,22 +9,13 @@ import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import '../../styles/admin/admin-base.css';
 import GenericTable from './tabla-generica';
+import { db } from '../../lib/firebase';
+import { collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 
-const datosIniciales = [
-  { id: 1, nombre: 'Toma de presión arterial', categoria: 'Evaluación básica', precio: 100, estado: 'Activo' },
-  { id: 2, nombre: 'Medición de glucosa capilar', categoria: 'Evaluación básica', precio: 120, estado: 'Activo' },
-  { id: 3, nombre: 'Aplicación de inyecciones', categoria: 'Procedimientos menores', precio: 200, estado: 'Activo' },
-  { id: 4, nombre: 'Curaciones', categoria: 'Urgencias menores', precio: 350, estado: 'Activo' },
-  { id: 5, nombre: 'Rayos X', categoria: 'Crónicos', precio: 300, estado: 'Activo' },
-  { id: 6, nombre: 'Ultrasonidos', categoria: 'Crónicos', precio: 300, estado: 'Activo' },
-  { id: 7, nombre: 'Examen físico general', categoria: 'Evaluación', precio: 550, estado: 'Activo' },
-  { id: 8, nombre: 'Expedición de certificado médico', categoria: 'Trámites', precio: 250, estado: 'Activo' },
-  { id: 9, nombre: 'Revisión de laboratorio clínico', categoria: 'Diagnóstico', precio: 200, estado: 'Activo' },
-  { id: 10, nombre: 'Electrocardiograma (ECG)', categoria: 'Diagnóstico', precio: 450, estado: 'Activo' },
-];
+
 
 export default function ServiciosAdmin() {
-  const [servicios, setServicios] = useState(datosIniciales);
+  const [servicios, setServicios] = useState([]);
   const [busqueda, setBusqueda] = useState('');
   const [menuAbierto, setMenu] = useState(null);
   const [nuevo, setNuevo] = useState(null);
@@ -32,90 +23,126 @@ export default function ServiciosAdmin() {
   const menuRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMenu(null);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const obtenerServicios = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, 'Servicios'));
+      const serviciosData = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          nombre: data.Servicio || '',
+          categoria: doc.id.replace(/_/g, ' '), // Si el ID del doc representa categoría
+          precio: data.Precio || 0,
+          estado: 'Activo',
+          fotoUrl: data.FotoUrl || '',
+        };
+      });
+      setServicios(serviciosData);
+    } catch (error) {
+      console.error('Error al obtener servicios desde Firebase:', error);
+    }
+  };
+
+  obtenerServicios();
+}, []);
+
 
   const toggleMenu = (id) => setMenu((prev) => (prev === id ? null : id));
   const cancelarNuevo = () => setNuevo(null);
   const cancelarEdicion = () => setEnEdicion(null);
+const guardarNuevo = async () => {
+  if (!nuevo.nombre.trim() || !nuevo.categoria.trim() || !nuevo.precio) {
+    return Swal.fire({ title: 'Todos los campos son obligatorios', icon: 'warning' });
+  }
 
-  const guardarNuevo = () => {
-    if (!nuevo.nombre.trim() || !nuevo.categoria.trim() || !nuevo.precio) {
-      return Swal.fire({ title: 'Todos los campos son obligatorios', icon: 'warning' });
-    }
-
-    const duplicado = servicios.some(
-      (s) => s.nombre.toLowerCase() === nuevo.nombre.trim().toLowerCase()
-    );
-    if (duplicado) {
-      return Swal.fire({ title: 'Ese servicio ya existe', icon: 'error' });
-    }
-
-    setServicios((prev) => [
-      ...prev,
-      { ...nuevo, id: Date.now(), precio: parseFloat(nuevo.precio) },
-    ]);
-    setNuevo(null);
+  const docId = nuevo.categoria.replace(/ /g, '_');
+  const nuevoDoc = {
+    Servicio: nuevo.nombre,
+    Precio: parseFloat(nuevo.precio),
+    FotoUrl: nuevo.fotoUrl || '',
+    estado: nuevo.Estado || 'Activo', // ← en tu map() dentro de obtenerServicios
   };
 
-  const guardarEdicion = () => {
-    if (!enEdicion.nombre.trim() || !enEdicion.categoria.trim() || !enEdicion.precio) {
-      return Swal.fire({ title: 'Todos los campos son obligatorios', icon: 'warning' });
-    }
+  try {
+    await setDoc(doc(db, 'Servicios', docId), nuevoDoc);
+    setServicios((prev) => [...prev, { id: docId, ...nuevoDoc, categoria: nuevo.categoria, estado: 'Activo' }]);
+    setNuevo(null);
+  } catch (err) {
+    console.error('Error al guardar servicio:', err);
+  }
+};
 
-    const duplicado = servicios.some(
-      (s) =>
-        s.nombre.toLowerCase() === enEdicion.nombre.trim().toLowerCase() &&
-        s.id !== enEdicion.id
-    );
-    if (duplicado) {
-      return Swal.fire({ title: 'Ese servicio ya existe', icon: 'error' });
-    }
+  const guardarEdicion = async () => {
+  if (!enEdicion.nombre.trim() || !enEdicion.categoria.trim() || !enEdicion.precio) {
+    return Swal.fire({ title: 'Todos los campos son obligatorios', icon: 'warning' });
+  }
+
+  try {
+    await updateDoc(doc(db, 'Servicios', enEdicion.id), {
+      Servicio: enEdicion.nombre,
+      Precio: parseFloat(enEdicion.precio),
+      FotoUrl: enEdicion.fotoUrl || '',
+    });
 
     setServicios((prev) =>
-      prev.map((s) =>
-        s.id === enEdicion.id
-          ? { ...enEdicion, precio: parseFloat(enEdicion.precio) }
-          : s
-      )
+      prev.map((s) => (s.id === enEdicion.id ? { ...enEdicion } : s))
     );
     setEnEdicion(null);
-  };
+  } catch (err) {
+    console.error('Error al actualizar servicio:', err);
+  }
+};
 
-  const eliminar = (id) => {
-    const reg = servicios.find((s) => s.id === id);
-    Swal.fire({
-      title: '¿Eliminar servicio?',
-      text: `Se eliminará "${reg?.nombre}".`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#b52020',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then((r) => {
-      if (r.isConfirmed) {
+
+ const eliminar = (id) => {
+  const reg = servicios.find((s) => s.id === id);
+  Swal.fire({
+    title: '¿Eliminar servicio?',
+    text: `Se eliminará "${reg?.nombre}".`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#b52020',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar',
+  }).then(async (r) => {
+    if (r.isConfirmed) {
+      try {
+        await deleteDoc(doc(db, 'Servicios', id));
         setServicios((prev) => prev.filter((s) => s.id !== id));
+      } catch (err) {
+        console.error('Error al eliminar servicio:', err);
       }
-    });
-  };
+    }
+  });
+};
 
-  const toggleEstado = (id) => {
+
+  const toggleEstado = async (id) => {
+  const servicio = servicios.find((s) => s.id === id);
+  if (!servicio) return;
+
+  const nuevoEstado = servicio.estado === 'Activo' ? 'Inactivo' : 'Activo';
+
+  try {
+    await updateDoc(doc(db, 'Servicios', id), {
+      Estado: nuevoEstado, // <- Agrega este campo a tu documento en Firestore
+    });
+
     setServicios((prev) =>
       prev.map((s) =>
-        s.id === id ? { ...s, estado: s.estado === 'Activo' ? 'Inactivo' : 'Activo' } : s
+        s.id === id ? { ...s, estado: nuevoEstado } : s
       )
     );
-  };
+  } catch (err) {
+    console.error('Error al actualizar el estado:', err);
+    Swal.fire({ title: 'Error al cambiar estado en Firebase', icon: 'error' });
+  }
+};
+
 
   const abrirNuevaFila = () => {
-    setNuevo({ nombre: '', categoria: '', precio: '', estado: 'Activo' });
+    setNuevo({ nombre: '', categoria: '', precio: '', fotoUrl: '', estado: 'Activo' });
     setMenu(null);
   };
 
@@ -182,6 +209,40 @@ export default function ServiciosAdmin() {
           <span className={`estado-tag ${row.estado === 'Activo' ? 'activo' : 'inactivo'}`}>{row.estado}</span>
         ),
     },
+     {header: 'Imagen',
+        accessor: (row) =>
+          row.id === 'tmp' ? (
+            <input
+              className="tabla-input"
+              type="text"
+              placeholder="URL de la imagen"
+              value={nuevo.fotoUrl}
+              onChange={(e) => setNuevo({ ...nuevo, fotoUrl: e.target.value })}
+            />
+          ) : enEdicion?.id === row.id ? (
+            <input
+              className="tabla-input"
+              type="text"
+              placeholder="URL de la imagen"
+              value={enEdicion.fotoUrl}
+              onChange={(e) => setEnEdicion({ ...enEdicion, fotoUrl: e.target.value })}
+            />
+          ) : row.fotoUrl ? (
+            <img
+              src={row.fotoUrl}
+              alt={row.nombre}
+              style={{
+                width: '40px',
+                height: '40px',
+                objectFit: 'cover',
+                borderRadius: '50%',
+                border: '1px solid #ccc',
+              }}
+            />
+          ) : (
+            <span>Sin imagen</span>
+          ),
+      },
     {
       header: 'Acciones',
       accessor: (row) =>

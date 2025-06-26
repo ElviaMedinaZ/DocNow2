@@ -26,11 +26,16 @@ import placeholder from '../../assets/avatar_placeholder.png';
 import logo from '../../assets/logo.png';
 import '../../styles/usuario/Registro.css';
 
-/* configuraciones */
-const MySwal      = withReactContent(Swal);
-const TODAY       = new Date();
-const passRegex   = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
-const cedulaRegex = /^\d{8}$/;        // 8 dígitos
+import { useEffect } from 'react';
+import { obtenerEspecialidades } from '../../utils/firebaseEspecialidades'; // ruta correcta
+import { actualizarDoctor } from '../../utils/firebaseDoctores';
+
+
+
+const MySwal = withReactContent(Swal);
+const HOY = new Date();
+const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+const cedulaRegex = /^\d{8}$/;
 const imgbbApiKey = import.meta.env.VITE_IMGBB_API_KEY;
 
 /* imagen */
@@ -57,70 +62,77 @@ const subirAImgbb = async (base64) => {
   }
 };
 
-/*especialidades */
-const ESPECIALIDADES = [
-  { label: 'Algología', value: 'Algología' },
-  { label: 'Alergología', value: 'Alergología' },
-  { label: 'Cardiología', value: 'Cardiología' },
-  { label: 'Coloproctología', value: 'Coloproctología' },
-  { label: 'Dermatología', value: 'Dermatología' },
-  { label: 'Endocrinología', value: 'Endocrinología' },
-  { label: 'Estomatología', value: 'Estomatología' },
-  { label: 'Geriatría', value: 'Geriatría' },
-  { label: 'Ginecología', value: 'Ginecología' },
-  { label: 'Neurología', value: 'Neurología' },
-  { label: 'Neumología', value: 'Neumología' },
-  { label: 'Reumatología', value: 'Reumatología' },
-  { label: 'Otorrinolaringología', value: 'Otorrinolaringología' },
-  { label: 'Obstetricia', value: 'Obstetricia' },
-  { label: 'Oncología', value: 'Oncología' },
-  { label: 'Ortopedía', value: 'Ortopedía' },
-  { label: 'Psicología', value: 'Psicología' },
-  { label: 'Psiquiatria', value: 'Psiquiatria' },
-  { label: 'Traumatología', value: 'Traumatología' },
-  { label: 'Urología', value: 'Urología' },
-  
-];
-
-export default function RegistroWeb() {
+export default function RegistroWeb({ datosIniciales, modo = 'crear', onSave, onClose }) {
   const navigate = useNavigate();
 
-  /* estado*/
   const [formData, setFormData] = useState({
-    nombres            : '',
-    apellidoP          : '',
-    apellidoM          : '',
-    especialidad       : '',
-    cedulaProfesional  : '',
-    cedulaEspecialidad : '',
-    sexo               : '',
-    fechaNacimiento    : null,
-    estadoCivil        : '',
-    correoElectronico  : '',
-    telefono           : '',
-    contrasena         : '',
-    confirmar          : '',
-    rol                : 'Doctor',
+    nombres: '',
+    apellidoP: '',
+    apellidoM: '',
+    cedulaProfesional: '',
+    especialidades: '',
+    sexo: '',
+    fechaNacimiento: null,
+    estadoCivil: '',
+    correoElectronico: '',
+    telefono: '',
+    contrasena: '',
+    confirmar: '',
+    rol: "Doctor",
+    turnoDia: "lunes a viernes",
+    turnoHora: "matutino"
   });
 
+  const [especialidades, setEspecialidades] = useState([]);
   const [fotoPerfil, setFotoPerfil] = useState(null);
-  const [errores, setErrores]       = useState({});
-  const [mensajes, setMensajes]     = useState({});
-  const [cargando, setCargando]     = useState(false);
+  const [errores, setErrores] = useState({});
+  const [mensajes, setMensajes] = useState({});
+  const [cargando, setCargando] = useState(false);
+
+  useEffect(() => {
+    if (modo === 'editar' && datosIniciales) {
+      setFormData(prev => ({
+        ...prev,
+        nombres: datosIniciales.nombres || '',
+        apellidoP: datosIniciales.apellidoP || '',
+        apellidoM: datosIniciales.apellidoM || '',
+        cedulaProfesional: datosIniciales.cedulaProfesional || '',
+        especialidades: datosIniciales.especialidad || '',
+        sexo: datosIniciales.sexo || '',
+        fechaNacimiento: datosIniciales.fechaNacimiento ? new Date(datosIniciales.fechaNacimiento) : null,
+        estadoCivil: datosIniciales.estadoCivil || '',
+        correoElectronico: datosIniciales.email || '',
+        telefono: datosIniciales.telefono || '',
+        contrasena: '',
+        confirmar: '',
+        rol: datosIniciales.rol || 'Doctor',
+        turnoDia: datosIniciales.turnoDia || 'lunes a viernes',
+        turnoHora: datosIniciales.turnoHora || 'matutino'
+      }));
+      if (datosIniciales.fotoPerfil) setFotoPerfil(datosIniciales.fotoPerfil);
+    }
+  }, [datosIniciales, modo]);
+
+  useEffect(() => {
+    const cargarEspecialidades = async () => {
+      const data = await obtenerEspecialidades();
+      setEspecialidades(data);
+    };
+    cargarEspecialidades();
+  }, []);
 
   const opcionesEstadoCivil = [
-    { label: 'Soltero/a',   value: 'Soltero'   },
-    { label: 'Casado/a',    value: 'Casado'    },
-    { label: 'Divorciado/a',value: 'Divorciado'},
-    { label: 'Viudo/a',     value: 'Viudo'     },
+    { label: 'Soltero/a', value: 'Soltero' },
+    { label: 'Casado/a', value: 'Casado' },
+    { label: 'Divorciado/a', value: 'Divorciado' },
+    { label: 'Viudo/a', value: 'Viudo' },
   ];
 
-  /* handlers  */
   const handleChange = (campo, valor) => {
     setFormData(prev => ({ ...prev, [campo]: valor }));
     if (errores[campo]) {
-      setErrores(prev  => ({ ...prev,  [campo]: false }));
-      setMensajes(prev => ({ ...prev, [campo]: ''   }));
+      setErrores(prev => ({ ...prev, [campo]: false }));
+      setMensajes(prev => ({ ...prev, [campo]: '' }));
     }
   };
 
@@ -129,129 +141,141 @@ export default function RegistroWeb() {
     if (file) setFotoPerfil(URL.createObjectURL(file));
   };
 
-  const calcularEdad = fecha =>
-    fecha ? Math.floor((TODAY - fecha) / 31557600000) : 0;
+  const calcularEdad = fecha => fecha ? Math.floor((Date.now() - fecha) / 31557600000) : 0;
 
-  /* validación y envío */
   const validarYEnviar = async () => {
-    const nuevosErrores  = {};
+
+    const nuevosErrores = {};
     const nuevosMensajes = {};
 
-    /* campos requeridos */
     Object.entries(formData).forEach(([k, v]) => {
-      if (!v) {
-        nuevosErrores[k]  = true;
-        nuevosMensajes[k] = 'Este campo es obligatorio';
-      }
-    });
+        // En modo editar, ignorar validación de contraseñas
+        if (modo === 'editar' && (k === 'contrasena' || k === 'confirmar')) {
+          return;
+        }
+
+        if (!v) {
+          nuevosErrores[k] = true;
+          nuevosMensajes[k] = 'Este campo es obligatorio';
+        }
+      });
+
     if (!fotoPerfil) {
-      nuevosErrores.fotoPerfil  = true;
+      nuevosErrores.fotoPerfil = true;
       nuevosMensajes.fotoPerfil = 'La foto es obligatoria';
     }
 
-    /*validaciones específicas */
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const telRegex   = /^\d{10}$/;
+    const telRegex = /^\d{10}$/;
+    const cedulaRegex = /^\d{8}$/;
 
-    if (formData.correoElectronico && !emailRegex.test(formData.correoElectronico)) {
-      nuevosErrores.correoElectronico  = true;
-      nuevosMensajes.correoElectronico = 'Correo electrónico inválido';
+    if (formData.correoElectronico && !emailRegex.test(formData.correoElectronico))
+      nuevosMensajes.correoElectronico = 'Correo inválido';
+
+    if (formData.telefono && !telRegex.test(formData.telefono))
+      nuevosMensajes.telefono = 'Teléfono inválido';
+
+    if (formData.cedulaProfesional && !cedulaRegex.test(formData.cedulaProfesional))
+      nuevosMensajes.cedulaProfesional = 'Cédula inválida';
+
+    if (modo === 'crear') {
+      if (!passRegex.test(formData.contrasena))
+        nuevosMensajes.contrasena = 'Contraseña débil';
+      if (formData.contrasena !== formData.confirmar)
+        nuevosMensajes.confirmar = 'No coincide';
     }
 
-    if (formData.telefono && !telRegex.test(formData.telefono)) {
-      nuevosErrores.telefono  = true;
-      nuevosMensajes.telefono = 'Solo números, 10 dígitos';
-    }
+    console.log("Datos validados:", formData);
 
-    if (formData.cedulaProfesional && !cedulaRegex.test(formData.cedulaProfesional)) {
-      nuevosErrores.cedulaProfesional  = true;
-      nuevosMensajes.cedulaProfesional = 'Debe tener 8 dígitos numéricos';
-    }
 
-    if (formData.cedulaEspecialidad && !cedulaRegex.test(formData.cedulaEspecialidad)) {
-      nuevosErrores.cedulaEspecialidad  = true;
-      nuevosMensajes.cedulaEspecialidad = 'Debe tener 8 dígitos numéricos';
-    }
-
-    if (formData.contrasena && !passRegex.test(formData.contrasena)) {
-      nuevosErrores.contrasena  = true;
-      nuevosMensajes.contrasena = 'Mínimo 8 caracteres, una mayúscula, un número y un símbolo';
-    }
-
-    if (formData.contrasena !== formData.confirmar) {
-      nuevosErrores.confirmar  = true;
-      nuevosMensajes.confirmar = 'Las contraseñas no coinciden';
-    }
-
-    if (formData.fechaNacimiento) {
-      const edad = calcularEdad(formData.fechaNacimiento);
-      if (formData.fechaNacimiento > TODAY) {
-        nuevosErrores.fechaNacimiento  = true;
-        nuevosMensajes.fechaNacimiento = 'La fecha no puede ser futura';
-      } else if (edad > 130) {
-        nuevosErrores.fechaNacimiento  = true;
-        nuevosMensajes.fechaNacimiento = 'Fecha de nacimiento inválida';
-      }
-    }
-
-    /* salida de validaciones */
     setErrores(nuevosErrores);
     setMensajes(nuevosMensajes);
 
-    if (Object.keys(nuevosMensajes).length) {
-      await MySwal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: nuevosMensajes[Object.keys(nuevosMensajes)[0]],
-        confirmButtonColor: '#0A3B74',
-      });
+    if (Object.keys(nuevosMensajes).length > 0) {
+      await Swal.fire('Error', Object.values(nuevosMensajes)[0], 'error');
       return;
     }
-
-    /* registro en Firebase */
+   
     setCargando(true);
     try {
-      const imgFile = document.querySelector('input[type="file"]')?.files[0];
-      const base64  = await fileToBase64(imgFile);
-      const fotoURL = await subirAImgbb(base64);
-      if (!fotoURL) throw new Error('No se pudo subir la imagen');
 
+   if (modo === 'editar') {
+  const result = await Swal.fire({
+    title: '¿Estás seguro?',
+    text: '¿Deseas guardar los cambios realizados?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#0A3B74',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, guardar',
+    cancelButtonText: 'Cancelar'
+  });
+
+  if (!result.isConfirmed) {
+    setCargando(false);
+    return;
+  }
+
+  const camposAActualizar = {
+    nombres: formData.nombres,
+    apellidoP: formData.apellidoP,
+    apellidoM: formData.apellidoM,
+    cedulaProfesional: formData.cedulaProfesional,
+    especialidad: formData.especialidades,
+    sexo: formData.sexo,
+    fechaNacimiento: formData.fechaNacimiento?.toISOString() || null,
+    estadoCivil: formData.estadoCivil,
+    email: formData.correoElectronico,
+    telefono: formData.telefono,
+    turnoDia: formData.turnoDia,
+    turnoHora: formData.turnoHora,
+  };
+
+  const imgFile = document.querySelector('input[type="file"]')?.files[0];
+  if (imgFile) {
+    const base64 = await fileToBase64(imgFile);
+    const fotoURL = await subirAImgbb(base64);
+    if (fotoURL) camposAActualizar.fotoPerfil = fotoURL;
+  }
+
+  await actualizarDoctor(datosIniciales.id, camposAActualizar);
+
+  await Swal.fire('¡Actualizado!', 'Los datos fueron guardados correctamente.', 'success');
+  onSave({ ...datosIniciales, ...camposAActualizar }, 'editar');
+  onClose();
+  return;
+}
+else {
+
+      const imgFile = document.querySelector('input[type="file"]')?.files[0];
+      const base64 = await fileToBase64(imgFile);
+      const fotoURL = await subirAImgbb(base64);
       const cred = await createUserWithEmailAndPassword(
         auth,
         formData.correoElectronico,
         formData.contrasena
       );
-      const uid = cred.user.uid;
 
-      await setDoc(doc(db, 'usuarios', uid), {
+      await setDoc(doc(db, 'usuarios', cred.user.uid), {
         ...formData,
-        fotoPerfil      : fotoURL,
-        fechaNacimiento : formData.fechaNacimiento?.toISOString() || null,
-        creadoEn        : new Date().toISOString(),
+        fotoPerfil: fotoURL,
+        fechaNacimiento: formData.fechaNacimiento?.toISOString() || null,
+        creadoEn: new Date().toISOString(),
       });
 
-      await MySwal.fire({
-        icon : 'success',
-        title: '¡Registro exitoso!',
-        text : 'Tu cuenta fue creada correctamente.',
-        confirmButtonColor: '#0A3B74',
-      });
-
+      await Swal.fire('¡Registro exitoso!', 'Cuenta creada correctamente.', 'success');
       navigate('/login', { replace: true });
-    } catch (err) {
-      console.error(err);
-      await MySwal.fire({
-        icon : 'error',
-        title: 'Error',
-        text : err.message || 'Ocurrió un error.',
-        confirmButtonColor: '#0A3B74',
-      });
+      
+    }
+
+    } catch (e) {
+      console.error(e);
+      Swal.fire('Error', e.message || 'Error al registrar.', 'error');
     } finally {
       setCargando(false);
     }
   };
 
-  /*render */
   return (
     <div className="RegistroContainer">
       {cargando && (
@@ -262,188 +286,60 @@ export default function RegistroWeb() {
 
       <div className="RegistroForm">
         <img src={logo} alt="Logo" className="Logo" />
-        <h2 className="Titulo">Registro</h2>
+        <h2 className="Titulo">{modo === 'editar' ? 'Editar Doctor' : 'Registro'}</h2>
         <p className="Subtitulo">
           Llena los campos tal como aparecen en tus documentos oficiales.
         </p>
 
-        {/*  foto  */}
+        {/* FOTO */}
         <div className="FotoPreview">
           <div className={`FotoWrapper ${errores.fotoPerfil ? 'PInvalid' : ''}`}>
-            <img
-              src={fotoPerfil || placeholder}
-              alt="Avatar"
-              className="PreviewImg"
-            />
+            <img src={fotoPerfil || placeholder} alt="Avatar" className="PreviewImg" />
           </div>
           <label className="FileLabel">
             Cambiar foto
             <input type="file" accept="image/*" onChange={handleFotoChange} hidden />
           </label>
-          {mensajes.fotoPerfil && <p className="ErrorMsg">{mensajes.fotoPerfil}</p>}
         </div>
 
-        {/* formulario */}
+        {/* FORMULARIO */}
         <div className="PFluid">
-          <InputText
-          placeholder="Nombre(s)"
-          className={errores.nombres ? 'PInvalid' : ''}
-          maxLength={40}
-          value={formData.nombres}
-          onChange={(e) =>
-            handleChange('nombres', e.target.value.replace(/[0-9]/g, ''))
-          }
-          onKeyPress={(e) => {
-            if (/\d/.test(e.key)) {
-              e.preventDefault(); // bloquea teclas numéricas
-            }
-          }}
-        />
-
-          <InputText
-            placeholder="Apellido paterno"
-            className={errores.apellidoP ? 'PInvalid' : ''}
-            maxLength={40}
-            value={formData.apellidoP}
-            onChange={(e) =>
-              handleChange('apellidoP', e.target.value.replace(/[0-9]/g, ''))
-            }
-            onKeyPress={(e) => {
-              if (/\d/.test(e.key)) {
-                e.preventDefault(); // Bloquea entrada de números
-              }
-            }}
-          />
-
-          <InputText
-            placeholder="Apellido materno"
-            maxLength={40}
-            className={errores.apellidoM ? 'PInvalid' : ''}
-            value={formData.apellidoM}
-            onChange={(e) =>
-              handleChange('apellidoM', e.target.value.replace(/[^a-zA-ZÁÉÍÓÚáéíóúÑñ\s]/g, ''))
-            }
-            onKeyPress={(e) => {
-              if (!/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]$/.test(e.key)) {
-                e.preventDefault(); // Bloquea números y caracteres especiales
-              }
-            }}
-          />
-
-          {/* NUEVOS CAMPOS */}
-          <Dropdown
-            value={formData.especialidad}
-            options={ESPECIALIDADES}
-            onChange={(e) => handleChange('especialidad', e.value)}
-            placeholder="Especialidad"
-            className={errores.especialidad ? 'PInvalid' : ''}
-          />
-
-          <InputText
-            placeholder="Cédula profesional (8 dígitos)"
-            className={errores.cedulaProfesional ? 'PInvalid' : ''}
-            value={formData.cedulaProfesional}
-            maxLength={8}
-            onChange={(e) => {
-              const soloNumeros = e.target.value.replace(/\D/g, '').slice(0, 8);
-              handleChange('cedulaProfesional', soloNumeros);
-            }}
-            onKeyPress={(e) => {
-              if (!/[0-9]/.test(e.key)) {
-                e.preventDefault(); // Bloquea letras y otros símbolos
-              }
-            }}
-          />
-
-          <InputText
-            placeholder="Cédula de especialidad (8 dígitos)"
-            className={errores.cedulaEspecialidad ? 'PInvalid' : ''}
-            value={formData.cedulaEspecialidad}
-            maxLength={8}
-            onChange={(e) => {
-              const soloNumeros = e.target.value.replace(/\D/g, '').slice(0, 8);
-              handleChange('cedulaEspecialidad', soloNumeros);
-            }}
-            onKeyPress={(e) => {
-              if (!/[0-9]/.test(e.key)) {
-                e.preventDefault(); // Bloquea letras y símbolos
-              }
-            }}
-          />
-          
-          <Dropdown
-            value={formData.sexo}
-            options={[
-              { label: 'Masculino', value: 'Masculino' },
-              { label: 'Femenino',  value: 'Femenino'  },
-            ]}
-            onChange={(e) => handleChange('sexo', e.value)}
-            placeholder="Sexo"
-            className={errores.sexo ? 'PInvalid' : ''}
-          />
-
-          <Calendar
-            value={formData.fechaNacimiento}
-            onChange={(e) => handleChange('fechaNacimiento', e.value)}
-            placeholder="Fecha de nacimiento"
-            showIcon
-            dateFormat="dd/mm/yy"
-            className={errores.fechaNacimiento ? 'PInvalid' : ''}
-          />
-
-          <Dropdown
-            value={formData.estadoCivil}
-            options={opcionesEstadoCivil}
-            onChange={(e) => handleChange('estadoCivil', e.value)}
-            placeholder="Estado civil"
-            className={errores.estadoCivil ? 'PInvalid' : ''}
-          />
-
+          <InputText placeholder="Nombre(s)" value={formData.nombres} onChange={(e) => handleChange('nombres', e.target.value)} />
+          <InputText placeholder="Apellido paterno" value={formData.apellidoP} onChange={(e) => handleChange('apellidoP', e.target.value)} />
+          <InputText placeholder="Apellido materno" value={formData.apellidoM} onChange={(e) => handleChange('apellidoM', e.target.value)} />
+          <InputText placeholder="Cédula profesional" value={formData.cedulaProfesional} onChange={(e) => handleChange('cedulaProfesional', e.target.value)} />
+          <Dropdown value={formData.especialidades} options={especialidades} onChange={(e) => handleChange('especialidades', e.value)} placeholder="Especialidades" />
+          <Dropdown value={formData.sexo} options={[{ label: 'Masculino', value: 'Masculino' }, { label: 'Femenino', value: 'Femenino' }]} onChange={(e) => handleChange('sexo', e.value)} placeholder="Sexo" />
+          <Calendar value={formData.fechaNacimiento} onChange={(e) => handleChange('fechaNacimiento', e.value)} placeholder="Fecha de nacimiento" showIcon dateFormat="dd/mm/yy" />
+          <Dropdown value={formData.estadoCivil} options={opcionesEstadoCivil} onChange={(e) => handleChange('estadoCivil', e.value)} placeholder="Estado civil" />
           <InputText
             placeholder="Correo electrónico"
-            maxLength={40}
-            className={errores.correoElectronico ? 'PInvalid' : ''}
             value={formData.correoElectronico}
             onChange={(e) => handleChange('correoElectronico', e.target.value)}
+            disabled={modo === 'editar'}
           />
 
-           <InputText
-            placeholder="Teléfono"
-            className={errores.telefono ? 'PInvalid' : ''}
-            value={formData.telefono}
-            maxLength={10}
-            onChange={(e) => handleChange('telefono', e.target.value.replace(/\D/g, ''))}
-            onKeyPress={(e) => {
-              if (!/[0-9]/.test(e.key)) {
-                e.preventDefault();
-              }
-            }}
-          />
+          <InputText placeholder="Teléfono" value={formData.telefono} onChange={(e) => handleChange('telefono', e.target.value)} />
 
-          <Password
-            placeholder="Contraseña"
-            feedback={false}
-            toggleMask
-            value={formData.contrasena}
-            onChange={(e) => handleChange('contrasena', e.target.value)}
-            className={errores.contrasena ? 'PInvalid' : ''}
-          />
+          {/* CONTRASEÑA */}
+          {modo === 'editar' ? (
+            <div className="password-masked">
+              <InputText value="*************" disabled />
+            </div>
+          ) : (
+            <>
+              <Password placeholder="Contraseña" feedback={false} toggleMask value={formData.contrasena} onChange={(e) => handleChange('contrasena', e.target.value)} />
+              <Password placeholder="Confirmar contraseña" feedback={false} toggleMask value={formData.confirmar} onChange={(e) => handleChange('confirmar', e.target.value)} />
+            </>
+          )}
 
-          <Password
-            placeholder="Confirmar contraseña"
-            feedback={false}
-            toggleMask
-            value={formData.confirmar}
-            onChange={(e) => handleChange('confirmar', e.target.value)}
-            className={errores.confirmar ? 'PInvalid' : ''}
-          />
-
-          <Button
-            label={cargando ? 'Registrando…' : 'Siguiente'}
+          {/* BOTÓN */}
+         <Button
+            label={modo === 'editar' ? 'Guardar cambios' : 'Siguiente'}
             onClick={validarYEnviar}
             className="BtnSiguiente p-button-primary"
-            disabled={cargando}
           />
+
         </div>
       </div>
     </div>

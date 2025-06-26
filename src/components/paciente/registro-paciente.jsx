@@ -9,13 +9,13 @@ import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { collection, doc, updateDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { auth, db } from '../../lib/firebase';
 
 import placeholder from '../../assets/avatar_placeholder.png';
@@ -101,7 +101,32 @@ const buildCurpPrefix = (nombres, apP, apM = '') => {
 };
 
 /* componente */
-export default function RegistroWeb() {
+export default function RegistroPaciente({ modo = 'crear', datosIniciales = {}, onSave, onClose }) {
+
+useEffect(() => {
+  if (modo === 'editar' && datosIniciales) {
+    setFormData({
+      nombres: datosIniciales.nombres || '',
+      apellidoP: datosIniciales.apellidoP || '',
+      apellidoM: datosIniciales.apellidoM || '',
+      curp: datosIniciales.curp || '',
+      sexo: datosIniciales.sexo || '',
+      fechaNacimiento: datosIniciales.fechaNacimiento ? new Date(datosIniciales.fechaNacimiento) : null,
+      estadoCivil: datosIniciales.estadoCivil || '',
+      correoElectronico: datosIniciales.correoElectronico || '',
+      telefono: datosIniciales.telefono || '',
+      contrasena: '',
+      confirmar: '',
+      rol: 'Paciente',
+    });
+
+    if (datosIniciales.fotoPerfil) {
+      setFotoPerfil(datosIniciales.fotoPerfil);
+    }
+  }
+}, [modo, datosIniciales]);
+
+
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -152,13 +177,15 @@ export default function RegistroWeb() {
     const nuevosErrores = {};
     const nuevosMensajes = {};
 
-    /* campos requeridos */
     Object.entries(formData).forEach(([campo, valor]) => {
-      if (!valor) {
-        nuevosErrores[campo] = true;
-        nuevosMensajes[campo] = 'Este campo es obligatorio';
-      }
-    });
+    // Ignorar contraseñas en edición
+    if (modo === 'editar' && (campo === 'contrasena' || campo === 'confirmar')) return;
+
+    if (!valor) {
+      nuevosErrores[campo] = true;
+      nuevosMensajes[campo] = 'Este campo es obligatorio';
+    }
+  });
 
     if (!fotoPerfil) {
       nuevosErrores.fotoPerfil = true;
@@ -185,15 +212,18 @@ export default function RegistroWeb() {
       nuevosMensajes.curp = 'CURP no válido';
     }
 
-    if (formData.contrasena && !passRegex.test(formData.contrasena)) {
-      nuevosErrores.contrasena = true;
-      nuevosMensajes.contrasena = 'Mínimo 8 caracteres, una mayúscula, un número y un símbolo';
+   if (modo !== 'editar') {
+      if (formData.contrasena && !passRegex.test(formData.contrasena)) {
+        nuevosErrores.contrasena = true;
+        nuevosMensajes.contrasena = 'Mínimo 8 caracteres, una mayúscula, un número y un símbolo';
+      }
+
+      if (formData.contrasena !== formData.confirmar) {
+        nuevosErrores.confirmar = true;
+        nuevosMensajes.confirmar = 'Las contraseñas no coinciden';
+      }
     }
 
-    if (formData.contrasena !== formData.confirmar) {
-      nuevosErrores.confirmar = true;
-      nuevosMensajes.confirmar = 'Las contraseñas no coinciden';
-    }
 
     if (formData.fechaNacimiento) {
       const edad = calcularEdad(formData.fechaNacimiento);
@@ -206,33 +236,45 @@ export default function RegistroWeb() {
       }
     }
 
-    /* validación de coherencia CURP */
-    if (!nuevosErrores.curp && formData.curp) {
-      const curpUpper = formData.curp.trim().toUpperCase();
-      const prefijoEsperado = buildCurpPrefix(
-        formData.nombres,
-        formData.apellidoP,
-        formData.apellidoM
-      );
+    if (formData.curp) {
+  const curpUpper = formData.curp.trim().toUpperCase();
+  const curpOriginal = datosIniciales?.curp?.trim().toUpperCase();
+  const esCurpModificado = modo !== 'editar' || curpUpper !== curpOriginal;
 
-      if (curpUpper.slice(0, 4) !== prefijoEsperado) {
+  if (esCurpModificado) {
+    const curpRegex = /^[A-Z]{4}\d{6}[HM][A-Z]{5}\d{2}$/i;
+    if (!curpRegex.test(curpUpper)) {
+      nuevosErrores.curp = true;
+      nuevosMensajes.curp = 'CURP no válido';
+    }
+
+    const prefijoEsperado = buildCurpPrefix(
+      formData.nombres,
+      formData.apellidoP,
+      formData.apellidoM
+    );
+
+    if (curpUpper.slice(0, 4) !== prefijoEsperado) {
+      nuevosErrores.curp = true;
+      nuevosMensajes.curp = 'CURP no concuerda con nombres/apellidos';
+    }
+
+    if (formData.fechaNacimiento) {
+      const y = String(formData.fechaNacimiento.getFullYear()).slice(-2);
+      const m = String(formData.fechaNacimiento.getMonth() + 1).padStart(2, '0');
+      const d = String(formData.fechaNacimiento.getDate()).padStart(2, '0');
+      const fechaEsperada = `${y}${m}${d}`;
+
+      if (curpUpper.slice(4, 10) !== fechaEsperada) {
         nuevosErrores.curp = true;
-        nuevosMensajes.curp = 'CURP no concuerda con nombres/apellidos';
+        nuevosMensajes.curp = 'CURP no concuerda con la fecha de nacimiento';
       }
 
-      if (formData.fechaNacimiento) {
-        const y = String(formData.fechaNacimiento.getFullYear()).slice(-2);
-        const m = String(formData.fechaNacimiento.getMonth() + 1).padStart(2, '0');
-        const d = String(formData.fechaNacimiento.getDate()).padStart(2, '0');
-        const fechaEsperada = `${y}${m}${d}`;
-
-        if (formData.curp && formData.sexo) {
-        const curpSexo = formData.curp.trim().toUpperCase()[10]; // posición 11
-        const esperado = formData.sexo === 'Masculino' ? 'H' : 'M';
-        if (curpSexo !== esperado) {
-          nuevosErrores.curp = true;
-          nuevosMensajes.curp = 'CURP no concuerda con el sexo seleccionado';
-        }
+      const curpSexo = curpUpper[10];
+      const esperadoSexo = formData.sexo === 'Masculino' ? 'H' : 'M';
+      if (curpSexo !== esperadoSexo) {
+        nuevosErrores.curp = true;
+        nuevosMensajes.curp = 'CURP no concuerda con el sexo seleccionado';
       }
 
       const entidadCurp = curpUpper.slice(11, 13);
@@ -240,29 +282,41 @@ export default function RegistroWeb() {
         'AS','BC','BS','CC','CL','CM','CS','CH','DF','DG','GT','GR','HG','JC','MC','MN','MS','NT',
         'NL','OC','PL','QT','QR','SP','SL','SR','TC','TS','TL','VZ','YN','ZS','NE'
       ];
-
       if (!clavesValidas.includes(entidadCurp)) {
         nuevosErrores.curp = true;
-        nuevosMensajes.curp = 'La entidad federativa en el CURP no es válida';
-      }
-
-
-        if (curpUpper.slice(4, 10) !== fechaEsperada) {
-          nuevosErrores.curp = true;
-          nuevosMensajes.curp = 'CURP no concuerda con la fecha de nacimiento';
-        }
+        nuevosMensajes.curp = 'Entidad federativa no válida en el CURP';
       }
     }
 
-    /* duplicidad de CURP en Firestore */
+    // Validación por duplicado
+    const q = query(collection(db, 'usuarios'), where('curp', '==', curpUpper));
+    const querySnapshot = await getDocs(q);
+    const existeOtroConMismoCurp = querySnapshot.docs.some(doc => doc.id !== datosIniciales?.id);
+    if (existeOtroConMismoCurp) {
+      nuevosErrores.curp = true;
+      nuevosMensajes.curp = 'Este CURP ya está registrado';
+    }
+  }
+}
+
     if (!nuevosErrores.curp) {
-      const q = query(collection(db, 'usuarios'), where('curp', '==', formData.curp.trim().toUpperCase()));
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        nuevosErrores.curp = true;
-        nuevosMensajes.curp = 'Este CURP ya está registrado';
-      }
+  const curpUpper = formData.curp.trim().toUpperCase();
+  const curpOriginal = datosIniciales?.curp?.trim().toUpperCase();
+
+  // Solo buscar duplicados si es un nuevo registro o si cambió el CURP en edición
+  if (modo !== 'editar' || curpUpper !== curpOriginal) {
+    const q = query(collection(db, 'usuarios'), where('curp', '==', curpUpper));
+    const querySnapshot = await getDocs(q);
+
+    const existeOtroConMismoCurp = querySnapshot.docs.some(doc => doc.id !== datosIniciales?.id);
+    if (existeOtroConMismoCurp) {
+      nuevosErrores.curp = true;
+      nuevosMensajes.curp = 'Este CURP ya está registrado';
     }
+  }
+}
+
+
 
     /* salida de validaciones */
     setErrores(nuevosErrores);
@@ -281,10 +335,52 @@ export default function RegistroWeb() {
     /* registro en Firebase */
     setCargando(true);
     try {
+      let fotoURL = datosIniciales.fotoPerfil; // valor por defecto
       const file = document.querySelector('input[type="file"]')?.files[0];
-      const base64 = await fileToBase64(file);
-      const fotoURL = await subirAImgbb(base64);
-      if (!fotoURL) throw new Error('No se pudo subir la imagen');
+
+      if (file) {
+        const base64 = await fileToBase64(file);
+        const subida = await subirAImgbb(base64);
+        if (!subida) throw new Error('No se pudo subir la imagen');
+        fotoURL = subida;
+      }
+
+      if (modo === 'editar') {
+    const confirm = await MySwal.fire({
+      icon: 'question',
+      title: '¿Guardar cambios?',
+      text: '¿Deseas actualizar la información del paciente?',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, actualizar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#0A3B74',
+    });
+
+    if (!confirm.isConfirmed) {
+      setCargando(false);
+      return;
+    }
+
+    const camposActualizados = {
+      nombres: formData.nombres,
+      apellidoP: formData.apellidoP,
+      apellidoM: formData.apellidoM,
+      curp: formData.curp.trim().toUpperCase(),
+      sexo: formData.sexo,
+      fechaNacimiento: formData.fechaNacimiento?.toISOString() || null,
+      estadoCivil: formData.estadoCivil,
+      email: formData.correoElectronico,
+      telefono: formData.telefono,
+      fotoPerfil: fotoURL,
+    };
+
+    await updateDoc(doc(db, 'usuarios', datosIniciales.id), camposActualizados);
+
+    await MySwal.fire('¡Actualizado!', 'Los datos fueron modificados correctamente.', 'success');
+    onSave({ ...datosIniciales, ...camposActualizados }, 'editar');
+    onClose();
+    return;
+  }
 
       const cred = await createUserWithEmailAndPassword(
         auth,
@@ -456,7 +552,9 @@ export default function RegistroWeb() {
             value={formData.correoElectronico}
             maxLength={40}
             onChange={(e) => handleChange('correoElectronico', e.target.value)}
+            readOnly={modo === 'editar'}
           />
+
 
           <InputText
             placeholder="Teléfono"
@@ -471,30 +569,42 @@ export default function RegistroWeb() {
             }}
           />
 
-          <Password
-            placeholder="Contraseña"
-            feedback={false}
-            toggleMask
-            value={formData.contrasena}
-            onChange={(e) => handleChange('contrasena', e.target.value)}
-            className={errores.contrasena ? 'PInvalid' : ''}
-          />
+          {modo !== 'editar' ? (
+              <>
+                <Password
+                  placeholder="Contraseña"
+                  feedback={false}
+                  toggleMask
+                  value={formData.contrasena}
+                  onChange={(e) => handleChange('contrasena', e.target.value)}
+                  className={errores.contrasena ? 'PInvalid' : ''}
+                />
 
-          <Password
-            placeholder="Confirmar contraseña"
-            feedback={false}
-            toggleMask
-            value={formData.confirmar}
-            onChange={(e) => handleChange('confirmar', e.target.value)}
-            className={errores.confirmar ? 'PInvalid' : ''}
-          />
+                <Password
+                  placeholder="Confirmar contraseña"
+                  feedback={false}
+                  toggleMask
+                  value={formData.confirmar}
+                  onChange={(e) => handleChange('confirmar', e.target.value)}
+                  className={errores.confirmar ? 'PInvalid' : ''}
+                />
+              </>
+            ) : (
+              <InputText
+                value="********"
+                disabled
+                className="PDisabled"
+                style={{ backgroundColor: '#f3f3f3' }}
+              />
+            )}
 
           <Button
-            label={cargando ? 'Registrando…' : 'Siguiente'}
+            label={modo === 'editar' ? 'Guardar cambios' : 'Siguiente'}
             onClick={validarYEnviar}
             className="BtnSiguiente p-button-primary"
             disabled={cargando}
           />
+
         </div>
       </div>
     </div>
