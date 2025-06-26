@@ -1,3 +1,9 @@
+/*
+ * Descripción: Vista de perfil del medico
+ * Fecha: 12 Junio de 2025
+ * Programador: Irais Reyes y Elvia Medina
+ */
+
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';

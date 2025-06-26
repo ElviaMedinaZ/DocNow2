@@ -1,4 +1,4 @@
-/**
+/*
  * Descripción: Vista de perfil del usuario
  * Fecha: 12 Junio de 2025
  * Programador: Irais Reyes y Elvia Medina
