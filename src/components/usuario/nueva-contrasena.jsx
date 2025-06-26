@@ -4,13 +4,12 @@
  * Programador: Elvia Medina
  */
 
-
 import { confirmPasswordReset, getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import '../../styles/usuario/nueva-contrasena.css'; // (si lo tienes)
+import '../../styles/usuario/nueva-contrasena.css';
 
 const MySwal = withReactContent(Swal);
 
@@ -79,26 +78,34 @@ export default function NuevaContrasena() {
   };
 
   return (
-    <div className="recuperar-container">
-      <div className="recuperar-card p-fluid">
-        <h2 className="recuperar-titulo">Nueva contraseña</h2>
+    <div className="nueva-container">
+      <div className="nueva-card p-fluid">
+        <h2 className="nueva-titulo">Nueva contraseña</h2>
         <p>Ingresa tu nueva contraseña para restablecer el acceso.</p>
 
-        <input
-          type="password"
-          placeholder="Nueva contraseña"
-          value={nuevaContrasena}
-          onChange={(e) => setNuevaContrasena(e.target.value)}
-        />
+        <div className="nueva-input-group">
+          <input
+            type="password"
+            placeholder="Nueva contraseña"
+            value={nuevaContrasena}
+            onChange={(e) => setNuevaContrasena(e.target.value)}
+            className="nueva-input"
+          />
+        </div>
 
-        <input
-          type="password"
-          placeholder="Confirmar contraseña"
-          value={confirmarContrasena}
-          onChange={(e) => setConfirmarContrasena(e.target.value)}
-        />
+        <div className="nueva-input-group">
+          <input
+            type="password"
+            placeholder="Confirmar contraseña"
+            value={confirmarContrasena}
+            onChange={(e) => setConfirmarContrasena(e.target.value)}
+            className="nueva-input"
+          />
+        </div>
 
-        <button onClick={manejarCambioContrasena}>Guardar contraseña</button>
+        <button className="nueva-boton" onClick={manejarCambioContrasena}>
+          Guardar contraseña
+        </button>
       </div>
     </div>
   );
