@@ -154,9 +154,6 @@ export default function CitasAdmin() {
     <div className="admin-citas-container">
       <div className="admin-citas-header">
         <h2>Citas Agendadas</h2>
-        <button className="btn-agregar">
-          <FaPlus /> Nueva Cita
-        </button>
       </div>
 
       <div className="buscador-citas">

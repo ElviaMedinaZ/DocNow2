@@ -9,7 +9,6 @@ import { FaEllipsisV, FaPlus, FaSearch } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import '../../styles/admin/admin-base.css';
 import HistorialMedico from '../medico/historial-medico';
-import AgendarCita from '../paciente/agendar-cita';
 import RegistroPaciente from '../paciente/registro-paciente';
 import GenericTable from './tabla-generica';
 import { cargarPacientesDesdeFirestore } from '../../utils/firebasePaciente';
@@ -43,7 +42,7 @@ export default function PacientesAdmin() {
   const cerrarModal = () => { setModal(false); setEdit(null); setMenu(null); };
   const cerrarModalCita = () => { setModalCita(false); setPacienteCita(null); setMenu(null); };
   const cerrarModalHistorial = () => { setModalHistorial(false); setPacienteHistorial(null); setMenu(null); };
-  const abrirCita = (row) => { setPacienteCita(row); setModalCita(true); setMenu(null); };
+
   const abrirHistorial = (row) => { setPacienteHistorial(row); setModalHistorial(true); setMenu(null); };
 
   const eliminar = async (id) => {
@@ -185,7 +184,6 @@ export default function PacientesAdmin() {
             <div className="menu-acciones" ref={menuRef}>
               <button onClick={() => abrirHistorial(row)}>Ver historial</button>
               <button onClick={() => abrirEditar(row)}>Editar</button>
-              <button onClick={() => abrirCita(row)}>Agendar cita</button>
               <button onClick={() => toggleEstado(row.id)}>
                 {row.estado === 'Activo' ? 'Inactivar' : 'Activar'}
               </button>
