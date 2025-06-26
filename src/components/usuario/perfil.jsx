@@ -150,6 +150,11 @@ export default function PerfilWeb() {
         nuevosErrores.descripcion = true;
         nuevosMensajes.descripcion = 'La descripción es obligatoria';
       }
+
+      if (descripcion.length > 50) {
+        nuevosErrores.descripcion = true;
+        nuevosMensajes.descripcion = 'Máximo 50 caracteres';
+      }
     }
 
     setErrores(nuevosErrores);
@@ -262,7 +267,13 @@ export default function PerfilWeb() {
           <label className={styles.laberPerfil}>Número telefónico</label>
           <InputText
             value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
+            onChange={(e) => {
+              const valor = e.target.value;
+              // Solo permitir números
+              if (/^\d{0,10}$/.test(valor)) {
+                setTelefono(valor);
+              }
+            }}
             disabled={!modoEdicion}
             className={`${styles.inputPerfil} ${errores.telefono ? 'p-invalid' : ''}`}
           />
@@ -294,7 +305,12 @@ export default function PerfilWeb() {
               <label className={styles.laberPerfil}>Descripción</label>
               <InputText
                 value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
+                onChange={(e) => {
+                  const valor = e.target.value;
+                  if (valor.length <= 50) {
+                    setDescripcion(valor);
+                  }
+                }}
                 disabled={!modoEdicion}
                 className={`${styles.inputPerfil} ${errores.descripcion ? 'p-invalid' : ''}`}
               />
