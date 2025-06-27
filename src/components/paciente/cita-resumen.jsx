@@ -49,7 +49,6 @@ export default function CitaResumen({ info, volver, continuar }) {
         <ul>
           <li>• Llegue 15 minutos antes de su cita</li>
           <li>• Traiga su identificación y seguro médico</li>
-          <li>• Recibirá una confirmación por email y SMS</li>
           <li>• Para cancelar, contacte con 24 horas de anticipación</li>
         </ul>
       </div>

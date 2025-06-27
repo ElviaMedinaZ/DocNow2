@@ -1,6 +1,6 @@
 /**
- * Descripción: Header del paciente
- * Fecha: 17-Jun-2025
+ * Descripción: Header del paciente con bandeja de notificaciones
+ * Fecha: 26-Jun-2025
  * Programador: Elvia Medina
  */
 
@@ -18,29 +18,31 @@ const MySwal = withReactContent(Swal);
 
 export default function HeaderPaciente() {
   const op = useRef(null);
+  const notiRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const [hayNotificaciones, setHayNotificaciones] = useState(false);
 
-  // ✅ Cargar notificaciones desde el backend
+  const [hayNotificaciones, setHayNotificaciones] = useState(false);
+  const [notificaciones, setNotificaciones] = useState([]);
+
   useEffect(() => {
     const cargarNotificaciones = async () => {
       try {
         const res = await fetch('/api/leerNotificaciones');
         const data = await res.json();
-        if (Array.isArray(data.notificaciones) && data.notificaciones.length > 0) {
-          setHayNotificaciones(true);
-        } else {
-          setHayNotificaciones(false);
+        if (Array.isArray(data.notificaciones)) {
+          setNotificaciones(data.notificaciones);
+          setHayNotificaciones(data.notificaciones.length > 0);
         }
       } catch (error) {
         console.error('Error al cargar notificaciones:', error);
+        setNotificaciones([]);
         setHayNotificaciones(false);
       }
     };
 
     cargarNotificaciones();
-    const intervalo = setInterval(cargarNotificaciones, 60000); // cada 1 minuto
+    const intervalo = setInterval(cargarNotificaciones, 60000);
     return () => clearInterval(intervalo);
   }, []);
 
@@ -74,7 +76,7 @@ export default function HeaderPaciente() {
         <span className="home-logo-text">DocNow</span>
       </Link>
 
-      {/* Navegación visible solo en desktop */}
+      {/* Navegación */}
       <nav className="home-nav">
         <a href="#servicios">Servicios</a>
         <a href="#medicos">Especialistas</a>
@@ -83,17 +85,32 @@ export default function HeaderPaciente() {
 
       {/* Acciones: Notificación + Menú */}
       <div className="desktop-actions">
-        <div className="notification-icon">
+        <div className="notification-icon" onClick={(e) => notiRef.current.toggle(e)}>
           <i className="pi pi-bell"></i>
           {hayNotificaciones && <span className="notification-dot"></span>}
         </div>
+
+        <OverlayPanel ref={notiRef} className="noti-dropdown" dismissable>
+          {notificaciones.length > 0 ? (
+            notificaciones.map((n, i) => (
+              <div key={i} className="noti-item">
+                <div className="noti-title">📅 {n.titulo || 'Cita próxima'}</div>
+                <div className="noti-text">
+                  🕒 {new Date(n.fecha).toLocaleDateString('es-MX')} a las {n.hora} <br />
+                  👨‍⚕️ {n.doctor}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="noti-empty">Sin notificaciones por ahora.</div>
+          )}
+        </OverlayPanel>
 
         <div className="user-menu" onClick={(e) => op.current.toggle(e)}>
           <div className="user-avatar"></div>
           <span className="user-name">María González</span>
         </div>
 
-        {/* Botón móvil tipo kebab */}
         <Button
           icon="pi pi-ellipsis-v"
           className="p-button-text kebab-menu"
@@ -116,11 +133,15 @@ export default function HeaderPaciente() {
         </Link>
 
         <a href="#configuracion"><i className="pi pi-cog" /> Configuración</a>
-        <a href="#logout" className="btn-logout" onClick={async (e) => {
-          e.preventDefault();
-          op.current.hide();
-          await cerrarSesion();
-        }}>
+        <a
+          href="#logout"
+          className="btn-logout"
+          onClick={async (e) => {
+            e.preventDefault();
+            op.current.hide();
+            await cerrarSesion();
+          }}
+        >
           <i className="pi pi-sign-out" /> Cerrar sesión
         </a>
       </OverlayPanel>

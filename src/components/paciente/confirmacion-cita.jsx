@@ -22,7 +22,6 @@ export default function ConfirmacionCita({ info, onFinalizar }) {
       <div className="pasos-siguientes">
         <h4>Próximos Pasos</h4>
         <ul>
-          <li>Recibirá un email de confirmación</li>
           <li>Llegue 15 minutos antes de su cita</li>
           <li>Traiga su identificación y seguro médico</li>
         </ul>
