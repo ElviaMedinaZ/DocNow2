@@ -13,11 +13,17 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import logo from '../../assets/logo.png';
 import '../../styles/paciente/menu-paciente.css';
+import { useEffect, useState } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../lib/firebase'; // Ajusta si tu ruta a firebase es distinta
 
 const MySwal = withReactContent(Swal);
 
 export default function HeaderPaciente() {
   const op = useRef(null);
+  const [nombre, setNombre] = useState('');
+  const [verTodosLosServicios, setVerTodosLosServicios] = useState(false);
+  const [fotoUrl, setFotoUrl] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const [hayNotificaciones, setHayNotificaciones] = useState(false);
@@ -44,6 +50,31 @@ export default function HeaderPaciente() {
     return () => clearInterval(intervalo);
   }, []);
 
+  const uid = localStorage.getItem('uid');
+  console.log('UID desde localStorage:', uid);
+
+    useEffect(() => {
+    const obtenerNombrePaciente = async () => {
+      const uid = localStorage.getItem('uid');
+      if (!uid) return;
+
+      try {
+        const docRef = doc(db, 'usuarios', uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setNombre(data.nombres); 
+          setFotoUrl(data.fotoPerfil);
+          console.log('Datos completos del usuario:', data);
+        }
+      } catch (error) {
+        console.error('Error al obtener el nombre del paciente:', error);
+      }
+    };
+
+    obtenerNombrePaciente();
+  }, []);
+
   const cerrarSesion = async () => {
     const { isConfirmed } = await MySwal.fire({
       title: '¿Cerrar sesión?',
@@ -59,24 +90,30 @@ export default function HeaderPaciente() {
     if (isConfirmed) navigate('/login');
   };
 
-  const handleLogoClick = (e) => {
-    if (location.pathname === '/home-paciente') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
+  const handleLogoClick = () => {
+  window.location.href = '/home-paciente';
+};
+
 
   return (
     <header className="home-header">
       {/* Logo */}
-      <Link to="/home-paciente" className="home-logo-container" onClick={handleLogoClick}>
+     <Link to="/home-paciente" className="home-logo-container" onClick={handleLogoClick}>
         <img src={logo} alt="DocNow" className="home-logo-icon" />
         <span className="home-logo-text">DocNow</span>
       </Link>
 
       {/* Navegación visible solo en desktop */}
       <nav className="home-nav">
-        <a href="#servicios">Servicios</a>
+        <a
+          href="#servicios-todos"
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.hash = '#servicios-todos';
+          }}
+        >
+          Servicios
+        </a>
         <a href="#medicos">Especialistas</a>
         <a href="#citas">Mis Citas</a>
       </nav>
@@ -89,8 +126,16 @@ export default function HeaderPaciente() {
         </div>
 
         <div className="user-menu" onClick={(e) => op.current.toggle(e)}>
-          <div className="user-avatar"></div>
-          <span className="user-name">María González</span>
+           <div
+            className="user-avatar"
+            style={{
+              backgroundImage: `url(${fotoUrl})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              borderRadius: '50%',
+            }}
+          ></div>
+          <span className="user-name"> {nombre ? `Hola, ${nombre}` : 'Cargando...'} </span>
         </div>
 
         {/* Botón móvil tipo kebab */}

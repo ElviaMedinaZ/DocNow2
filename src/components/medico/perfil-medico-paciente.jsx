@@ -4,58 +4,71 @@
  * Programador: Elvia Medina
  */
 
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { DataView } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
-import { useState } from 'react';
+
 import '../../styles/paciente/perfil-medico-paciente.css';
 import HeaderPaciente from '../paciente/menu-paciente';
-
-import '../../styles/admin/admin-base.css';
-import '../../styles/admin/doctores-admin.css';
-import '../../styles/paciente/perfil-medico-paciente.css';
-
 import AgendarCita from '../../components/paciente/agendar-cita';
 
-const doctorDemo = {
-  nombre: 'Dr. Mario González',
-  turno: 'Matutino',
-  experiencia: 15,
-  foto: 'https://i.pravatar.cc/150?img=13',
-  telefono: '612 158 4464',
-  email: 'mario.gonzalez@gmail.com',
-  consultorio: '3',
-  servicios: [
-    { nombre: 'Consulta general', precio: 500, desc: 'Revisión médica', dur: '45 min' },
-    { nombre: 'Inyecciones', precio: 200, desc: 'Aplicación de medicación o vacunas', dur: '30 min' },
-    { nombre: 'Ultrasonidos', precio: 80, desc: 'Descarta cualquier tumor', dur: '15 min' },
-  ],
-  horario: [
-    { dia: 'Lunes', horas: '8:00 AM - 1:00 PM' },
-    { dia: 'Martes', horas: '8:00 AM - 1:00 PM' },
-    { dia: 'Miércoles', horas: '8:00 AM - 1:00 PM' },
-    { dia: 'Jueves', horas: '8:00 AM - 1:00 PM' },
-    { dia: 'Viernes', horas: '8:00 AM - 1:00 PM' },
-    { dia: 'Sábado', horas: '8:00 AM - 12:00 PM' },
-    { dia: 'Domingo', horas: 'No disponible' },
-  ],
-  valoraciones: [
-    { id: 1, usuario: 'Ana Martínez', avatar: 'https://i.pravatar.cc/150?img=47', estrellas: 5, comentario: 'Excelente doctora, muy profesional y empática.', fecha: '14/1/2024' },
-    { id: 2, usuario: 'Carlos López', avatar: 'https://i.pravatar.cc/150?img=12', estrellas: 5, comentario: 'Altamente recomendada.', fecha: '9/1/2024' },
-    { id: 3, usuario: 'Laura Rodríguez', avatar: 'https://i.pravatar.cc/100?img=23', estrellas: 4, comentario: 'Buena atención, aunque tardó un poco.', fecha: '4/1/2024' },
-    { id: 4, usuario: 'Miguel Torres', avatar: 'https://i.pravatar.cc/150?img=15', estrellas: 5, comentario: 'Me ayudó mucho con mi problema cardiaco.', fecha: '27/12/2023' },
-    { id: 5, usuario: 'Sofía Hernández', avatar: 'https://i.pravatar.cc/150?img=8', estrellas: 5, comentario: 'Muy detallada y cálida en el trato.', fecha: '19/12/2023' },
-  ],
-};
-
-export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
+export default function PerfilMedicoDashboard() {
+  const { uid } = useParams();
+  const [doctor, setDoctor] = useState(null);
   const [modalCita, setModalCita] = useState(false);
 
+  useEffect(() => {
+    const cargarDoctor = async () => {
+      const ref = doc(db, 'usuarios', uid);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        const data = snap.data();
+
+        // Simulamos valores faltantes para renderizado
+        setDoctor({
+          nombre: data.nombres || 'Sin nombre',
+          turno: data.turnoHora || 'Matutino',
+          experiencia: data.experiencia || 0,
+          foto: data.fotoPerfil || '',
+          telefono: data.telefono || 'No disponible',
+          email: data.email || '',
+          consultorio: data.consultorio || 'N/A',
+          servicios: data.Servicios?.split(',').map(s => ({
+            nombre: s,
+            precio: 300,
+            desc: 'Descripción no disponible',
+            dur: '30 min'
+          })) || [],
+          horario: [
+            { dia: 'Lunes', horas: '8:00 AM - 1:00 PM' },
+            { dia: 'Martes', horas: '8:00 AM - 1:00 PM' },
+            { dia: 'Miércoles', horas: '8:00 AM - 1:00 PM' },
+            { dia: 'Jueves', horas: '8:00 AM - 1:00 PM' },
+            { dia: 'Viernes', horas: '8:00 AM - 1:00 PM' },
+            { dia: 'Sábado', horas: '8:00 AM - 12:00 PM' },
+            { dia: 'Domingo', horas: 'No disponible' },
+          ],
+          valoraciones: [] // Puedes cargar valoraciones reales si las tienes
+        });
+      }
+    };
+
+    cargarDoctor();
+  }, [uid]);
+
+  if (!doctor) return <p>Cargando perfil del médico...</p>;
+
   const currency = (n) => `$${n.toLocaleString('es-MX')}`;
-  const promedio = doctor.valoraciones.reduce((acc, v) => acc + v.estrellas, 0) / doctor.valoraciones.length;
+  const promedio = doctor.valoraciones.length > 0
+    ? doctor.valoraciones.reduce((acc, v) => acc + v.estrellas, 0) / doctor.valoraciones.length
+    : 0;
   const totalReseñas = doctor.valoraciones.length;
 
   const valoracionTemplate = (v) => (
@@ -136,8 +149,8 @@ export default function PerfilMedicoDashboard({ doctor = doctorDemo }) {
         <main className="pm-main">
           <Card className="pm-card pm-services-card" title="Servicios Médicos">
             <div className="pm-services-grid">
-              {doctor.servicios.map((s) => (
-                <div key={s.nombre} className="pm-service-box">
+              {doctor.servicios.map((s, i) => (
+                <div key={i} className="pm-service-box">
                   <div className="pm-service-head">
                     <h4>{s.nombre}</h4>
                     <Tag value={currency(s.precio)} className="pm-tag-precio" />

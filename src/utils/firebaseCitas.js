@@ -1,6 +1,26 @@
 // utils/firebaseCitas.js
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { db } from "../../lib/firebase"; // ajusta según tu estructura
+
+
+export const obtenerCitasPaciente = async (pacienteId) => {
+  const ref = collection(db, 'citas');
+  const snapshot = await getDocs(ref);
+
+  const citas = [];
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.pacienteId === pacienteId) {
+      citas.push({
+        id: doc.id,
+        ...data,
+      });
+    }
+  });
+
+  return citas;
+};
 
 export const guardarCita = async (datosCita) => {
   if (!datosCita.nombre || !datosCita.fecha || !datosCita.hora) {
