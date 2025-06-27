@@ -7,7 +7,7 @@
 import 'primeicons/primeicons.css';
 import { Button } from 'primereact/button';
 import { OverlayPanel } from 'primereact/overlaypanel';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -16,7 +16,6 @@ import '../../styles/paciente/menu-paciente.css';
 import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase'; // Ajusta si tu ruta a firebase es distinta
-
 
 const MySwal = withReactContent(Swal);
 
@@ -27,6 +26,29 @@ export default function HeaderPaciente() {
   const [fotoUrl, setFotoUrl] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  const [hayNotificaciones, setHayNotificaciones] = useState(false);
+
+  // ✅ Cargar notificaciones desde el backend
+  useEffect(() => {
+    const cargarNotificaciones = async () => {
+      try {
+        const res = await fetch('/api/leerNotificaciones');
+        const data = await res.json();
+        if (Array.isArray(data.notificaciones) && data.notificaciones.length > 0) {
+          setHayNotificaciones(true);
+        } else {
+          setHayNotificaciones(false);
+        }
+      } catch (error) {
+        console.error('Error al cargar notificaciones:', error);
+        setHayNotificaciones(false);
+      }
+    };
+
+    cargarNotificaciones();
+    const intervalo = setInterval(cargarNotificaciones, 60000); // cada 1 minuto
+    return () => clearInterval(intervalo);
+  }, []);
 
   const uid = localStorage.getItem('uid');
   console.log('UID desde localStorage:', uid);
@@ -100,7 +122,7 @@ export default function HeaderPaciente() {
       <div className="desktop-actions">
         <div className="notification-icon">
           <i className="pi pi-bell"></i>
-          <span className="notification-dot"></span>
+          {hayNotificaciones && <span className="notification-dot"></span>}
         </div>
 
         <div className="user-menu" onClick={(e) => op.current.toggle(e)}>
@@ -117,12 +139,16 @@ export default function HeaderPaciente() {
         </div>
 
         {/* Botón móvil tipo kebab */}
-        <Button icon="pi pi-ellipsis-v" className="p-button-text kebab-menu" onClick={(e) => op.current.toggle(e)} aria-label="Abrir menú" />
+        <Button
+          icon="pi pi-ellipsis-v"
+          className="p-button-text kebab-menu"
+          onClick={(e) => op.current.toggle(e)}
+          aria-label="Abrir menú"
+        />
       </div>
 
       {/* Menú desplegable */}
       <OverlayPanel ref={op} className="user-dropdown" dismissable>
-        {/* Solo en móvil */}
         <div className="mobile-only">
           <a href="#servicios"><i className="pi pi-briefcase" /> Servicios</a>
           <a href="#medicos"><i className="pi pi-users" /> Especialistas</a>
@@ -130,10 +156,11 @@ export default function HeaderPaciente() {
           <hr />
         </div>
 
-       <Link to="/perfil" onClick={() => op.current.hide()}>
-        <i className="pi pi-user" /> Perfil
-       </Link>
+        <Link to="/perfil" onClick={() => op.current.hide()}>
+          <i className="pi pi-user" /> Perfil
+        </Link>
 
+        <a href="#configuracion"><i className="pi pi-cog" /> Configuración</a>
         <a href="#logout" className="btn-logout" onClick={async (e) => {
           e.preventDefault();
           op.current.hide();

@@ -1,14 +1,16 @@
-
 /*
  * Descripción: Implementación de agendar cita con validaciones y modales
  * Fecha: 24 Junio de 2025
  * Programador: Elvia Medina
  */
 
+import { addDoc, collection, doc, getDoc, Timestamp } from "firebase/firestore";
 import { Calendar } from "primereact/calendar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaClock } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { auth, db } from "../../lib/firebase";
+
 import CitaResumen from "../../components/paciente/cita-resumen.jsx";
 import ConfirmacionCita from "../../components/paciente/confirmacion-cita.jsx";
 import PagoCita from "../../components/paciente/pago-cita.jsx";
@@ -28,6 +30,17 @@ const availableTimes = [
   "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM"
 ];
 
+const convertirHoraAFecha = (horaStr, fechaBase) => {
+  const [horaMinuto, meridiano] = horaStr.split(" ");
+  let [horas, minutos] = horaMinuto.split(":").map(Number);
+  if (meridiano === "PM" && horas !== 12) horas += 12;
+  if (meridiano === "AM" && horas === 12) horas = 0;
+
+  const fecha = new Date(fechaBase);
+  fecha.setHours(horas, minutos, 0, 0);
+  return fecha;
+};
+
 export default function AgendarCita({ onClose }) {
   const [step, setStep] = useState(1);
   const [date, setDate] = useState(null);
@@ -43,6 +56,43 @@ export default function AgendarCita({ onClose }) {
   const [notas, setNotas] = useState("");
 
   const [errores, setErrores] = useState({});
+  const [uid, setUid] = useState(null);
+
+  // Calcular edad desde fecha de nacimiento
+  const calcularEdad = (fechaNacimiento) => {
+    const hoy = new Date();
+    const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    const m = hoy.getMonth() - fechaNacimiento.getMonth();
+    return m < 0 || (m === 0 && hoy.getDate() < fechaNacimiento.getDate()) ? edad - 1 : edad;
+  };
+
+  // Cargar datos del paciente al montar
+  useEffect(() => {
+    const cargarDatosPaciente = async () => {
+      try {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        setUid(user.uid);
+
+        const docRef = doc(db, "usuarios", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+
+          setNombre(data.nombres || "");
+          setEdad(data.fechaNacimiento ? calcularEdad(new Date(data.fechaNacimiento)).toString() : "");
+          setEmail(data.correoElectronico || data.email || "");
+          setTelefono(data.telefono || "");
+        }
+      } catch (error) {
+        console.error("Error al cargar datos del paciente:", error);
+      }
+    };
+
+    cargarDatosPaciente();
+  }, []);
 
   const toggleAppointment = (index) => {
     setSelectedAppointments((prev) =>
@@ -100,10 +150,19 @@ export default function AgendarCita({ onClose }) {
     setStep(step + 1);
   };
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const renderStep1 = () => {
-    const today = new Date();
-    const maxDate = new Date();
-    maxDate.setFullYear(today.getFullYear() + 2);
+    const ahora = new Date();
+    const esHoy = date && date.toDateString() === ahora.toDateString();
+
+    const horariosFiltrados = esHoy
+      ? availableTimes.filter((hora) => {
+          const horaCompleta = convertirHoraAFecha(hora, date);
+          return horaCompleta > ahora;
+        })
+      : availableTimes;
 
     return (
       <div className="ap-container">
@@ -116,8 +175,9 @@ export default function AgendarCita({ onClose }) {
               onChange={(e) => setDate(e.value)}
               inline
               showIcon
-              minDate={today}
-              maxDate={maxDate}
+              // minDate={today}
+                minDate={today}
+              // maxDate={maxDate}
             />
           </div>
 
@@ -145,7 +205,7 @@ export default function AgendarCita({ onClose }) {
             <h3>Horarios Disponibles</h3>
             <p>{date.toLocaleDateString("es-MX", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
             <div className="ap-horarios-grid">
-              {availableTimes.map((time) => (
+              {horariosFiltrados.map((time) => (
                 <button
                   key={time}
                   className={`ap-hora-btn ${selectedTime === time ? "ap-hora-seleccionada" : ""}`}
@@ -166,23 +226,10 @@ export default function AgendarCita({ onClose }) {
     <div className="ap-form-paciente">
       <h2>Información del Paciente</h2>
       <div className="ap-form-grid">
-        <input className={errores.nombre ? "input-error" : ""}  maxLength={50} placeholder="Ej: Juan Pérez García" value={nombre} onChange={(e) => setNombre(e.target.value)} />
-        <input
-            className={errores.edad ? "input-error" : ""}
-            maxLength={3}
-            placeholder="Ej: 35"
-            value={edad}
-            onChange={(e) => {
-              const soloNumeros = e.target.value.replace(/\D/g, ""); // elimina letras
-              setEdad(soloNumeros);
-            }}
-          />
-        <input className={errores.email ? "input-error" : ""}  maxLength={50} placeholder="ejemplo@correo.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input className={errores.telefono ? "input-error" : ""}  maxLength={10} placeholder="5551234567" value={telefono}
-          onChange={(e) => {
-            const num = e.target.value.replace(/\D/g, "");
-            if (num.length <= 10) setTelefono(num);
-          }} />
+        <input className={errores.nombre ? "input-error" : ""} maxLength={50} placeholder="Ej: Juan Pérez García" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+        <input className={errores.edad ? "input-error" : ""} maxLength={3} placeholder="Ej: 35" value={edad} onChange={(e) => setEdad(e.target.value.replace(/\D/g, ""))} />
+        <input className={errores.email ? "input-error" : ""} maxLength={50} placeholder="ejemplo@correo.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input className={errores.telefono ? "input-error" : ""} maxLength={10} placeholder="5551234567" value={telefono} onChange={(e) => setTelefono(e.target.value.replace(/\D/g, ""))} />
         <textarea className={errores.motivo ? "input-error" : ""} placeholder="Motivo de consulta..." value={motivo} onChange={(e) => setMotivo(e.target.value)} />
         <textarea placeholder="Notas adicionales..." value={notas} onChange={(e) => setNotas(e.target.value)} />
       </div>
@@ -201,27 +248,38 @@ export default function AgendarCita({ onClose }) {
       {step === 4 && (
         <PagoCita
           info={{ ...formData, total: (parseFloat(formData.precio) * 1.1).toFixed(2) }}
-          onConfirm={(datosPago) => {
-            setFormData((prev) => ({
-              ...prev,
-              tarjeta: datosPago.tarjeta,
-            }));
-            setStep(5);
-          }}
+          onConfirm={() => setStep(5)}
           onBack={() => setStep(3)}
         />
       )}
-
       {step === 5 && (
         <ConfirmacionCita
-          info={{ ...formData, total: (parseFloat(formData.precio) * 1.1).toFixed(2) }}
-          onFinalizar={() => {
-            Swal.fire({
-              title: "¡Cita registrada con éxito!",
-              text: "Recibirá una confirmación por email",
-              icon: "success",
-              confirmButtonText: "OK"
-            }).then(() => {
+          info={{
+            ...formData,
+            total: (parseFloat(formData.precio) * 1.1).toFixed(2),
+            tarjeta: "1213",
+          }}
+          onFinalizar={async () => {
+            try {
+              const citaData = {
+                ...formData,
+                total: (parseFloat(formData.precio) * 1.1).toFixed(2),
+                tarjeta: "1213",
+                fecha: date.toISOString(),
+                hora: selectedTime,
+                creadaEn: Timestamp.now(),
+                uid: uid,
+              };
+
+              await addDoc(collection(db, "citas"), citaData);
+
+              await Swal.fire({
+                title: "¡Cita registrada con éxito!",
+                text: "Recibirá una confirmación por email o SMS.",
+                icon: "success",
+                confirmButtonText: "OK"
+              });
+
               if (onClose) onClose();
               setStep(1);
               setDate(null);
@@ -230,8 +288,12 @@ export default function AgendarCita({ onClose }) {
               setFormData({});
               setNombre(""); setEdad(""); setEmail(""); setTelefono(""); setMotivo(""); setNotas("");
               setErrores({});
-            });
+            } catch (error) {
+              console.error("Error al guardar la cita:", error);
+              await Swal.fire("Error", "No se pudo guardar la cita. Intenta nuevamente.", "error");
+            }
           }}
+          onBack={() => setStep(4)}
         />
       )}
     </div>
