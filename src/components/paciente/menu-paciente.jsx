@@ -13,7 +13,6 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import logo from '../../assets/logo.png';
 import '../../styles/paciente/menu-paciente.css';
-import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase'; // Ajusta si tu ruta a firebase es distinta
 
@@ -22,10 +21,8 @@ const MySwal = withReactContent(Swal);
 export default function HeaderPaciente() {
   const op = useRef(null);
   const [nombre, setNombre] = useState('');
-  const [verTodosLosServicios, setVerTodosLosServicios] = useState(false);
   const [fotoUrl, setFotoUrl] = useState('');
   const navigate = useNavigate();
-  const location = useLocation();
   const [hayNotificaciones, setHayNotificaciones] = useState(false);
 
   // ✅ Cargar notificaciones desde el backend
