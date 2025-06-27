@@ -1,7 +1,7 @@
 // utils/firebaseCitas.js
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { addDoc, Timestamp } from "firebase/firestore";
 
 
 export const obtenerCitasPaciente = async (pacienteId) => {
