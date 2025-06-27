@@ -92,7 +92,7 @@ function App() {
 
         {/* --- Médico --- */}
         <Route path="/home-medico" element={<PantallaHomeMedico />} />
-        <Route path="/perfil-medico-paciente" element={<PantallaPerfilMedicoPaciente />} />
+        <Route path="/perfil-medico-paciente/:uid" element={<PantallaPerfilMedicoPaciente />} />
         <Route path="/registro-medico" element={<PantallaRegistroMedico />} />
         <Route path="/registro-medico/:id" element={<PantallaRegistroMedico />} />
         <Route path="/consulta-medica" element={<PantallaConsultaMedica />} />
